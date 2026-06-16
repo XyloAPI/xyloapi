@@ -9,6 +9,11 @@
             "root": "backend",
             "entrypoint": "src/index.ts",
             "routePrefix": "/api"
+        },
+        "scrapers": {
+            "root": "backend",
+            "entrypoint": "scrapers/main.py",
+            "routePrefix": "/_/scrapers"
         }
     }
 }

@@ -7,6 +7,31 @@ import os
 # Set up module paths
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
+def load_dotenv():
+    possible_paths = [
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env'),
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env'),
+        os.path.join(os.getcwd(), 'backend', '.env'),
+        os.path.join(os.getcwd(), '.env'),
+    ]
+    for path in possible_paths:
+        if os.path.exists(path):
+            try:
+                with open(path, 'r') as f:
+                    for line in f:
+                        line = line.strip()
+                        if not line or line.startswith('#'):
+                            continue
+                        if '=' in line:
+                            key, val = line.split('=', 1)
+                            val = val.strip().strip('"').strip("'")
+                            os.environ[key.strip()] = val
+                break
+            except Exception:
+                pass
+
+load_dotenv()
+
 # Import modular scrapers
 try:
     from imgur_uploader import upload_imgur

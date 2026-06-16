@@ -8,6 +8,8 @@ import { Pool } from 'pg';
 
 const execAsync = promisify(exec);
 
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
+dotenv.config({ path: path.resolve(process.cwd(), 'backend/.env') });
 dotenv.config();
 
 const app = express();
@@ -20,7 +22,8 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization', 'X-API-Key', 'x-api-key']
 }));
 
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Prefix-recovery middleware to handle Vercel path stripping when using routePrefix: "/api"
 app.use((req, res, next) => {
@@ -252,6 +255,64 @@ app.get('/api/monitor', async (req, res) => {
   });
 });
 
+// Helper to execute Python scrapers via HTTP service first, falling back to local shell execution
+async function executePipeline(slug: string, payload: any, reqHost: string, protocol: string): Promise<any> {
+  // 1. Try Python Scraper Service over HTTP
+  try {
+    const scrapersUrl = `${protocol}://${reqHost}/_/scrapers`;
+    console.log(`[XyloAPI Node] Attempting HTTP pipeline call to: ${scrapersUrl} for slug: ${slug}`);
+    
+    const response = await (global as any).fetch(scrapersUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ slug, payload })
+    });
+    
+    if (response.ok) {
+      const result = await response.json();
+      console.log(`[XyloAPI Node] HTTP pipeline call succeeded for slug: ${slug}`);
+      return result;
+    } else {
+      console.warn(`[XyloAPI Node] HTTP pipeline call returned status ${response.status}. Falling back to local process execution.`);
+    }
+  } catch (httpError: any) {
+    console.warn(`[XyloAPI Node] HTTP pipeline call failed: ${httpError.message}. Falling back to local process execution.`);
+  }
+
+  // 2. Fallback to Local Python CLI Execution (for local developer environments)
+  const pythonPath = process.env.PYTHON_PATH || 'python';
+  const scriptPath = path.join(__dirname, '..', 'scrapers', 'scraper_runner.py');
+  
+  const payloadStr = JSON.stringify(payload || {});
+  const payloadBase64 = Buffer.from(payloadStr).toString('base64');
+
+  const { stdout, stderr } = await new Promise<{ stdout: string; stderr: string }>((resolve, reject) => {
+    const child = exec(
+      `"${pythonPath}" "${scriptPath}" "${slug}"`,
+      { maxBuffer: 1024 * 1024 * 50, env: { ...process.env } },
+      (error, stdout, stderr) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve({ stdout, stderr });
+        }
+      }
+    );
+    if (child.stdin) {
+      child.stdin.write(payloadBase64);
+      child.stdin.end();
+    }
+  });
+
+  if (stderr && !stdout) {
+    throw new Error(stderr);
+  }
+
+  return JSON.parse(stdout.trim());
+}
+
 // 2. Modules / Endpoints Route
 app.get('/api/modules', (req, res) => {
   res.json({
@@ -269,65 +330,24 @@ app.all('/api/uploader/:slug', async (req, res) => {
   };
 
   try {
-    const pythonPath = process.env.PYTHON_PATH || 'python';
-    const scriptPath = path.join(__dirname, '..', 'scrapers', 'scraper_runner.py');
-    
-    const payloadStr = JSON.stringify(payload || {});
-    const payloadBase64 = Buffer.from(payloadStr).toString('base64');
+    const reqHost = req.headers.host || 'localhost:5000';
+    const protocol = req.secure || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
+    const result = await executePipeline(slug, payload, reqHost, protocol);
 
-    // Run python process writing base64 payload to its standard input
-    const { stdout, stderr } = await new Promise<{ stdout: string; stderr: string }>((resolve, reject) => {
-      const child = exec(
-        `"${pythonPath}" "${scriptPath}" "${slug}"`,
-        { maxBuffer: 1024 * 1024 * 50, env: { ...process.env } }, // 50MB output buffer & inherit env
-        (error, stdout, stderr) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve({ stdout, stderr });
-          }
-        }
-      );
-      if (child.stdin) {
-        child.stdin.write(payloadBase64);
-        child.stdin.end();
-      }
-    });
-
-    if (stderr && !stdout) {
-      return res.status(500).json({
+    // If the scraper runner returned success: false, bubble it
+    if (result && result.success === false) {
+      return res.status(400).json({
         success: false,
-        error: "Execution pipeline error",
-        details: stderr
+        creator: "XyloAPI",
+        ...result
       });
     }
 
-    try {
-      const result = JSON.parse(stdout.trim());
-      
-      // If the scraper runner returned success: false, bubble it
-      if (result && result.success === false) {
-        return res.status(400).json({
-          success: false,
-          creator: "XyloAPI",
-          ...result
-        });
-      }
-
-      return res.json({
-        success: true,
-        creator: "XyloAPI",
-        data: result.data || result
-      });
-    } catch (parseError) {
-      return res.json({
-        success: true,
-        creator: "XyloAPI",
-        rawOutput: stdout,
-        warning: "Output was not valid JSON",
-        error: parseError instanceof Error ? parseError.message : String(parseError)
-      });
-    }
+    return res.json({
+      success: true,
+      creator: "XyloAPI",
+      data: result.data || result
+    });
 
   } catch (error: any) {
     res.status(500).json({
@@ -356,65 +376,24 @@ app.all('/api/downloader/:slug', async (req, res) => {
   } catch (logErr) {}
 
   try {
-    const pythonPath = process.env.PYTHON_PATH || 'python';
-    const scriptPath = path.join(__dirname, '..', 'scrapers', 'scraper_runner.py');
-    
-    const payloadStr = JSON.stringify(payload || {});
-    const payloadBase64 = Buffer.from(payloadStr).toString('base64');
+    const reqHost = req.headers.host || 'localhost:5000';
+    const protocol = req.secure || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
+    const result = await executePipeline(slug, payload, reqHost, protocol);
 
-    // Run python process writing base64 payload to its standard input
-    const { stdout, stderr } = await new Promise<{ stdout: string; stderr: string }>((resolve, reject) => {
-      const child = exec(
-        `"${pythonPath}" "${scriptPath}" "${slug}"`,
-        { maxBuffer: 1024 * 1024 * 50, env: { ...process.env } }, // 50MB output buffer & inherit env
-        (error, stdout, stderr) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve({ stdout, stderr });
-          }
-        }
-      );
-      if (child.stdin) {
-        child.stdin.write(payloadBase64);
-        child.stdin.end();
-      }
-    });
-
-    if (stderr && !stdout) {
-      return res.status(500).json({
+    // If the scraper runner returned success: false, bubble it
+    if (result && result.success === false) {
+      return res.status(400).json({
         success: false,
-        error: "Execution pipeline error",
-        details: stderr
+        creator: "XyloAPI",
+        ...result
       });
     }
 
-    try {
-      const result = JSON.parse(stdout.trim());
-      
-      // If the scraper runner returned success: false, bubble it
-      if (result && result.success === false) {
-        return res.status(400).json({
-          success: false,
-          creator: "XyloAPI",
-          ...result
-        });
-      }
-
-      return res.json({
-        success: true,
-        creator: "XyloAPI",
-        data: result.data || result
-      });
-    } catch (parseError) {
-      return res.json({
-        success: true,
-        creator: "XyloAPI",
-        rawOutput: stdout,
-        warning: "Output was not valid JSON",
-        error: parseError instanceof Error ? parseError.message : String(parseError)
-      });
-    }
+    return res.json({
+      success: true,
+      creator: "XyloAPI",
+      data: result.data || result
+    });
 
   } catch (error: any) {
     res.status(500).json({
