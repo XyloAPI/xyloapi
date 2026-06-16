@@ -22,6 +22,14 @@ app.use(cors({
 
 app.use(express.json());
 
+// Prefix-recovery middleware to handle Vercel path stripping when using routePrefix: "/api"
+app.use((req, res, next) => {
+  if (!req.url.startsWith('/api')) {
+    req.url = '/api' + req.url;
+  }
+  next();
+});
+
 // Initialize Neon PostgreSQL Connection Pool if DATABASE_URL is available
 let pool: Pool | null = null;
 if (process.env.DATABASE_URL) {

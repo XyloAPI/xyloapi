@@ -21,6 +21,13 @@ app.use((0, cors_1.default)({
     allowedHeaders: ['Content-Type', 'Authorization', 'X-API-Key', 'x-api-key']
 }));
 app.use(express_1.default.json());
+// Prefix-recovery middleware to handle Vercel path stripping when using routePrefix: "/api"
+app.use((req, res, next) => {
+    if (!req.url.startsWith('/api')) {
+        req.url = '/api' + req.url;
+    }
+    next();
+});
 // Initialize Neon PostgreSQL Connection Pool if DATABASE_URL is available
 let pool = null;
 if (process.env.DATABASE_URL) {

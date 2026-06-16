@@ -660,7 +660,8 @@ export default function Docs() {
       });
     }
 
-    let url = `http://localhost:5000${path}`;
+    const host = window.location.hostname === 'localhost' ? 'http://localhost:5000' : window.location.origin;
+    let url = `${host}${path}`;
 
     // Append remaining parameters as query string for GET
     const method = getActiveMethod();

@@ -42,7 +42,8 @@ export default function Monitor() {
 
   const fetchMonitorData = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/monitor');
+      const host = window.location.hostname === 'localhost' ? 'http://localhost:5000' : window.location.origin;
+      const res = await fetch(`${host}/api/monitor`);
       if (res.ok) {
         const json = await res.json();
         setData(json);
