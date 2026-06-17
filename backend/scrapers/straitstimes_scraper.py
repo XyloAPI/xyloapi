@@ -3,6 +3,7 @@ import requests
 from xml.etree import ElementTree as ET
 from html import unescape
 from html.parser import HTMLParser
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # Available categories and their RSS endpoints
 CATEGORIES = {
@@ -18,7 +19,8 @@ CATEGORIES = {
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "Accept": "application/rss+xml, application/xml, text/xml, */*",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.9",
 }
 
 
@@ -41,6 +43,29 @@ def strip_html(text):
         return s.get_data()
     except Exception:
         return re.sub(r"<[^>]+>", "", unescape(text or "")).strip()
+
+
+def _fetch_og_image(url: str) -> str:
+    """Fetch og:image meta tag from an article page. Returns empty string on failure."""
+    try:
+        resp = requests.get(url, headers=HEADERS, timeout=8)
+        if resp.status_code != 200:
+            return ""
+        html = resp.text
+
+        # Fast regex — og:image is always in <head>, no need to parse full DOM
+        m = re.search(
+            r'<meta\s+property=["\']og:image["\']\s+content=["\']([^"\']+)["\']',
+            html, re.IGNORECASE
+        )
+        if not m:
+            m = re.search(
+                r'<meta\s+content=["\']([^"\']+)["\']\s+property=["\']og:image["\']',
+                html, re.IGNORECASE
+            )
+        return m.group(1).strip() if m else ""
+    except Exception:
+        return ""
 
 
 def get_straitstimes_news(payload):
@@ -69,38 +94,20 @@ def get_straitstimes_news(payload):
     except ET.ParseError as e:
         return {"success": False, "error": f"Failed to parse RSS XML: {str(e)}"}
 
-    ns = {
-        "dc": "http://purl.org/dc/elements/1.1/",
-        "content": "http://purl.org/rss/1.0/modules/content/",
-    }
-
     channel = root.find("channel")
     if channel is None:
         return {"success": False, "error": "No channel found in RSS feed"}
 
     channel_title = (channel.findtext("title") or "The Straits Times").strip()
 
+    # Build article list from RSS (no images yet)
     articles = []
     for item in channel.findall("item"):
         title = (item.findtext("title") or "").strip()
         link = (item.findtext("link") or item.findtext("guid") or "").strip()
         pub_date = (item.findtext("pubDate") or "").strip()
-
         raw_desc = item.findtext("description") or ""
         description = strip_html(raw_desc)
-
-        # Try to get image from enclosure or media tags
-        image_url = None
-        enclosure = item.find("enclosure")
-        if enclosure is not None:
-            image_url = enclosure.get("url")
-
-        if not image_url:
-            # Try to find image in content:encoded
-            content_encoded = item.findtext("{http://purl.org/rss/1.0/modules/content/}encoded") or ""
-            img_match = re.search(r'src=["\']([^"\']+?\.(?:jpg|jpeg|png|webp))["\']', content_encoded)
-            if img_match:
-                image_url = img_match.group(1)
 
         if title and link:
             articles.append({
@@ -108,16 +115,37 @@ def get_straitstimes_news(payload):
                 "url": link,
                 "description": description[:200] if description else "",
                 "published": pub_date,
-                "image": image_url or "",
+                "image": "",
                 "source": "The Straits Times",
             })
+
+    articles = articles[:20]  # limit to 20 for speed
+
+    # Concurrently fetch og:image for each article (max 10 workers)
+    urls = [a["url"] for a in articles]
+    images = [""] * len(urls)
+
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        future_to_idx = {
+            executor.submit(_fetch_og_image, url): idx
+            for idx, url in enumerate(urls)
+        }
+        for future in as_completed(future_to_idx):
+            idx = future_to_idx[future]
+            try:
+                images[idx] = future.result()
+            except Exception:
+                images[idx] = ""
+
+    for i, article in enumerate(articles):
+        article["image"] = images[i]
 
     return {
         "success": True,
         "data": {
             "category": CATEGORIES.get(category, category.title()),
             "source": channel_title,
-            "articles": articles[:25],
+            "articles": articles,
             "total": len(articles),
         }
     }
