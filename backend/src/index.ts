@@ -200,9 +200,9 @@ const apiModules = [
   {
     id: "news",
     name: "News Scrapers Pack",
-    description: "Fetch latest news from: The Straits Times (8 cat), CNA (10 cat), BBC News (11 cat), CNN (13 cat), and Mothership SG (latest feed).",
+    description: "Fetch latest news from: The Straits Times, CNA, BBC News, CNN, Mothership SG, and Al Jazeera — with image, description, and publish date.",
     status: "active",
-    endpointsCount: 5,
+    endpointsCount: 6,
   }
 ];
 
