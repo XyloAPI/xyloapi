@@ -41,20 +41,18 @@ def _og(html: str, prop: str) -> str:
 
 
 def _fetch_article(url: str) -> dict:
-    """Fetch a single article page and extract all og: meta tags."""
+    """Fetch a single article page and extract all og: meta tags + published date."""
     empty = {"title": "", "image": "", "description": "", "published": "", "url": url}
     try:
         resp = requests.get(url, headers=HEADERS, timeout=10)
         if resp.status_code != 200:
             return empty
-        # Only need the first 6KB — all <meta> tags are in <head>
-        html = resp.text[:6000]
+        # JSON-LD is within first ~10KB, og: meta tags in <head>
+        html = resp.text[:10000]
 
         published = ""
-        pub_m = re.search(
-            r'<meta\s+property=["\']article:published_time["\']\s+content=["\']([^"\']+)["\']',
-            html, re.I
-        )
+        # CNA stores date in JSON-LD: "datePublished": "2026-06-18T..."
+        pub_m = re.search(r'"datePublished"\s*:\s*"([^"]+)"', html)
         if pub_m:
             published = pub_m.group(1).strip()
 
