@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Globe, RefreshCw, Send, Check, Upload, Download } from 'lucide-react';
+import { Globe, RefreshCw, Send, Check, Upload, Download, Newspaper } from 'lucide-react';
 
 interface CustomVideoPlayerProps {
   src: string;
@@ -895,6 +895,36 @@ const docTopics: DocTopic[] = [
     payloadTemplate: {
       url: ''
     }
+  },
+  {
+    id: 'straitstimes',
+    title: 'The Straits Times',
+    category: 'News',
+    method: 'POST',
+    path: '/api/news/straitstimes',
+    pathTemplate: '/api/news/:slug',
+    description: 'Fetch the latest news headlines and articles from The Straits Times (straitstimes.com) by category. Returns up to 25 articles with title, link, excerpt, and publish date.',
+    parameters: [
+      {
+        name: 'category',
+        type: 'select',
+        required: true,
+        desc: 'Select a news category to fetch articles from.',
+        options: [
+          { value: 'singapore', label: 'Singapore' },
+          { value: 'asia', label: 'Asia' },
+          { value: 'world', label: 'World' },
+          { value: 'business', label: 'Business' },
+          { value: 'sport', label: 'Sport' },
+          { value: 'life', label: 'Life & Style' },
+          { value: 'opinion', label: 'Opinion' },
+          { value: 'multimedia', label: 'Multimedia' },
+        ]
+      } as any
+    ],
+    payloadTemplate: {
+      category: 'singapore'
+    }
   }
 ];
 
@@ -1058,6 +1088,7 @@ export default function Docs() {
       case 'Media Uploaders': return <Upload size={14} />;
       case 'File Uploaders': return <Upload size={14} />;
       case 'Downloader': return <Download size={14} />;
+      case 'News': return <Newspaper size={14} />;
       default: return <Globe size={14} />;
     }
   };
@@ -1234,6 +1265,55 @@ export default function Docs() {
                 </div>
               )}
             </div>
+          </div>
+        </div>
+      );
+    }
+
+    // 7. News Layout
+    if (activeTopic.category === 'News' && resData && resData.articles) {
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '16px' }}>
+            <span style={{ fontSize: '11px', fontFamily: 'var(--font-mono)', color: '#27C93F', fontWeight: 700, textTransform: 'uppercase' }}>✓ NEWS FETCHED</span>
+            <h2 style={{ fontSize: '18px', fontWeight: 800, color: 'var(--white)', marginTop: '4px' }}>
+              {resData.source || 'The Straits Times'}
+            </h2>
+            <span style={{ fontSize: '11px', fontFamily: 'var(--font-mono)', color: 'var(--ash)', marginTop: '4px', display: 'block' }}>
+              CATEGORY: <span style={{ color: 'var(--gold-text)' }}>{resData.category}</span> · {resData.total} ARTICLES
+            </span>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {resData.articles.map((article: any, idx: number) => (
+              <a
+                key={idx}
+                href={article.url}
+                target="_blank"
+                rel="noreferrer"
+                style={{ display: 'flex', gap: '14px', alignItems: 'start', padding: '14px', border: '1px solid var(--border-color)', backgroundColor: 'rgba(255,255,255,0.01)', textDecoration: 'none', transition: 'border-color 0.2s', cursor: 'pointer' }}
+                onMouseOver={(e) => (e.currentTarget.style.borderColor = 'var(--gold)')}
+                onMouseOut={(e) => (e.currentTarget.style.borderColor = 'var(--border-color)')}
+              >
+                {article.image && (
+                  <img
+                    src={article.image}
+                    alt={article.title}
+                    referrerPolicy="no-referrer"
+                    style={{ width: '80px', height: '55px', objectFit: 'cover', flexShrink: 0, border: '1px solid var(--border-color)' }}
+                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                  />
+                )}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--white)', display: 'block', lineHeight: 1.4 }}>{article.title}</span>
+                  {article.description && (
+                    <span style={{ fontSize: '11px', color: 'var(--ash)', display: 'block', marginTop: '4px', lineHeight: 1.5 }}>{article.description}</span>
+                  )}
+                  <span style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--ash)', display: 'block', marginTop: '6px', opacity: 0.7 }}>
+                    {article.published ? new Date(article.published).toLocaleString() : ''}
+                  </span>
+                </div>
+              </a>
+            ))}
           </div>
         </div>
       );
@@ -1663,6 +1743,32 @@ export default function Docs() {
                             onFocus={() => setFocusedField(param.name)}
                             onBlur={() => setFocusedField(null)}
                           />
+                        ) : param.type === 'select' ? (
+                          <select
+                            value={val}
+                            onChange={(e) => setFormValues(prev => ({ ...prev, [param.name]: e.target.value }))}
+                            className="docs-input"
+                            style={{
+                              width: '100%',
+                              padding: '12px',
+                              backgroundColor: 'var(--black)',
+                              color: 'var(--white)',
+                              border: focusedField === param.name ? '1px solid var(--gold)' : '1px solid #2B2B2B',
+                              borderRadius: '0px',
+                              outline: 'none',
+                              fontFamily: 'var(--font-mono)',
+                              fontSize: '12px',
+                              cursor: 'pointer',
+                              transition: 'border-color 0.2s',
+                              appearance: 'none',
+                            }}
+                            onFocus={() => setFocusedField(param.name)}
+                            onBlur={() => setFocusedField(null)}
+                          >
+                            {(param as any).options?.map((opt: { value: string; label: string }) => (
+                              <option key={opt.value} value={opt.value}>{opt.label}</option>
+                            ))}
+                          </select>
                         ) : (
                           <input
                             type="text"

@@ -77,6 +77,7 @@ try:
     from ph_downloader import download_ph
     from pornhd_downloader import download_pornhd
     from xnxx_downloader import download_xnxx
+    from straitstimes_scraper import get_straitstimes_news
 except ImportError:
     # Fallback to local import if environment is weird
     import imgur_uploader
@@ -122,6 +123,7 @@ except ImportError:
     import ph_downloader
     import pornhd_downloader
     import xnxx_downloader
+    import straitstimes_scraper
     upload_imgur = imgur_uploader.upload_imgur
     upload_eight_uploads = eight_uploads_uploader.upload_eight_uploads
     upload_freeimage = freeimage_uploader.upload_freeimage
@@ -165,6 +167,7 @@ except ImportError:
     download_ph = ph_downloader.download_ph
     download_pornhd = pornhd_downloader.download_pornhd
     download_xnxx = xnxx_downloader.download_xnxx
+    get_straitstimes_news = straitstimes_scraper.get_straitstimes_news
 
 def run_pipeline(endpoint_id, payload):
     if endpoint_id in ["imgur", "image"]:
@@ -251,6 +254,8 @@ def run_pipeline(endpoint_id, payload):
         return download_pornhd(payload)
     elif endpoint_id in ["xnxx"]:
         return download_xnxx(payload)
+    elif endpoint_id in ["straitstimes", "st", "straits-times"]:
+        return get_straitstimes_news(payload)
     else:
         return {
             "endpoint_id": endpoint_id,
