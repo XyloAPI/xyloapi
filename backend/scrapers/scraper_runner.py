@@ -81,6 +81,7 @@ try:
     from cna_scraper import get_cna_news
     from bbc_scraper import get_bbc_news
     from cnn_scraper import get_cnn_news
+    from mothership_scraper import get_mothership_news
 except ImportError:
     # Fallback to local import if environment is weird
     import imgur_uploader
@@ -130,6 +131,7 @@ except ImportError:
     import cna_scraper
     import bbc_scraper
     import cnn_scraper
+    import mothership_scraper
     upload_imgur = imgur_uploader.upload_imgur
     upload_eight_uploads = eight_uploads_uploader.upload_eight_uploads
     upload_freeimage = freeimage_uploader.upload_freeimage
@@ -177,6 +179,7 @@ except ImportError:
     get_cna_news = cna_scraper.get_cna_news
     get_bbc_news = bbc_scraper.get_bbc_news
     get_cnn_news = cnn_scraper.get_cnn_news
+    get_mothership_news = mothership_scraper.get_mothership_news
 
 def run_pipeline(endpoint_id, payload):
     if endpoint_id in ["imgur", "image"]:
@@ -271,6 +274,8 @@ def run_pipeline(endpoint_id, payload):
         return get_bbc_news(payload)
     elif endpoint_id in ["cnn", "cnn-news"]:
         return get_cnn_news(payload)
+    elif endpoint_id in ["mothership", "mothership-sg"]:
+        return get_mothership_news(payload)
     else:
         return {
             "endpoint_id": endpoint_id,
