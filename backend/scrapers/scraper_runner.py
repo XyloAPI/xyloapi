@@ -57,6 +57,22 @@ try:
     from x_downloader import download_x
     from threads_downloader import download_threads
     from facebook_downloader import download_facebook
+    from bilibili_downloader import download_bilibili
+    from snackvideo_downloader import download_snackvideo
+    from capcut_downloader import download_capcut
+    from cocofun_downloader import download_cocofun
+    from douyin_downloader import download_douyin
+    from youtube_community_downloader import download_youtube_community
+    from github_downloader import download_github
+    from gdrive_downloader import download_gdrive
+    from mediafire_downloader import download_mediafire
+    from mega_downloader import download_mega
+    from npm_downloader import download_npm
+    from pinterest_downloader import download_pinterest
+    from rednote_downloader import download_rednote
+    from scribd_downloader import download_scribd
+    from sfile_downloader import download_sfile
+    from terabox_downloader import download_terabox
 except ImportError:
     # Fallback to local import if environment is weird
     import imgur_uploader
@@ -82,6 +98,22 @@ except ImportError:
     import x_downloader
     import threads_downloader
     import facebook_downloader
+    import bilibili_downloader
+    import snackvideo_downloader
+    import capcut_downloader
+    import cocofun_downloader
+    import douyin_downloader
+    import youtube_community_downloader
+    import github_downloader
+    import gdrive_downloader
+    import mediafire_downloader
+    import mega_downloader
+    import npm_downloader
+    import pinterest_downloader
+    import rednote_downloader
+    import scribd_downloader
+    import sfile_downloader
+    import terabox_downloader
     upload_imgur = imgur_uploader.upload_imgur
     upload_eight_uploads = eight_uploads_uploader.upload_eight_uploads
     upload_freeimage = freeimage_uploader.upload_freeimage
@@ -105,6 +137,22 @@ except ImportError:
     download_x = x_downloader.download_x
     download_threads = threads_downloader.download_threads
     download_facebook = facebook_downloader.download_facebook
+    download_bilibili = bilibili_downloader.download_bilibili
+    download_snackvideo = snackvideo_downloader.download_snackvideo
+    download_capcut = capcut_downloader.download_capcut
+    download_cocofun = cocofun_downloader.download_cocofun
+    download_douyin = douyin_downloader.download_douyin
+    download_youtube_community = youtube_community_downloader.download_youtube_community
+    download_github = github_downloader.download_github
+    download_gdrive = gdrive_downloader.download_gdrive
+    download_mediafire = mediafire_downloader.download_mediafire
+    download_mega = mega_downloader.download_mega
+    download_npm = npm_downloader.download_npm
+    download_pinterest = pinterest_downloader.download_pinterest
+    download_rednote = rednote_downloader.download_rednote
+    download_scribd = scribd_downloader.download_scribd
+    download_sfile = sfile_downloader.download_sfile
+    download_terabox = terabox_downloader.download_terabox
 
 def run_pipeline(endpoint_id, payload):
     if endpoint_id in ["imgur", "image"]:
@@ -151,6 +199,38 @@ def run_pipeline(endpoint_id, payload):
         return download_threads(payload)
     elif endpoint_id in ["facebook"]:
         return download_facebook(payload)
+    elif endpoint_id in ["bilibili"]:
+        return download_bilibili(payload)
+    elif endpoint_id in ["snackvideo", "snack"]:
+        return download_snackvideo(payload)
+    elif endpoint_id in ["capcut"]:
+        return download_capcut(payload)
+    elif endpoint_id in ["cocofun", "coco"]:
+        return download_cocofun(payload)
+    elif endpoint_id in ["douyin"]:
+        return download_douyin(payload)
+    elif endpoint_id in ["youtube-community", "yt-community"]:
+        return download_youtube_community(payload)
+    elif endpoint_id in ["github", "git"]:
+        return download_github(payload)
+    elif endpoint_id in ["gdrive", "google-drive"]:
+        return download_gdrive(payload)
+    elif endpoint_id in ["mediafire"]:
+        return download_mediafire(payload)
+    elif endpoint_id in ["mega"]:
+        return download_mega(payload)
+    elif endpoint_id in ["npm"]:
+        return download_npm(payload)
+    elif endpoint_id in ["pinterest", "pin"]:
+        return download_pinterest(payload)
+    elif endpoint_id in ["rednote", "xiaohongshu"]:
+        return download_rednote(payload)
+    elif endpoint_id in ["scribd"]:
+        return download_scribd(payload)
+    elif endpoint_id in ["sfile"]:
+        return download_sfile(payload)
+    elif endpoint_id in ["terabox"]:
+        return download_terabox(payload)
     else:
         return {
             "endpoint_id": endpoint_id,

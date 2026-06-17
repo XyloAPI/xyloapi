@@ -595,6 +595,246 @@ const docTopics: DocTopic[] = [
     payloadTemplate: {
       url: ''
     }
+  },
+  {
+    id: 'bilibili',
+    title: 'Bilibili Downloader',
+    category: 'Downloader',
+    method: 'POST',
+    path: '/api/downloader/bilibili',
+    pathTemplate: '/api/downloader/:slug',
+    description: 'Download videos from Bilibili posts and anime episodes.',
+    parameters: [
+      { name: 'url', type: 'text', required: true, desc: 'Enter the Bilibili video URL' }
+    ],
+    payloadTemplate: {
+      url: ''
+    }
+  },
+  {
+    id: 'snackvideo',
+    title: 'SnackVideo Downloader',
+    category: 'Downloader',
+    method: 'POST',
+    path: '/api/downloader/snackvideo',
+    pathTemplate: '/api/downloader/:slug',
+    description: 'Download SnackVideo videos without watermark, with cover thumbnail and audio stream.',
+    parameters: [
+      { name: 'url', type: 'text', required: true, desc: 'Enter the SnackVideo URL' }
+    ],
+    payloadTemplate: {
+      url: ''
+    }
+  },
+  {
+    id: 'capcut',
+    title: 'CapCut Downloader',
+    category: 'Downloader',
+    method: 'POST',
+    path: '/api/downloader/capcut',
+    pathTemplate: '/api/downloader/:slug',
+    description: 'Download CapCut video templates without watermark in high quality.',
+    parameters: [
+      { name: 'url', type: 'text', required: true, desc: 'Enter the CapCut video URL' }
+    ],
+    payloadTemplate: {
+      url: ''
+    }
+  },
+  {
+    id: 'cocofun',
+    title: 'CocoFun Downloader',
+    category: 'Downloader',
+    method: 'POST',
+    path: '/api/downloader/cocofun',
+    pathTemplate: '/api/downloader/:slug',
+    description: 'Download CocoFun videos in high quality.',
+    parameters: [
+      { name: 'url', type: 'text', required: true, desc: 'Enter the CocoFun share video URL' }
+    ],
+    payloadTemplate: {
+      url: ''
+    }
+  },
+  {
+    id: 'douyin',
+    title: 'Douyin Downloader',
+    category: 'Downloader',
+    method: 'POST',
+    path: '/api/downloader/douyin',
+    pathTemplate: '/api/downloader/:slug',
+    description: 'Download Douyin videos and photos in high quality without watermark.',
+    parameters: [
+      { name: 'url', type: 'text', required: true, desc: 'Enter the Douyin video/post URL' }
+    ],
+    payloadTemplate: {
+      url: ''
+    }
+  },
+  {
+    id: 'youtube-community',
+    title: 'YouTube Community Downloader',
+    category: 'Downloader',
+    method: 'POST',
+    path: '/api/downloader/youtube-community',
+    pathTemplate: '/api/downloader/:slug',
+    description: 'Download images from YouTube community posts in high quality.',
+    parameters: [
+      { name: 'url', type: 'text', required: true, desc: 'Enter the YouTube Community Post URL' }
+    ],
+    payloadTemplate: {
+      url: ''
+    }
+  },
+  {
+    id: 'github',
+    title: 'GitHub Downloader',
+    category: 'Downloader',
+    method: 'POST',
+    path: '/api/downloader/github',
+    pathTemplate: '/api/downloader/:slug',
+    description: 'Download repositories, releases, release assets, specific branches, single files, or folders from GitHub.',
+    parameters: [
+      { name: 'url', type: 'text', required: true, desc: 'Enter the GitHub Repository, Release, File, or Folder URL' }
+    ],
+    payloadTemplate: {
+      url: ''
+    }
+  },
+  {
+    id: 'gdrive',
+    title: 'Google Drive Downloader',
+    category: 'Downloader',
+    method: 'POST',
+    path: '/api/downloader/gdrive',
+    pathTemplate: '/api/downloader/:slug',
+    description: 'Download files and export Google Docs, Sheets, and Slides directly from Google Drive sharing URLs.',
+    parameters: [
+      { name: 'url', type: 'text', required: true, desc: 'Enter the Google Drive / Docs share URL' }
+    ],
+    payloadTemplate: {
+      url: ''
+    }
+  },
+  {
+    id: 'mediafire',
+    title: 'MediaFire Downloader',
+    category: 'Downloader',
+    method: 'POST',
+    path: '/api/downloader/mediafire',
+    pathTemplate: '/api/downloader/:slug',
+    description: 'Generate direct high-speed download links from MediaFire file sharing URLs.',
+    parameters: [
+      { name: 'url', type: 'text', required: true, desc: 'Enter the MediaFire file URL' }
+    ],
+    payloadTemplate: {
+      url: ''
+    }
+  },
+  {
+    id: 'mega',
+    title: 'MEGA Downloader',
+    category: 'Downloader',
+    method: 'POST',
+    path: '/api/downloader/mega',
+    pathTemplate: '/api/downloader/:slug',
+    description: 'Download and decrypt public files hosted on MEGA.nz directly to stream and save.',
+    parameters: [
+      { name: 'url', type: 'text', required: true, desc: 'Enter the MEGA.nz file share URL' }
+    ],
+    payloadTemplate: {
+      url: ''
+    }
+  },
+  {
+    id: 'npm',
+    title: 'NPM Downloader',
+    category: 'Downloader',
+    method: 'POST',
+    path: '/api/downloader/npm',
+    pathTemplate: '/api/downloader/:slug',
+    description: 'Download tarball packages of Node modules directly from NPM Registry.',
+    parameters: [
+      { name: 'url', type: 'text', required: true, desc: 'Enter the NPM package name or URL (e.g. react or https://www.npmjs.com/package/react)' }
+    ],
+    payloadTemplate: {
+      url: ''
+    }
+  },
+  {
+    id: 'pinterest',
+    title: 'Pinterest Downloader',
+    category: 'Downloader',
+    method: 'POST',
+    path: '/api/downloader/pinterest',
+    pathTemplate: '/api/downloader/:slug',
+    description: 'Download high-quality images and video streams directly from Pinterest boards and pins.',
+    parameters: [
+      { name: 'url', type: 'text', required: true, desc: 'Enter the Pinterest pin share URL (e.g. https://www.pinterest.com/pin/123456/ or short URL https://pin.it/xxxxx)' }
+    ],
+    payloadTemplate: {
+      url: ''
+    }
+  },
+  {
+    id: 'rednote',
+    title: 'RedNote Downloader',
+    category: 'Downloader',
+    method: 'POST',
+    path: '/api/downloader/rednote',
+    pathTemplate: '/api/downloader/:slug',
+    description: 'Download high-quality images and videos directly from Xiaohongshu (RedNote) posts.',
+    parameters: [
+      { name: 'url', type: 'text', required: true, desc: 'Enter the Xiaohongshu/RedNote share URL (e.g. https://www.xiaohongshu.com/discovery/item/...)' }
+    ],
+    payloadTemplate: {
+      url: ''
+    }
+  },
+  {
+    id: 'scribd',
+    title: 'Scribd Downloader',
+    category: 'Downloader',
+    method: 'POST',
+    path: '/api/downloader/scribd',
+    pathTemplate: '/api/downloader/:slug',
+    description: 'Download high-quality original document page images directly from Scribd.',
+    parameters: [
+      { name: 'url', type: 'text', required: true, desc: 'Enter the Scribd document URL or embed URL (e.g. https://www.scribd.com/document/...)' }
+    ],
+    payloadTemplate: {
+      url: ''
+    }
+  },
+  {
+    id: 'sfile',
+    title: 'Sfile.co Downloader',
+    category: 'Downloader',
+    method: 'POST',
+    path: '/api/downloader/sfile',
+    pathTemplate: '/api/downloader/:slug',
+    description: 'Download files directly from sfile.co (and sfile.mobi) bypassing ad countdowns.',
+    parameters: [
+      { name: 'url', type: 'text', required: true, desc: 'Enter the sfile.co file URL (e.g. https://sfile.co/agNixA1YkHq)' }
+    ],
+    payloadTemplate: {
+      url: ''
+    }
+  },
+  {
+    id: 'terabox',
+    title: 'Terabox Downloader',
+    category: 'Downloader',
+    method: 'POST',
+    path: '/api/downloader/terabox',
+    pathTemplate: '/api/downloader/:slug',
+    description: 'Download videos and files directly from Terabox links bypassing app lock limitations.',
+    parameters: [
+      { name: 'url', type: 'text', required: true, desc: 'Enter the Terabox file URL (e.g. https://1024terabox.com/s/1etUwLqCoOeuWejxFNJF5xA)' }
+    ],
+    payloadTemplate: {
+      url: ''
+    }
   }
 ];
 
@@ -831,14 +1071,14 @@ export default function Docs() {
 
       // Extract the first video URL if available
       let videoSource = '';
-      if (activeTopic.id === 'tiktok' && resData.links) {
-        videoSource = resData.links.nowatermark || resData.links.watermark || '';
-      } else if ((activeTopic.id === 'instagram' || activeTopic.id === 'iqsaved' || activeTopic.id === 'youtube') && resData.links) {
+      if (resData.links) {
         if (Array.isArray(resData.links)) {
           const foundVideo = resData.links.find((l: any) => isVideoLink(l));
           if (foundVideo) {
             videoSource = foundVideo.url;
           }
+        } else {
+          videoSource = resData.links.nowatermark || resData.links.watermark || resData.links.video || '';
         }
       }
 

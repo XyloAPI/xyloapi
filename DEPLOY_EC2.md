@@ -206,3 +206,54 @@ sudo systemctl restart nginx
 Buka IP EC2 Publik Anda di browser (contoh: `http://54.255.xx.xx`). 
 * Halaman utama website React Anda akan langsung muncul.
 * Semua request API ke `/api/...` dan scraper di `/api/downloader/...` akan ter-route dengan benar dan berfungsi sempurna secara offline/online!
+
+---
+
+## 8. Konfigurasi Custom Domain & HTTPS via Cloudflare Tunnel (Tanpa Buka Port / Bebas DDoS)
+
+Menggunakan **Cloudflare Tunnel** (`cloudflared`) adalah metode paling aman untuk men-deploy XyloAPI ke EC2. Anda tidak perlu membuka port `80` (HTTP) maupun `443` (HTTPS) di AWS Security Group. IP asli EC2 Anda akan sepenuhnya tersembunyi dari publik, sehingga terhindar dari serangan DDoS langsung atau pemindaian IP.
+
+### Langkah A: Buat Tunnel di Cloudflare Dashboard (Sangat Mudah)
+1. Masuk ke **[Cloudflare Dashboard](https://dash.cloudflare.com/)** -> pilih domain Anda.
+2. Di menu navigasi kiri, pilih **Zero Trust** -> **Access** -> **Tunnels**.
+3. Klik tombol **Create a Tunnel**, pilih **Cloudflared** (default), lalu klik **Next**.
+4. Beri nama tunnel Anda (contoh: `xyloapi-tunnel`), lalu klik **Save tunnel**.
+5. Di bagian **Install and run a connector**, pilih tab **Debian (amd64)**.
+6. Salin baris perintah instalasi yang disediakan secara otomatis oleh Cloudflare (berisi download file `.deb` dan command `sudo cloudflared service install <TOKEN_ANDA>`).
+
+### Langkah B: Jalankan Instalasi di Terminal EC2
+Paste perintah instalasi yang telah disalin tadi ke terminal EC2 Anda secara berurutan. Contoh perintahnya:
+
+```bash
+# 1. Download installer cloudflared untuk Debian/Ubuntu amd64
+curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+
+# 2. Instal package cloudflared
+sudo dpkg -i cloudflared.deb
+
+# 3. Hubungkan tunnel dan jalankan sebagai daemon service di background
+# (PASTIKAN UNTUK MENGGANTI <TOKEN_ANDA> DENGAN TOKEN ASLI DARI CLOUDFLARE DASHBOARD)
+sudo cloudflared service install <TOKEN_ANDA>
+```
+
+Setelah dijalankan, cek dashboard Cloudflare Anda. Status tunnel Anda akan berubah menjadi **Active** (berwarna hijau).
+
+### Langkah C: Konfigurasi Public Hostname di Cloudflare
+Kembali ke Cloudflare Dashboard tempat Anda membuat tunnel tadi, klik **Next** atau pilih tab **Public Hostname**:
+1. Klik **Add a public hostname**.
+2. Isi formulir dengan data berikut:
+   * **Subdomain**: (kosongkan jika menggunakan domain utama, atau isi `api` jika ingin menggunakan subdomain)
+   * **Domain**: Pilih domain kustom Anda (misal: `xyloapi.com`).
+   * **Path**: (kosongkan)
+   * **Type**: Pilih **`HTTP`** (karena tunnel akan meneruskan koneksi lokal ke Nginx)
+   * **URL**: Isi dengan **`localhost:80`** (Port Nginx Gateway local server Anda)
+3. Klik **Save hostname**.
+
+### Langkah D: Amankan AWS Security Group (Tutup Port 80 & 443)
+Karena koneksi ditarik dari dalam server keluar menuju Cloudflare via tunnel, Anda sudah **tidak perlu lagi membuka port inbound HTTP/HTTPS** di AWS:
+1. Masuk ke **AWS EC2 Console** -> pilih instance `xyloapi` -> klik tab **Security** -> klik Security Group Anda.
+2. Edit **Inbound Rules**.
+3. **Hapus/Delete** aturan untuk **HTTP (Port 80)** dan **HTTPS (Port 443)**. Hanya sisakan **SSH (Port 22)** jika Anda masih membutuhkan akses terminal di kemudian hari.
+4. Klik **Save rules**.
+
+*Sekarang, website dan API Anda bisa diakses secara aman dengan protokol HTTPS melalui domain kustom Anda (misal: `https://xyloapi.com`), sedangkan IP publik EC2 Anda 100% aman dan tidak merespon koneksi HTTP langsung dari luar!*

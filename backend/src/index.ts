@@ -2,11 +2,72 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
-import { exec } from 'child_process';
+import fs from 'fs';
+import { File as MegaFile } from 'megajs';
+import { exec, execSync } from 'child_process';
 import { promisify } from 'util';
 import { Pool } from 'pg';
 
 const execAsync = promisify(exec);
+
+function killPortOwner(port: number) {
+  if (process.platform === 'win32') {
+    let output = '';
+    try {
+      output = execSync(`netstat -ano | findstr :${port}`, { stdio: ['pipe', 'pipe', 'pipe'] }).toString();
+    } catch (e: any) {
+      console.log(`[XyloAPI Server] No active process on port ${port} (netstat returned exit code 1 or failed: ${e.message})`);
+      return;
+    }
+
+    const lines = output.trim().split('\n');
+    const killedPids = new Set<string>();
+    for (const line of lines) {
+      if (!line.trim()) continue;
+      const parts = line.trim().split(/\s+/);
+      if (parts.length >= 5) {
+        const localAddr = parts[1];
+        const pid = parts[4];
+        if (localAddr.endsWith(':' + port) && pid && pid !== '0' && parseInt(pid) !== process.pid) {
+          if (!killedPids.has(pid)) {
+            console.log(`[XyloAPI Server] Port ${port} is occupied by process PID ${pid}. Terminating it...`);
+            try {
+              execSync(`taskkill /F /PID ${pid}`, { stdio: 'ignore' });
+              killedPids.add(pid);
+              console.log(`[XyloAPI Server] Successfully killed PID ${pid}.`);
+            } catch (err: any) {
+              console.log(`[XyloAPI Server] Failed to kill PID ${pid}: ${err.message}`);
+            }
+            // Sleep 500ms
+            const start = Date.now();
+            while (Date.now() - start < 500) {}
+          }
+        }
+      }
+    }
+  } else {
+    let pid = '';
+    try {
+      pid = execSync(`lsof -t -i:${port}`, { stdio: ['pipe', 'pipe', 'pipe'] }).toString().trim();
+    } catch (e: any) {
+      return;
+    }
+    if (pid && parseInt(pid) !== process.pid) {
+      console.log(`[XyloAPI Server] Port ${port} is occupied by process PID ${pid}. Terminating it...`);
+      try {
+        execSync(`kill -9 ${pid}`, { stdio: 'ignore' });
+        console.log(`[XyloAPI Server] Successfully killed PID ${pid}.`);
+      } catch (err: any) {
+        console.log(`[XyloAPI Server] Failed to kill PID ${pid}: ${err.message}`);
+      }
+      // Sleep 500ms
+      const start = Date.now();
+      while (Date.now() - start < 500) {}
+    }
+  }
+}
+
+
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 dotenv.config({ path: path.resolve(process.cwd(), 'backend/.env') });
@@ -21,6 +82,17 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-API-Key', 'x-api-key']
 }));
+
+// Intercept preflight OPTIONS requests immediately to prevent them from hitting pipeline routes
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-API-Key, x-api-key');
+    return res.sendStatus(204);
+  }
+  next();
+});
 
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
@@ -121,9 +193,9 @@ const apiModules = [
   {
     id: "downloaders",
     name: "Media Downloaders Pack",
-    description: "Download video and audio streams directly from platforms like TikTok, Instagram, YouTube, Spotify, SoundCloud, Twitter/X, Threads, and Facebook.",
+    description: "Download video and audio streams directly from platforms like TikTok, Instagram, YouTube, Spotify, SoundCloud, Twitter/X, Threads, Facebook, Bilibili, SnackVideo, CapCut, CocoFun, Douyin, YouTube Community, GitHub, Google Drive, MediaFire, MEGA, NPM, Pinterest, RedNote (Xiaohongshu), Scribd, SFile.co, and TeraBox.",
     status: "active",
-    endpointsCount: 8,
+    endpointsCount: 24,
   }
 ];
 
@@ -258,34 +330,51 @@ app.get('/api/monitor', async (req, res) => {
 // Helper to execute Python scrapers via HTTP service first, falling back to local shell execution
 async function executePipeline(slug: string, payload: any, reqHost: string, protocol: string): Promise<any> {
   // 1. Try Python Scraper Service over HTTP
-  try {
-    const scrapersUrl = `${protocol}://${reqHost}/_/scrapers`;
-    console.log(`[XyloAPI Node] Attempting HTTP pipeline call to: ${scrapersUrl} for slug: ${slug}`);
-    
-    const response = await (global as any).fetch(scrapersUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ slug, payload })
-    });
-    
-    if (response.ok) {
-      const result = await response.json();
-      console.log(`[XyloAPI Node] HTTP pipeline call succeeded for slug: ${slug}`);
-      return result;
-    } else {
-      console.warn(`[XyloAPI Node] HTTP pipeline call returned status ${response.status}. Falling back to local process execution.`);
+  // 1. Try Python Scraper Service over HTTP (skip in local development to avoid 404 warnings)
+  if (!reqHost.includes('localhost') && !reqHost.includes('127.0.0.1')) {
+    try {
+      const scrapersUrl = `${protocol}://${reqHost}/_/scrapers`;
+      console.log(`[XyloAPI Node] Attempting HTTP pipeline call to: ${scrapersUrl} for slug: ${slug}`);
+      
+      const response = await (global as any).fetch(scrapersUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ slug, payload })
+      });
+      
+      if (response.ok) {
+        const result = await response.json();
+        console.log(`[XyloAPI Node] HTTP pipeline call succeeded for slug: ${slug}`);
+        return result;
+      } else {
+        console.warn(`[XyloAPI Node] HTTP pipeline call returned status ${response.status}. Falling back to local process execution.`);
+      }
+    } catch (httpError: any) {
+      console.warn(`[XyloAPI Node] HTTP pipeline call failed: ${httpError.message}. Falling back to local process execution.`);
     }
-  } catch (httpError: any) {
-    console.warn(`[XyloAPI Node] HTTP pipeline call failed: ${httpError.message}. Falling back to local process execution.`);
   }
 
   // 2. Fallback to Local Python CLI Execution (for local developer environments)
-  const pythonPath = process.env.PYTHON_PATH || 'python';
+  let pythonPath = process.env.PYTHON_PATH || 'python';
+  
+  const winVenvPath = path.join(__dirname, '..', 'scrapers', '.venv', 'Scripts', 'python.exe');
+  const nixVenvPath = path.join(__dirname, '..', 'scrapers', '.venv', 'bin', 'python');
+  if (fs.existsSync(winVenvPath)) {
+    pythonPath = winVenvPath;
+  } else if (fs.existsSync(nixVenvPath)) {
+    pythonPath = nixVenvPath;
+  }
+
   const scriptPath = path.join(__dirname, '..', 'scrapers', 'scraper_runner.py');
   
-  const payloadStr = JSON.stringify(payload || {});
+  const enrichedPayload = {
+    ...(payload || {}),
+    _reqHost: reqHost,
+    _protocol: protocol
+  };
+  const payloadStr = JSON.stringify(enrichedPayload);
   const payloadBase64 = Buffer.from(payloadStr).toString('base64');
 
   const { stdout, stderr } = await new Promise<{ stdout: string; stderr: string }>((resolve, reject) => {
@@ -378,6 +467,76 @@ app.all('/api/downloader/:slug', async (req, res) => {
   try {
     const reqHost = req.headers.host || 'localhost:5000';
     const protocol = req.secure || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
+
+    // Special interception for MEGA to stream on-the-fly and avoid slow disk downloads
+    if (slug === 'mega') {
+      const url = payload.url;
+      if (!url) {
+        return res.status(400).json({
+          success: false,
+          creator: "XyloAPI",
+          error: "Missing required parameter: 'url'"
+        });
+      }
+
+      try {
+        const file = MegaFile.fromURL(url);
+        let filename = 'mega_download.bin';
+        let size = 0;
+
+        try {
+          await new Promise<void>((resolve, reject) => {
+            const timeout = setTimeout(() => reject(new Error("Timeout")), 2000);
+            file.loadAttributes((err: any) => {
+              clearTimeout(timeout);
+              if (!err) {
+                filename = file.name || 'mega_download.bin';
+                size = file.size || 0;
+              }
+              resolve();
+            });
+          });
+        } catch (e) {
+          // Fallback filename extraction from URL paths
+          try {
+            const urlObj = new URL(url);
+            const pathParts = urlObj.pathname.split('/');
+            const lastPart = pathParts[pathParts.length - 1];
+            if (lastPart && lastPart.includes('.')) {
+              filename = lastPart;
+            }
+          } catch (urlErr) {}
+        }
+
+        const urlBase64 = Buffer.from(url).toString('base64url');
+        const fileUrl = `${protocol}://${reqHost}/api/downloads/mega/${urlBase64}/${encodeURIComponent(filename)}`;
+
+        return res.json({
+          success: true,
+          creator: "XyloAPI",
+          data: {
+            title: filename,
+            creator: "MEGA",
+            description: `Resolved MEGA file: ${filename} (${size ? (size / (1024 * 1024)).toFixed(2) + ' MB' : 'Size unknown'})`,
+            cover: "https://mega.nz/favicon.ico",
+            links: [
+              {
+                label: "DOWNLOAD FILE (Direct Stream)",
+                url: fileUrl
+              }
+            ]
+          }
+        });
+      } catch (err: any) {
+        return res.status(500).json({
+          success: false,
+          creator: "XyloAPI",
+          error: "Failed to resolve MEGA URL",
+          details: err.message || String(err)
+        });
+      }
+    }
+
     const result = await executePipeline(slug, payload, reqHost, protocol);
 
     // If the scraper runner returned success: false, bubble it
@@ -404,7 +563,77 @@ app.all('/api/downloader/:slug', async (req, res) => {
   }
 });
 
-// Start Server
+// 5. Temporary File Streaming & Clean-up Route (for MEGA, etc.)
+app.get('/api/downloads/:fileId/:filename', async (req, res) => {
+  const { fileId, filename } = req.params;
+  const filePath = path.join(__dirname, '..', 'downloads', fileId, filename);
+  const dirPath = path.join(__dirname, '..', 'downloads', fileId);
+
+  if (fs.existsSync(filePath)) {
+    res.download(filePath, filename, (err) => {
+      // Clean up the folder after download completes or fails
+      try {
+        if (fs.existsSync(dirPath)) {
+          fs.rmSync(dirPath, { recursive: true, force: true });
+        }
+      } catch (rmErr) {
+        console.error(`[XyloAPI Node] Failed to clean up download dir ${dirPath}:`, rmErr);
+      }
+    });
+  } else {
+    res.status(404).json({
+      success: false,
+      error: "File not found or has already been downloaded."
+    });
+  }
+});
+
+// 6. Direct On-The-Fly Decryption Streaming for MEGA files
+app.get('/api/downloads/mega/:urlBase64/:filename', async (req, res) => {
+  const { urlBase64, filename } = req.params;
+  try {
+    const url = Buffer.from(urlBase64, 'base64url').toString('utf8');
+    const file = MegaFile.fromURL(url);
+
+    // Try to load attributes to set Content-Length if possible
+    let size = 0;
+    try {
+      await new Promise<void>((resolve) => {
+        file.loadAttributes((err: any) => {
+          if (!err && file.size) {
+            size = file.size;
+          }
+          resolve();
+        });
+      });
+    } catch (e) {}
+
+    // Set streaming headers
+    res.setHeader('Content-Disposition', `attachment; filename="${encodeURIComponent(filename)}"`);
+    res.setHeader('Content-Type', 'application/octet-stream');
+    if (size > 0) {
+      res.setHeader('Content-Length', size.toString());
+    }
+
+    const stream = file.download({});
+    stream.on('error', (err: any) => {
+      console.error('[XyloAPI Node] MEGA Stream Error:', err);
+      if (!res.headersSent) {
+        res.status(500).send("Error streaming MEGA file");
+      }
+    });
+
+    stream.pipe(res);
+  } catch (error: any) {
+    console.error('[XyloAPI Node] MEGA Downloader Error:', error);
+    if (!res.headersSent) {
+      res.status(500).send("Failed to start MEGA stream");
+    }
+  }
+});
+
+// Start Server - watch test restart 2
+killPortOwner(Number(PORT));
 app.listen(PORT, () => {
   console.log(`[XyloAPI Server] Running at http://localhost:${PORT}`);
 });
