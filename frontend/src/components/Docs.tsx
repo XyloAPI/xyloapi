@@ -1117,6 +1117,18 @@ export default function Docs() {
       if (qs) {
         url += `?${qs}`;
       }
+    } else if (activeTopic.parameters) {
+      // For POST: still show select-type params in URL for visual clarity
+      const selectParams = activeTopic.parameters.filter((p: any) => p.type === 'select');
+      if (selectParams.length > 0) {
+        const params = new URLSearchParams();
+        selectParams.forEach((param: any) => {
+          const val = formValues[param.name] !== undefined ? formValues[param.name] : '';
+          if (val) params.append(param.name, String(val));
+        });
+        const qs = params.toString();
+        if (qs) url += `?${qs}`;
+      }
     }
     return url;
   };
