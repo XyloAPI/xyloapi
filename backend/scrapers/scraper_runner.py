@@ -75,6 +75,7 @@ try:
     from terabox_downloader import download_terabox
     from dailymotion_downloader import download_dailymotion
     from ph_downloader import download_ph
+    from pornhd_downloader import download_pornhd
 except ImportError:
     # Fallback to local import if environment is weird
     import imgur_uploader
@@ -118,6 +119,7 @@ except ImportError:
     import terabox_downloader
     import dailymotion_downloader
     import ph_downloader
+    import pornhd_downloader
     upload_imgur = imgur_uploader.upload_imgur
     upload_eight_uploads = eight_uploads_uploader.upload_eight_uploads
     upload_freeimage = freeimage_uploader.upload_freeimage
@@ -159,6 +161,7 @@ except ImportError:
     download_terabox = terabox_downloader.download_terabox
     download_dailymotion = dailymotion_downloader.download_dailymotion
     download_ph = ph_downloader.download_ph
+    download_pornhd = pornhd_downloader.download_pornhd
 
 def run_pipeline(endpoint_id, payload):
     if endpoint_id in ["imgur", "image"]:
@@ -241,6 +244,8 @@ def run_pipeline(endpoint_id, payload):
         return download_dailymotion(payload)
     elif endpoint_id in ["ph", "pornhub"]:
         return download_ph(payload)
+    elif endpoint_id in ["pornhd", "faphouse"]:
+        return download_pornhd(payload)
     else:
         return {
             "endpoint_id": endpoint_id,
