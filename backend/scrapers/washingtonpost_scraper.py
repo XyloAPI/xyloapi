@@ -23,8 +23,8 @@ HEADERS = {
     "Accept": "application/rss+xml, application/xml, text/xml, */*",
 }
 
-# WaPo favicon for image fallback
-WAPO_LOGO = "https://www.washingtonpost.com/wp-apps/imrs.php?src=https://arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/FBQF7L2WBNBWHJSXYWCFQRYBBA.jpg&w=1440"
+# WaPo logo hosted by Google (from Google News favicon cache)
+WAPO_LOGO = "https://lh3.googleusercontent.com/-DR60l-K8vnyi99NZovm9HlXyZwQ85GMDxiwJWzoasZYCUrPuUM_P_4Rb7ei03j-0nRs0c4F=w256-h256-k-no"
 
 
 def _cdata(text: str) -> str:
@@ -113,7 +113,8 @@ def get_washingtonpost_news(payload):
             "url": wapo_url,
             "description": desc,
             "published": pub,
-            "image": "",   # WaPo blocks all server-side image fetching
+            "image": WAPO_LOGO,
+            "image_note": "WaPo paywall blocks article image access; using publisher logo.",
             "source": "The Washington Post",
         })
 

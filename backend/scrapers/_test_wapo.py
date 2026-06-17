@@ -2,44 +2,36 @@ import requests, re
 from xml.etree import ElementTree as ET
 
 headers_gnews = {'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'}
-headers_wapo = {
-    'User-Agent': 'LinkedInBot/1.0 (compatible; Mozilla/5.0; Jakarta Commons-HttpClient/3.1 +http://www.linkedin.com)',
-    'Accept': 'text/html,*/*',
-    'Accept-Language': 'en-US,en;q=0.9',
-}
-headers_wapo2 = {
-    'User-Agent': 'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)',
-    'Accept': 'text/html,*/*',
-}
-headers_wapo3 = {
-    'User-Agent': 'Twitterbot/1.0',
-    'Accept': 'text/html,*/*',
-}
-
-# Fetch Google News RSS to get article titles
 r = requests.get(
     'https://news.google.com/rss/search?q=site:washingtonpost.com&hl=en-US&gl=US&ceid=US:en',
     headers=headers_gnews, timeout=15
 )
 root = ET.fromstring(r.content)
-channel = root.find('channel')
-items = channel.findall('item')
+items = root.find('channel').findall('item')
+glink = items[0].findtext('link') or ''
+title = (items[0].findtext('title') or '')[:40]
 
-# Get one article title, strip " - The Washington Post" suffix
-item = items[0]
-raw_title = item.findtext('title') or ''
-title = re.sub(r'\s*[-–]\s*The Washington Post\s*$', '', raw_title).strip()
-glink = item.findtext('link') or ''
-print(f'Title: {title}')
-print(f'Google link: {glink[:80]}')
+session = requests.Session()
+session.headers.update({
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Accept': 'text/html,application/xhtml+xml,*/*;q=0.9',
+    'Accept-Language': 'en-US,en;q=0.9',
+})
 
-# Try different UAs to access WaPo article
-test_url = 'https://www.washingtonpost.com/technology/2026/06/16/anthropic-claude-white-house-trust/'
-for name, hdrs in [('LinkedInBot', headers_wapo), ('facebookexternalhit', headers_wapo2), ('Twitterbot', headers_wapo3)]:
-    try:
-        r2 = requests.get(test_url, headers=hdrs, timeout=10)
-        html = r2.text[:5000]
-        og_img = re.search(r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']', html, re.I)
-        print(f'{name}: HTTP {r2.status_code}, size={len(r2.text)}, og:image={"YES: " + og_img.group(1)[:60] if og_img else "NO"}')
-    except Exception as e:
-        print(f'{name}: FAIL - {e}')
+r2 = session.get(glink, allow_redirects=True, timeout=10)
+html = r2.text
+print(f'HTML size: {len(html)}')
+
+# Search for all Google-hosted thumbnail images (encrypted-tbn or lh3)
+all_imgs = re.findall(r'https://(?:encrypted-tbn\d+\.gstatic\.com/images\?[^"\s\\]+|lh3\.googleusercontent\.com/[^"\s\\]+)', html)
+unique_imgs = list(dict.fromkeys(all_imgs))
+print(f'Total unique Google-hosted images: {len(unique_imgs)}')
+for img in unique_imgs[:10]:
+    print(f'  {img[:120]}')
+
+print()
+# Also search for any washingtonpost image CDN
+wapo_imgs = re.findall(r'https://(?:static|images|www)\.washingtonpost\.com/[^"\'<\s\\]+\.(?:jpg|png|jpeg|webp)[^"\'<\s\\]*', html)
+print(f'WaPo CDN images: {len(wapo_imgs)}')
+for img in wapo_imgs[:5]:
+    print(f'  {img[:120]}')
