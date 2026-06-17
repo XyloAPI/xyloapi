@@ -1025,6 +1025,38 @@ const docTopics: DocTopic[] = [
     payloadTemplate: {
       category: 'singapore'
     }
+  },
+  {
+    id: 'cna',
+    title: 'Channel NewsAsia (CNA)',
+    category: 'News',
+    method: 'POST',
+    path: '/api/news/cna',
+    pathTemplate: '/api/news/:slug',
+    description: 'Fetch the latest news headlines and articles from Channel NewsAsia (channelnewsasia.com) by category. Returns up to 20 articles with title, image, description, and publish date.',
+    parameters: [
+      {
+        name: 'category',
+        type: 'select',
+        required: true,
+        desc: 'Select a news category to fetch articles from.',
+        options: [
+          { value: 'singapore', label: 'Singapore' },
+          { value: 'asia', label: 'Asia' },
+          { value: 'world', label: 'World' },
+          { value: 'business', label: 'Business' },
+          { value: 'sport', label: 'Sport' },
+          { value: 'technology', label: 'Technology' },
+          { value: 'lifestyle', label: 'Lifestyle' },
+          { value: 'entertainment', label: 'Entertainment' },
+          { value: 'commentary', label: 'Commentary' },
+          { value: 'cna-insider', label: 'CNA Insider' },
+        ]
+      } as any
+    ],
+    payloadTemplate: {
+      category: 'singapore'
+    }
   }
 ];
 

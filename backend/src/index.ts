@@ -200,9 +200,9 @@ const apiModules = [
   {
     id: "news",
     name: "News Scrapers Pack",
-    description: "Fetch latest news articles and headlines from top publishers. Supports The Straits Times with multi-category filtering (Singapore, Asia, World, Business, Sport, Life & Style, Opinion, Multimedia).",
+    description: "Fetch latest news articles and headlines from top publishers. Supports The Straits Times (8 categories) and Channel NewsAsia / CNA (10 categories) with image, description, and publish date.",
     status: "active",
-    endpointsCount: 1,
+    endpointsCount: 2,
   }
 ];
 
