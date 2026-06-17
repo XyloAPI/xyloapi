@@ -193,9 +193,9 @@ const apiModules = [
   {
     id: "downloaders",
     name: "Media Downloaders Pack",
-    description: "Download video and audio streams directly from platforms like TikTok, Instagram, YouTube, Spotify, SoundCloud, Twitter/X, Threads, Facebook, Bilibili, SnackVideo, CapCut, CocoFun, Douyin, YouTube Community, GitHub, Google Drive, MediaFire, MEGA, NPM, Pinterest, RedNote (Xiaohongshu), Scribd, SFile.co, and TeraBox.",
+    description: "Download video and audio streams directly from platforms like TikTok, Instagram, YouTube, Spotify, SoundCloud, Twitter/X, Threads, Facebook, Bilibili, SnackVideo, CapCut, CocoFun, Douyin, YouTube Community, GitHub, Google Drive, MediaFire, MEGA, NPM, Pinterest, RedNote (Xiaohongshu), Scribd, SFile.co, TeraBox, Dailymotion, and Pornhub.",
     status: "active",
-    endpointsCount: 24,
+    endpointsCount: 26,
   }
 ];
 
