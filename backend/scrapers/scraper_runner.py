@@ -73,6 +73,7 @@ try:
     from scribd_downloader import download_scribd
     from sfile_downloader import download_sfile
     from terabox_downloader import download_terabox
+    from dailymotion_downloader import download_dailymotion
 except ImportError:
     # Fallback to local import if environment is weird
     import imgur_uploader
@@ -114,6 +115,7 @@ except ImportError:
     import scribd_downloader
     import sfile_downloader
     import terabox_downloader
+    import dailymotion_downloader
     upload_imgur = imgur_uploader.upload_imgur
     upload_eight_uploads = eight_uploads_uploader.upload_eight_uploads
     upload_freeimage = freeimage_uploader.upload_freeimage
@@ -153,6 +155,7 @@ except ImportError:
     download_scribd = scribd_downloader.download_scribd
     download_sfile = sfile_downloader.download_sfile
     download_terabox = terabox_downloader.download_terabox
+    download_dailymotion = dailymotion_downloader.download_dailymotion
 
 def run_pipeline(endpoint_id, payload):
     if endpoint_id in ["imgur", "image"]:
@@ -231,6 +234,8 @@ def run_pipeline(endpoint_id, payload):
         return download_sfile(payload)
     elif endpoint_id in ["terabox"]:
         return download_terabox(payload)
+    elif endpoint_id in ["dailymotion", "daily"]:
+        return download_dailymotion(payload)
     else:
         return {
             "endpoint_id": endpoint_id,
