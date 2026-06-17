@@ -570,6 +570,43 @@ app.all('/api/downloader/:slug', async (req, res) => {
   }
 });
 
+// 4b. News Scrapers Route (e.g. /api/news/straitstimes)
+app.all('/api/news/:slug', async (req, res) => {
+  const { slug } = req.params;
+  const payload = {
+    ...req.query,
+    ...req.body
+  };
+
+  try {
+    const reqHost = req.headers.host || 'localhost:5000';
+    const protocol = req.secure || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
+
+    const result = await executePipeline(slug, payload, reqHost, protocol);
+
+    if (result && result.success === false) {
+      return res.status(400).json({
+        success: false,
+        creator: "XyloAPI",
+        ...result
+      });
+    }
+
+    return res.json({
+      success: true,
+      creator: "XyloAPI",
+      data: result.data || result
+    });
+
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      error: "Failed to execute news pipeline",
+      details: error.message || String(error)
+    });
+  }
+});
+
 // 5. Temporary File Streaming & Clean-up Route (for MEGA, etc.)
 app.get('/api/downloads/:fileId/:filename', async (req, res) => {
   const { fileId, filename } = req.params;
