@@ -79,6 +79,7 @@ try:
     from xnxx_downloader import download_xnxx
     from straitstimes_scraper import get_straitstimes_news
     from cna_scraper import get_cna_news
+    from bbc_scraper import get_bbc_news
 except ImportError:
     # Fallback to local import if environment is weird
     import imgur_uploader
@@ -126,6 +127,7 @@ except ImportError:
     import xnxx_downloader
     import straitstimes_scraper
     import cna_scraper
+    import bbc_scraper
     upload_imgur = imgur_uploader.upload_imgur
     upload_eight_uploads = eight_uploads_uploader.upload_eight_uploads
     upload_freeimage = freeimage_uploader.upload_freeimage
@@ -171,6 +173,7 @@ except ImportError:
     download_xnxx = xnxx_downloader.download_xnxx
     get_straitstimes_news = straitstimes_scraper.get_straitstimes_news
     get_cna_news = cna_scraper.get_cna_news
+    get_bbc_news = bbc_scraper.get_bbc_news
 
 def run_pipeline(endpoint_id, payload):
     if endpoint_id in ["imgur", "image"]:
@@ -261,6 +264,8 @@ def run_pipeline(endpoint_id, payload):
         return get_straitstimes_news(payload)
     elif endpoint_id in ["cna", "channelnewsasia", "channel-news-asia"]:
         return get_cna_news(payload)
+    elif endpoint_id in ["bbc", "bbc-news"]:
+        return get_bbc_news(payload)
     else:
         return {
             "endpoint_id": endpoint_id,
