@@ -84,6 +84,7 @@ try:
     from mothership_scraper import get_mothership_news
     from aljazeera_scraper import get_aljazeera_news
     from abc_scraper import get_abc_news
+    from washingtonpost_scraper import get_washingtonpost_news
 except ImportError:
     # Fallback to local import if environment is weird
     import imgur_uploader
@@ -136,6 +137,7 @@ except ImportError:
     import mothership_scraper
     import aljazeera_scraper
     import abc_scraper
+    import washingtonpost_scraper
     upload_imgur = imgur_uploader.upload_imgur
     upload_eight_uploads = eight_uploads_uploader.upload_eight_uploads
     upload_freeimage = freeimage_uploader.upload_freeimage
@@ -186,6 +188,7 @@ except ImportError:
     get_mothership_news = mothership_scraper.get_mothership_news
     get_aljazeera_news = aljazeera_scraper.get_aljazeera_news
     get_abc_news = abc_scraper.get_abc_news
+    get_washingtonpost_news = washingtonpost_scraper.get_washingtonpost_news
 
 def run_pipeline(endpoint_id, payload):
     if endpoint_id in ["imgur", "image"]:
@@ -286,6 +289,8 @@ def run_pipeline(endpoint_id, payload):
         return get_aljazeera_news(payload)
     elif endpoint_id in ["abc", "abcnews", "abc-news"]:
         return get_abc_news(payload)
+    elif endpoint_id in ["washingtonpost", "wapo", "washington-post"]:
+        return get_washingtonpost_news(payload)
     else:
         return {
             "endpoint_id": endpoint_id,
