@@ -89,6 +89,7 @@ try:
     from foxnews_scraper import get_foxnews
     from reuters_scraper import get_reuters
     from cbs_scraper import get_cbs_news
+    from nytimes_scraper import get_nytimes
 except ImportError:
     # Fallback to local import if environment is weird
     import imgur_uploader
@@ -146,6 +147,7 @@ except ImportError:
     import foxnews_scraper
     import reuters_scraper
     import cbs_scraper
+    import nytimes_scraper
     upload_imgur = imgur_uploader.upload_imgur
     upload_eight_uploads = eight_uploads_uploader.upload_eight_uploads
     upload_freeimage = freeimage_uploader.upload_freeimage
@@ -201,6 +203,7 @@ except ImportError:
     get_foxnews = foxnews_scraper.get_foxnews
     get_reuters = reuters_scraper.get_reuters
     get_cbs_news = cbs_scraper.get_cbs_news
+    get_nytimes = nytimes_scraper.get_nytimes
 
 def run_pipeline(endpoint_id, payload):
     if endpoint_id in ["imgur", "image"]:
@@ -311,6 +314,8 @@ def run_pipeline(endpoint_id, payload):
         return get_reuters(payload)
     elif endpoint_id in ["cbs", "cbsnews", "cbs-news"]:
         return get_cbs_news(payload)
+    elif endpoint_id in ["nytimes", "nyt", "new-york-times"]:
+        return get_nytimes(payload)
     else:
         return {
             "endpoint_id": endpoint_id,
