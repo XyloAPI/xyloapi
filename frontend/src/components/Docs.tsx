@@ -2538,7 +2538,7 @@ export default function Docs() {
     }
 
     // 7. News Layout
-    if (activeTopic.category === 'News' && resData && resData.articles) {
+    if ((activeTopic.category === 'News' || activeTopic.category === 'Local News') && resData && resData.articles) {
       return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <div style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '16px' }}>
