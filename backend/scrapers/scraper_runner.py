@@ -94,6 +94,7 @@ try:
     from wsj_scraper import get_wsj
     from guardian_scraper import get_guardian
     from time_scraper import get_time_news
+    from skynews_scraper import get_skynews
 except ImportError:
     # Fallback to local import if environment is weird
     import imgur_uploader
@@ -156,6 +157,7 @@ except ImportError:
     import wsj_scraper
     import guardian_scraper
     import time_scraper
+    import skynews_scraper
     upload_imgur = imgur_uploader.upload_imgur
     upload_eight_uploads = eight_uploads_uploader.upload_eight_uploads
     upload_freeimage = freeimage_uploader.upload_freeimage
@@ -216,6 +218,7 @@ except ImportError:
     get_wsj = wsj_scraper.get_wsj
     get_guardian = guardian_scraper.get_guardian
     get_time_news = time_scraper.get_time_news
+    get_skynews = skynews_scraper.get_skynews
 
 def run_pipeline(endpoint_id, payload):
     if endpoint_id in ["imgur", "image"]:
@@ -336,6 +339,8 @@ def run_pipeline(endpoint_id, payload):
         return get_guardian(payload)
     elif endpoint_id in ["time", "time-magazine", "timemag"]:
         return get_time_news(payload)
+    elif endpoint_id in ["skynews", "sky", "sky-news"]:
+        return get_skynews(payload)
     else:
         return {
             "endpoint_id": endpoint_id,
