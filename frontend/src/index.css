@@ -1667,3 +1667,14 @@ body,
   background-color: var(--charcoal) !important;
   color: var(--white) !important;
 }
+
+/* Disable native spinner/stepper arrows on number inputs */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+

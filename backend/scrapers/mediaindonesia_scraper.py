@@ -59,13 +59,14 @@ def get_mi_news(payload):
 
     try:
         soup = BeautifulSoup(resp.content, "html.parser")
-        a_tags = soup.find_all("a", href=True)
         seen_hrefs = set()
         articles = []
 
-        for a in a_tags:
-            href = a.get("href")
-            # Ensure absolute URL
+        for li in soup.find_all("li"):
+            a_tag = li.find("a", href=True)
+            if not a_tag:
+                continue
+            href = a_tag.get("href")
             if not href.startswith("http"):
                 continue
 
@@ -74,47 +75,44 @@ def get_mi_news(payload):
             if not match:
                 continue
 
+            href = href.split("#")[0]
             if href in seen_hrefs:
                 continue
-            seen_hrefs.add(href)
 
-            title = a.get("title") or a.get_text(strip=True)
-            img_url = ""
-            date_str = ""
-            desc = ""
-
-            # Locate the container class "item" or "card"
-            item_div = None
-            curr = a
-            for _ in range(5):
-                if curr.parent is None:
-                    break
-                curr = curr.parent
-                if curr.name == "div" and ("item" in curr.get("class", []) or "card" in curr.get("class", [])):
-                    item_div = curr
-                    break
-
-            if item_div:
-                img = item_div.find("img")
-                if img:
-                    img_url = img.get("data-src") or img.get("src") or ""
-                date_div = item_div.find(class_="date")
-                if date_div:
-                    date_str = clean_text(date_div.get_text())
-                p_tag = item_div.find("p")
-                if p_tag:
-                    desc = clean_text(p_tag.get_text())
+            title = ""
+            h3 = li.find("h3")
+            if h3:
+                title = clean_text(h3.get_text())
+            if not title:
+                title_a = li.find("a", title=True)
+                if title_a:
+                    title = clean_text(title_a.get("title"))
+            if not title:
+                title = clean_text(a_tag.get_text() or a_tag.get("title") or "")
 
             if not title:
-                title = a.get_text(strip=True)
+                continue
+
+            img_url = ""
+            img = li.find("img")
+            if img:
+                img_url = img.get("data-src") or img.get("src") or ""
+
+            date_str = ""
+            span = li.find("span")
+            if span:
+                date_str = clean_text(span.get_text())
+
+            desc = ""
+            p = li.find("p")
+            if p:
+                desc = clean_text(p.get_text())
             if not desc:
                 desc = title
 
-            # Extra cleanup for #goog_rewarded or other hash links
-            href = href.split("#")[0]
-
+            seen_hrefs.add(href)
             articles.append({
-                "title": clean_text(title),
+                "title": title,
                 "url": href,
                 "description": desc,
                 "published": date_str,

@@ -63,8 +63,6 @@ def get_liputan6_news(payload):
         image = ""
         if img_tag:
             image = img_tag.get("src") or img_tag.get("data-src") or ""
-            if image and "/200x112/" in image:
-                image = image.replace("/200x112/", "/800x450/")
 
         time_tag = item.find(class_="articles--rows--item__time")
         pub = time_tag.get("datetime") if time_tag else ""

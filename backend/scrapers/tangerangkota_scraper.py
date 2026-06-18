@@ -86,6 +86,9 @@ def get_tk_news(payload):
                     if grand_img:
                         img_url = grand_img.get("src") or grand_img.get("data-src") or ""
 
+            if img_url and img_url.startswith("/"):
+                img_url = f"https://www.tangerangkota.go.id{img_url}"
+
             # 3. Search for date
             date_str = ""
             parent = a.parent

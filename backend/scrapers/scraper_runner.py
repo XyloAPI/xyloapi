@@ -80,7 +80,7 @@ try:
     from straitstimes_scraper import get_straitstimes_news
     from cna_scraper import get_cna_news
     from bbc_scraper import get_bbc_news
-    from cnn_scraper import get_cnn_news
+    from cnn_scraper import get_cnn_news as get_cnn_news_global
     from mothership_scraper import get_mothership_news
     from aljazeera_scraper import get_aljazeera_news
     from abc_scraper import get_abc_news
@@ -116,7 +116,7 @@ try:
     from punch_scraper import get_punch_news
     from detik_scraper import get_detik_news
     from kompas_scraper import get_kompas_news
-    from cnnindonesia_scraper import get_cnn_news
+    from cnnindonesia_scraper import get_cnn_news as get_cnn_news_indo
     from liputan6_scraper import get_liputan6_news
     from sindonews_scraper import get_sindo_news
     from antaranews_scraper import get_antara_news
@@ -132,6 +132,23 @@ try:
     from mediaindonesia_scraper import get_mi_news
     from beritajakarta_scraper import get_bj_news
     from tangerangkota_scraper import get_tk_news
+    from kompastv_scraper import get_ktv_news
+    from viva_scraper import get_viva_news
+    from inews_scraper import get_inews_news
+    from terkini_scraper import get_terkini_news
+    from cna_scraper import get_cna_news
+    from merdeka_scraper import get_merdeka_news
+    from jakartapost_scraper import get_jakartapost_news
+    from removebg_scraper import get_removebg_image
+    from upscale_scraper import get_upscale_image
+    from sepia_scraper import get_sepia_image
+    from invert_scraper import get_inverted_image
+    from flip_scraper import get_flipped_image
+    from pixelate_scraper import get_pixelated_image
+    from round_corners_scraper import get_rounded_image
+    from split_scraper import get_split_image
+    from noise_scraper import get_noised_image
+    from blur_scraper import get_blurred_image
 except ImportError:
     # Fallback to local import if environment is weird
     import imgur_uploader
@@ -232,6 +249,23 @@ except ImportError:
     import mediaindonesia_scraper
     import beritajakarta_scraper
     import tangerangkota_scraper
+    import kompastv_scraper
+    import viva_scraper
+    import inews_scraper
+    import terkini_scraper
+    import cna_scraper
+    import merdeka_scraper
+    import jakartapost_scraper
+    import removebg_scraper
+    import upscale_scraper
+    import sepia_scraper
+    import invert_scraper
+    import flip_scraper
+    import pixelate_scraper
+    import round_corners_scraper
+    import split_scraper
+    import noise_scraper
+    import blur_scraper
     upload_imgur = imgur_uploader.upload_imgur
     upload_eight_uploads = eight_uploads_uploader.upload_eight_uploads
     upload_freeimage = freeimage_uploader.upload_freeimage
@@ -278,7 +312,7 @@ except ImportError:
     get_straitstimes_news = straitstimes_scraper.get_straitstimes_news
     get_cna_news = cna_scraper.get_cna_news
     get_bbc_news = bbc_scraper.get_bbc_news
-    get_cnn_news = cnn_scraper.get_cnn_news
+    get_cnn_news_global = cnn_scraper.get_cnn_news
     get_mothership_news = mothership_scraper.get_mothership_news
     get_aljazeera_news = aljazeera_scraper.get_aljazeera_news
     get_abc_news = abc_scraper.get_abc_news
@@ -314,7 +348,7 @@ except ImportError:
     get_punch_news = punch_scraper.get_punch_news
     get_detik_news = detik_scraper.get_detik_news
     get_kompas_news = kompas_scraper.get_kompas_news
-    get_cnn_news = cnnindonesia_scraper.get_cnn_news
+    get_cnn_news_indo = cnnindonesia_scraper.get_cnn_news
     get_liputan6_news = liputan6_scraper.get_liputan6_news
     get_sindo_news = sindonews_scraper.get_sindo_news
     get_antara_news = antaranews_scraper.get_antara_news
@@ -330,6 +364,23 @@ except ImportError:
     get_mi_news = mediaindonesia_scraper.get_mi_news
     get_bj_news = beritajakarta_scraper.get_bj_news
     get_tk_news = tangerangkota_scraper.get_tk_news
+    get_ktv_news = kompastv_scraper.get_ktv_news
+    get_viva_news = viva_scraper.get_viva_news
+    get_inews_news = inews_scraper.get_inews_news
+    get_terkini_news = terkini_scraper.get_terkini_news
+    get_cna_news = cna_scraper.get_cna_news
+    get_merdeka_news = merdeka_scraper.get_merdeka_news
+    get_jakartapost_news = jakartapost_scraper.get_jakartapost_news
+    get_removebg_image = removebg_scraper.get_removebg_image
+    get_upscale_image = upscale_scraper.get_upscale_image
+    get_sepia_image = sepia_scraper.get_sepia_image
+    get_inverted_image = invert_scraper.get_inverted_image
+    get_flipped_image = flip_scraper.get_flipped_image
+    get_pixelated_image = pixelate_scraper.get_pixelated_image
+    get_rounded_image = round_corners_scraper.get_rounded_image
+    get_split_image = split_scraper.get_split_image
+    get_noised_image = noise_scraper.get_noised_image
+    get_blurred_image = blur_scraper.get_blurred_image
 
 def run_pipeline(endpoint_id, payload):
     if endpoint_id in ["imgur", "image"]:
@@ -423,7 +474,7 @@ def run_pipeline(endpoint_id, payload):
     elif endpoint_id in ["bbc", "bbc-news"]:
         return get_bbc_news(payload)
     elif endpoint_id in ["cnn", "cnn-news"]:
-        return get_cnn_news(payload)
+        return get_cnn_news_global(payload)
     elif endpoint_id in ["mothership", "mothership-sg"]:
         return get_mothership_news(payload)
     elif endpoint_id in ["aljazeera", "al-jazeera", "aj"]:
@@ -456,7 +507,7 @@ def run_pipeline(endpoint_id, payload):
         return get_npr(payload)
     elif endpoint_id in ["bloomberg", "bbg"]:
         return get_bloomberg(payload)
-    elif endpoint_id in ["thetimes", "the-times", "times"]:
+    elif endpoint_id in ["thetimes", "the-times"]:
         return get_thetimes(payload)
     elif endpoint_id in ["dw", "deutsche-welle"]:
         return get_dw(payload)
@@ -495,7 +546,7 @@ def run_pipeline(endpoint_id, payload):
     elif endpoint_id in ["kompas", "kompas-news"]:
         return get_kompas_news(payload)
     elif endpoint_id in ["cnnindonesia", "cnn-indonesia", "cnnindo"]:
-        return get_cnn_news(payload)
+        return get_cnn_news_indo(payload)
     elif endpoint_id in ["liputan6", "liputan-6"]:
         return get_liputan6_news(payload)
     elif endpoint_id in ["sindonews", "sindo-news", "sindo"]:
@@ -526,6 +577,40 @@ def run_pipeline(endpoint_id, payload):
         return get_bj_news(payload)
     elif endpoint_id in ["tangerangkota", "tangerang-kota", "tangerangkota-news"]:
         return get_tk_news(payload)
+    elif endpoint_id in ["kompastv", "kompas-tv", "kompastv-news"]:
+        return get_ktv_news(payload)
+    elif endpoint_id in ["viva", "viva-news", "vivaco"]:
+        return get_viva_news(payload)
+    elif endpoint_id in ["inews", "inews-news", "inewsid"]:
+        return get_inews_news(payload)
+    elif endpoint_id in ["terkini", "terkini-news", "terkiniid"]:
+        return get_terkini_news(payload)
+    elif endpoint_id in ["cna", "cna-news", "cnaid"]:
+        return get_cna_news(payload)
+    elif endpoint_id in ["merdeka", "merdeka-news", "merdekacom"]:
+        return get_merdeka_news(payload)
+    elif endpoint_id in ["jakartapost", "jakarta-post", "jakpost", "thejakartapost"]:
+        return get_jakartapost_news(payload)
+    elif endpoint_id in ["removebg", "remove-bg"]:
+        return get_removebg_image(payload)
+    elif endpoint_id in ["upscale", "upscaler"]:
+        return get_upscale_image(payload)
+    elif endpoint_id in ["sepia", "sepia-effect"]:
+        return get_sepia_image(payload)
+    elif endpoint_id in ["invert", "invert-colors"]:
+        return get_inverted_image(payload)
+    elif endpoint_id in ["flip", "flip-image"]:
+        return get_flipped_image(payload)
+    elif endpoint_id in ["pixelate", "pixelate-effect"]:
+        return get_pixelated_image(payload)
+    elif endpoint_id in ["round-corners", "rounded-corners"]:
+        return get_rounded_image(payload)
+    elif endpoint_id in ["split", "split-image"]:
+        return get_split_image(payload)
+    elif endpoint_id in ["add-noise", "noise"]:
+        return get_noised_image(payload)
+    elif endpoint_id in ["blur", "blur-image"]:
+        return get_blurred_image(payload)
     else:
         return {
             "endpoint_id": endpoint_id,

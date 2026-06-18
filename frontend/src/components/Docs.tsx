@@ -2663,6 +2663,415 @@ const docTopics: DocTopic[] = [
     payloadTemplate: {
       category: 'latest'
     }
+  },
+  {
+    id: 'kompastv',
+    title: 'Kompas TV',
+    category: 'Local News',
+    method: 'POST',
+    path: '/api/news/kompastv',
+    pathTemplate: '/api/news/:slug',
+    description: 'Fetch latest local news and talkshow videos from Kompas TV (kompas.tv) in Indonesia. Returns up to 20 articles with title, link, description, publish date, source, and media content.',
+    parameters: [
+      {
+        name: 'category',
+        type: 'select',
+        required: true,
+        desc: 'Select a Kompas TV news category.',
+        options: [
+          { value: 'news', label: 'Berita Utama (News)' },
+          { value: 'nasional', label: 'Nasional' },
+          { value: 'regional', label: 'Regional' },
+          { value: 'internasional', label: 'Internasional' },
+          { value: 'ekonomi', label: 'Ekonomi' },
+          { value: 'olahraga', label: 'Olahraga' },
+          { value: 'lifestyle', label: 'Lifestyle' },
+          { value: 'entertainment', label: 'Entertainment' },
+          { value: 'talkshow', label: 'Talkshow' }
+        ]
+      } as any
+    ],
+    payloadTemplate: {
+      category: 'news'
+    }
+  },
+  {
+    id: 'viva',
+    title: 'VIVA News',
+    category: 'Local News',
+    method: 'POST',
+    path: '/api/news/viva',
+    pathTemplate: '/api/news/:slug',
+    description: 'Fetch latest local news, sports, business, and lifestyle updates from VIVA News (viva.co.id) in Indonesia. Returns up to 20 articles with title, link, description, publish date, source, and image content.',
+    parameters: [
+      {
+        name: 'category',
+        type: 'select',
+        required: true,
+        desc: 'Select a VIVA News category.',
+        options: [
+          { value: 'news', label: 'Berita Terbaru (All)' },
+          { value: 'nasional', label: 'Nasional' },
+          { value: 'internasional', label: 'Internasional' },
+          { value: 'metro', label: 'Metro' },
+          { value: 'bisnis', label: 'Bisnis' },
+          { value: 'bola', label: 'Bola' },
+          { value: 'sport', label: 'Sport' },
+          { value: 'otomotif', label: 'Otomotif' },
+          { value: 'lifestyle', label: 'Lifestyle' },
+          { value: 'showbiz', label: 'Showbiz' },
+          { value: 'digital', label: 'Digital' }
+        ]
+      } as any
+    ],
+    payloadTemplate: {
+      category: 'news'
+    }
+  },
+  {
+    id: 'inews',
+    title: 'iNews',
+    category: 'Local News',
+    method: 'POST',
+    path: '/api/news/inews',
+    pathTemplate: '/api/news/:slug',
+    description: 'Fetch latest local news, sports, business, lifestyle, and regional updates from iNews (inews.id) in Indonesia. Returns up to 20 articles with title, link, description, publish date, source, and image content.',
+    parameters: [
+      {
+        name: 'category',
+        type: 'select',
+        required: true,
+        desc: 'Select an iNews category.',
+        options: [
+          { value: 'news', label: 'News Utama' },
+          { value: 'nasional', label: 'Nasional' },
+          { value: 'internasional', label: 'Internasional' },
+          { value: 'megapolitan', label: 'Megapolitan' },
+          { value: 'finance', label: 'Finance' },
+          { value: 'sport', label: 'Sport' },
+          { value: 'soccer', label: 'Soccer' },
+          { value: 'lifestyle', label: 'Lifestyle' },
+          { value: 'travel', label: 'Travel' },
+          { value: 'otomotif', label: 'Otomotif' },
+          { value: 'techno', label: 'Techno' },
+          { value: 'regional', label: 'Regional' }
+        ]
+      } as any
+    ],
+    payloadTemplate: {
+      category: 'news'
+    }
+  },
+  {
+    id: 'terkini',
+    title: 'Terkini News',
+    category: 'Local News',
+    method: 'POST',
+    path: '/api/news/terkini',
+    pathTemplate: '/api/news/:slug',
+    description: 'Fetch latest local news, economy, lifestyle, sports, and tech updates from Terkini News (terkini.id) in Indonesia. Returns up to 20 articles with title, link, description, publish date, source, and image content.',
+    parameters: [
+      {
+        name: 'category',
+        type: 'select',
+        required: true,
+        desc: 'Select a Terkini News category.',
+        options: [
+          { value: 'news', label: 'News' },
+          { value: 'ekobis', label: 'Ekobis' },
+          { value: 'lifestyle', label: 'Lifestyle' },
+          { value: 'hiburan', label: 'Hiburan' },
+          { value: 'bola', label: 'Bola' },
+          { value: 'cekfakta', label: 'Cek Fakta' },
+          { value: 'health', label: 'Health' },
+          { value: 'tekno', label: 'Tekno' },
+          { value: 'komunitas', label: 'Komunitas' },
+          { value: 'milenial', label: 'Milenial' },
+          { value: 'ragam', label: 'Ragam' },
+          { value: 'kolom', label: 'Kolom' }
+        ]
+      } as any
+    ],
+    payloadTemplate: {
+      category: 'news'
+    }
+  },
+  {
+    id: 'cna',
+    title: 'CNA Indonesia',
+    category: 'Local News',
+    method: 'POST',
+    path: '/api/news/cna',
+    pathTemplate: '/api/news/:slug',
+    description: 'Fetch latest local news, economy, lifestyle, and regional updates from CNA Indonesia (cna.id). Returns up to 20 articles with title, link, description, publish date, source, and image content.',
+    parameters: [
+      {
+        name: 'category',
+        type: 'select',
+        required: true,
+        desc: 'Select a CNA Indonesia category.',
+        options: [
+          { value: 'news', label: 'Berita Utama' },
+          { value: 'terbaru', label: 'Terbaru' },
+          { value: 'asia', label: 'Asia' },
+          { value: 'indonesia', label: 'Indonesia' },
+          { value: 'lifestyle', label: 'Lifestyle' },
+          { value: 'trending', label: 'Trending' },
+          { value: 'pilihan-editor', label: 'Pilihan Editor' }
+        ]
+      } as any
+    ],
+    payloadTemplate: {
+      category: 'indonesia'
+    }
+  },
+  {
+    id: 'merdeka',
+    title: 'Merdeka News',
+    category: 'Local News',
+    method: 'POST',
+    path: '/api/news/merdeka',
+    pathTemplate: '/api/news/:slug',
+    description: 'Fetch latest local news, politics, economy, celebrities, trending topics, and regional updates from Merdeka News (merdeka.com). Returns up to 20 articles with title, link, description, publish date, source, and image content.',
+    parameters: [
+      {
+        name: 'category',
+        type: 'select',
+        required: true,
+        desc: 'Select a Merdeka News category.',
+        options: [
+          { value: 'news', label: 'News' },
+          { value: 'politik', label: 'Politik' },
+          { value: 'ekonomi', label: 'Ekonomi' },
+          { value: 'artis', label: 'Artis' },
+          { value: 'trending', label: 'Trending' },
+          { value: 'tekno', label: 'Tekno' },
+          { value: 'otomotif', label: 'Otomotif' },
+          { value: 'dunia', label: 'Dunia' },
+          { value: 'lifestyle', label: 'Lifestyle' },
+          { value: 'sehat', label: 'Sehat' },
+          { value: 'sport', label: 'Sport' }
+        ]
+      } as any
+    ],
+    payloadTemplate: {
+      category: 'news'
+    }
+  },
+  {
+    id: 'jakartapost',
+    title: 'The Jakarta Post',
+    category: 'Local News',
+    method: 'POST',
+    path: '/api/news/jakartapost',
+    pathTemplate: '/api/news/:slug',
+    description: 'Fetch latest English local news, business, opinion editorials, world affairs, culture, and sports updates from The Jakarta Post (thejakartapost.com). Returns up to 20 articles with title, link, description, publish date, source, and image content.',
+    parameters: [
+      {
+        name: 'category',
+        type: 'select',
+        required: true,
+        desc: 'Select a Jakarta Post category.',
+        options: [
+          { value: 'indonesia', label: 'Indonesia' },
+          { value: 'business', label: 'Business' },
+          { value: 'opinion', label: 'Opinion' },
+          { value: 'world', label: 'World' },
+          { value: 'culture', label: 'Culture' },
+          { value: 'sports', label: 'Sports' }
+        ]
+      } as any
+    ],
+    payloadTemplate: {
+      category: 'indonesia'
+    }
+  },
+  {
+    id: 'removebg',
+    title: 'Remove Background',
+    category: 'Image Tools',
+    method: 'POST',
+    path: '/api/image-tool/removebg',
+    pathTemplate: '/api/image-tool/:slug',
+    description: 'Remove backgrounds from images instantly and automatically using advanced AI segmentation. Upload an image file or provide a direct image URL.',
+    parameters: [
+      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' }
+    ],
+    payloadTemplate: {
+      image: ''
+    }
+  },
+  {
+    id: 'upscale',
+    title: 'Image Upscaler',
+    category: 'Image Tools',
+    method: 'POST',
+    path: '/api/image-tool/upscale',
+    pathTemplate: '/api/image-tool/:slug',
+    description: 'Upscale and enhance low-resolution images instantly using advanced super-resolution AI. Upload an image file or provide a direct image URL.',
+    parameters: [
+      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' }
+    ],
+    payloadTemplate: {
+      image: ''
+    }
+  },
+  {
+    id: 'sepia',
+    title: 'Sepia Effect',
+    category: 'Image Tools',
+    method: 'POST',
+    path: '/api/image-tool/sepia',
+    pathTemplate: '/api/image-tool/:slug',
+    description: 'Apply a classic, warm, vintage sepia tone filter to your images instantly. Upload an image file or provide a direct image URL, and adjust the optional intensity parameter.',
+    parameters: [
+      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' },
+      { name: 'intensity', type: 'number', required: false, desc: 'Sepia effect intensity (amount) from 0 to 100. Default is 80.' }
+    ],
+    payloadTemplate: {
+      image: '',
+      intensity: 80
+    }
+  },
+  {
+    id: 'invert',
+    title: 'Invert Colors',
+    category: 'Image Tools',
+    method: 'POST',
+    path: '/api/image-tool/invert',
+    pathTemplate: '/api/image-tool/:slug',
+    description: 'Invert colors of an image to their exact opposites to create a striking "negative" photo effect. Upload an image file or provide a direct image URL.',
+    parameters: [
+      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' }
+    ],
+    payloadTemplate: {
+      image: ''
+    }
+  },
+  {
+    id: 'flip',
+    title: 'Flip Image',
+    category: 'Image Tools',
+    method: 'POST',
+    path: '/api/image-tool/flip',
+    pathTemplate: '/api/image-tool/:slug',
+    description: 'Flip your images horizontally (mirror effect) or vertically (upside down) instantly. Upload an image file or provide a direct image URL.',
+    parameters: [
+      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' },
+      {
+        name: 'direction',
+        type: 'select',
+        required: false,
+        desc: 'Flip direction: "horizontal" or "vertical". Default is "horizontal".',
+        options: [
+          { value: 'horizontal', label: 'Horizontal (Mirror Effect)' },
+          { value: 'vertical', label: 'Vertical (Upside Down)' }
+        ]
+      } as any
+    ],
+    payloadTemplate: {
+      image: '',
+      direction: 'horizontal'
+    }
+  },
+  {
+    id: 'pixelate',
+    title: 'Pixelate Effect',
+    category: 'Image Tools',
+    method: 'POST',
+    path: '/api/image-tool/pixelate',
+    pathTemplate: '/api/image-tool/:slug',
+    description: 'Create a cool retro 8-bit blocky pixelation effect on your photos instantly. Upload an image file or provide a direct image URL, and adjust the optional pixel size parameter.',
+    parameters: [
+      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' },
+      { name: 'pixel_size', type: 'number', required: false, desc: 'Pixel block size from 2 to 100. Default is 10.' }
+    ],
+    payloadTemplate: {
+      image: '',
+      pixel_size: 10
+    }
+  },
+  {
+    id: 'round-corners',
+    title: 'Round Corners',
+    category: 'Image Tools',
+    method: 'POST',
+    path: '/api/image-tool/round-corners',
+    pathTemplate: '/api/image-tool/:slug',
+    description: 'Round the corners of your images online. Customize the corner radius to create smooth, rounded edges on your photos.',
+    parameters: [
+      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' },
+      { name: 'radius', type: 'number', required: false, desc: 'Corner radius in pixels (e.g. 30) or percentage (e.g. "25%"). Default is 30.' }
+    ],
+    payloadTemplate: {
+      image: '',
+      radius: 30
+    }
+  },
+  {
+    id: 'split',
+    title: 'Split Image',
+    category: 'Image Tools',
+    method: 'POST',
+    path: '/api/image-tool/split',
+    pathTemplate: '/api/image-tool/:slug',
+    description: 'Split your images into multiple parts (horizontal rows and vertical columns grid) instantly. Upload an image file or provide a direct image URL.',
+    parameters: [
+      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' },
+      { name: 'rows', type: 'number', required: false, desc: 'Number of rows to split the image into (1-10). Default is 2.' },
+      { name: 'cols', type: 'number', required: false, desc: 'Number of columns to split the image into (1-10). Default is 2.' }
+    ],
+    payloadTemplate: {
+      image: '',
+      rows: 2,
+      cols: 2
+    }
+  },
+  {
+    id: 'add-noise',
+    title: 'Add Noise',
+    category: 'Image Tools',
+    method: 'POST',
+    path: '/api/image-tool/add-noise',
+    pathTemplate: '/api/image-tool/:slug',
+    description: 'Add random noise to your images online. Select the noise type (Gaussian, Uniform, or Salt & Pepper) and specify the intensity amount.',
+    parameters: [
+      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' },
+      { name: 'amount', type: 'number', required: false, desc: 'Noise amount from 0 to 100. Default is 20.' },
+      {
+        name: 'noise_type',
+        type: 'select',
+        required: false,
+        desc: 'Type of noise to generate: "gaussian", "uniform", or "salt_and_pepper". Default is "gaussian".',
+        options: [
+          { value: 'gaussian', label: 'Gaussian (Film Grain)' },
+          { value: 'uniform', label: 'Uniform Noise' },
+          { value: 'salt_and_pepper', label: 'Salt & Pepper Noise' }
+        ]
+      } as any
+    ],
+    payloadTemplate: {
+      image: '',
+      amount: 20,
+      noise_type: 'gaussian'
+    }
+  },
+  {
+    id: 'blur',
+    title: 'Blur Image',
+    category: 'Image Tools',
+    method: 'POST',
+    path: '/api/image-tool/blur',
+    pathTemplate: '/api/image-tool/:slug',
+    description: 'Blur the entire image with a custom blur radius. Upload an image file or provide a direct image URL.',
+    parameters: [
+      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' },
+      { name: 'radius', type: 'number', required: false, desc: 'Blur radius from 1 to 50. Default is 10.' }
+    ],
+    payloadTemplate: {
+      image: '',
+      radius: 10
+    }
   }
 ];
 
@@ -2867,6 +3276,7 @@ export default function Docs() {
       case 'Downloader': return <Download size={14} />;
       case 'News': return <Newspaper size={14} />;
       case 'Local News': return <Newspaper size={14} />;
+      case 'Image Tools': return <Upload size={14} />;
       default: return <Globe size={14} />;
     }
   };
@@ -2879,8 +3289,12 @@ export default function Docs() {
     if (method === 'GET') {
       return `curl "${evalUrl}"`;
     }
-    if (activeTopic.category === 'Media Uploaders' || activeTopic.category === 'File Uploaders') {
-      return `curl -X POST "${evalUrl}" \\\n  -F "image=@path_to_file.zip"`;
+    if (activeTopic.category === 'Media Uploaders' || activeTopic.category === 'File Uploaders' || activeTopic.category === 'Image Tools') {
+      if (uploadMode === 'file') {
+        return `curl -X POST "${evalUrl}" \\\n  -H "Content-Type: application/json" \\\n  -d '{"image": "data:image/jpeg;base64,..."}'`;
+      } else {
+        return `curl -X POST "${evalUrl}" \\\n  -H "Content-Type: application/json" \\\n  -d '{"url": "https://example.com/photo.jpg"}'`;
+      }
     }
     return `curl -X POST "${evalUrl}" \\\n  -H "Content-Type: application/json" \\\n  -d '${getPayloadJson().replace(/\n/g, '\n    ')}'`;
   };
@@ -2914,6 +3328,211 @@ export default function Docs() {
     }
 
 
+
+    // 5. Image Tools Layout
+    if (activeTopic.category === 'Image Tools' && resData) {
+      const isSplit = activeTopic.id === 'split';
+      if (isSplit && resData.slices) {
+        const gridCols = resData.cols || 2;
+        const gridRows = resData.rows || 2;
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <div style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '16px' }}>
+              <span style={{ fontSize: '11px', fontFamily: 'var(--font-mono)', color: '#27C93F', fontWeight: 700, textTransform: 'uppercase' }}>
+                ✓ IMAGE SPLIT SUCCESSFUL
+              </span>
+              <h2 style={{ fontSize: '18px', fontWeight: 800, color: 'var(--white)', marginTop: '4px' }}>
+                Split Image Grid ({gridCols}x{gridRows})
+              </h2>
+            </div>
+
+            <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', alignItems: 'start' }}>
+              {/* Grid representation */}
+              <div style={{ flexShrink: 0 }}>
+                <span style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--ash)', display: 'block', marginBottom: '8px' }}>
+                  SPLIT PIECES PREVIEW (CLICK TO ENLARGE)
+                </span>
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: `repeat(${gridCols}, 1fr)`,
+                  gap: '4px',
+                  border: '1px solid var(--border-color)',
+                  padding: '8px',
+                  backgroundColor: 'var(--black)',
+                  backgroundImage: 'linear-gradient(45deg, #151515 25%, transparent 25%), linear-gradient(-45deg, #151515 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #151515 75%), linear-gradient(-45deg, transparent 75%, #151515 75%)',
+                  backgroundSize: '20px 20px',
+                  backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px',
+                  maxWidth: '340px'
+                }}>
+                  {resData.slices.map((slice: any, idx: number) => (
+                    <div 
+                      key={idx} 
+                      style={{ 
+                        position: 'relative',
+                        border: '1px dashed var(--gold)',
+                        overflow: 'hidden',
+                        aspectRatio: `${slice.width} / ${slice.height}`,
+                        cursor: 'pointer'
+                      }}
+                      onClick={() => window.open(slice.url, '_blank')}
+                      title={`Slice ${slice.row + 1}, ${slice.col + 1} (${slice.width}x${slice.height}px)`}
+                    >
+                      <img 
+                        src={slice.url} 
+                        referrerPolicy="no-referrer"
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} 
+                      />
+                      <div style={{
+                        position: 'absolute',
+                        bottom: 0,
+                        right: 0,
+                        backgroundColor: 'rgba(0,0,0,0.8)',
+                        color: 'var(--gold-text)',
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '8px',
+                        padding: '1px 3px'
+                      }}>
+                        R{slice.row + 1} C{slice.col + 1}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Slices list with links */}
+              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '10px', minWidth: '280px' }}>
+                <span style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--ash)', display: 'block' }}>
+                  DOWNLOAD INDIVIDUAL PARTS
+                </span>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxHeight: '320px', overflowY: 'auto', paddingRight: '4px' }}>
+                  {resData.slices.map((slice: any, idx: number) => (
+                    <div 
+                      key={idx}
+                      style={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'space-between',
+                        padding: '8px 12px',
+                        backgroundColor: 'rgba(255,255,255,0.02)',
+                        border: '1px solid var(--border-color)',
+                        gap: '12px'
+                      }}
+                    >
+                      <span style={{ fontSize: '11px', fontFamily: 'var(--font-mono)', color: 'var(--white)' }}>
+                        Part {idx + 1} (R{slice.row + 1}, C{slice.col + 1}) - {slice.width}x{slice.height}px
+                      </span>
+                      <div style={{ display: 'flex', gap: '6px', flexShrink: 0 }}>
+                        <a 
+                          href={slice.url} 
+                          target="_blank" 
+                          rel="noreferrer" 
+                          className="btn btn-gold" 
+                          style={{ textDecoration: 'none', padding: '4px 8px', fontSize: '9px', fontWeight: 700 }}
+                        >
+                          DOWNLOAD
+                        </a>
+                        <button 
+                          onClick={() => copyToClipboard(slice.url)} 
+                          className="btn btn-black" 
+                          style={{ padding: '4px 8px', fontSize: '9px', fontWeight: 700, border: '1px solid var(--border-color)' }}
+                        >
+                          COPY
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      const isUpscale = activeTopic.id === 'upscale';
+      const isSepia = activeTopic.id === 'sepia';
+      const isInvert = activeTopic.id === 'invert';
+      const isFlip = activeTopic.id === 'flip';
+      const isPixelate = activeTopic.id === 'pixelate';
+      const isRound = activeTopic.id === 'round-corners';
+      const isNoise = activeTopic.id === 'add-noise';
+      const isBlur = activeTopic.id === 'blur';
+      
+      let badgeText = '✓ BACKGROUND REMOVED';
+      if (isUpscale) badgeText = '✓ IMAGE UPSCALED';
+      if (isSepia) badgeText = '✓ SEPIA FILTER APPLIED';
+      if (isInvert) badgeText = '✓ COLORS INVERTED';
+      if (isFlip) badgeText = '✓ IMAGE FLIPPED';
+      if (isPixelate) badgeText = '✓ RETRO PIXELATION APPLIED';
+      if (isRound) badgeText = '✓ CORNERS ROUNDED';
+      if (isNoise) badgeText = '✓ NOISE FILTER APPLIED';
+      if (isBlur) badgeText = '✓ IMAGE BLURRED';
+
+      let downloadText = 'DOWNLOAD TRANSPARENT IMAGE';
+      if (isUpscale) downloadText = 'DOWNLOAD UPSCALED IMAGE';
+      if (isSepia) downloadText = 'DOWNLOAD SEPIA IMAGE';
+      if (isInvert) downloadText = 'DOWNLOAD INVERTED IMAGE';
+      if (isFlip) downloadText = 'DOWNLOAD FLIPPED IMAGE';
+      if (isPixelate) downloadText = 'DOWNLOAD PIXELATED IMAGE';
+      if (isRound) downloadText = 'DOWNLOAD ROUNDED IMAGE';
+      if (isNoise) downloadText = 'DOWNLOAD NOISED IMAGE';
+      if (isBlur) downloadText = 'DOWNLOAD BLURRED IMAGE';
+
+      const showGridBg = !isUpscale && !isSepia && !isInvert && !isFlip && !isPixelate && !isNoise && !isBlur;
+      const previewAlt = isUpscale ? 'Upscaled Preview' : isSepia ? 'Sepia Filter Preview' : isInvert ? 'Inverted Colors Preview' : isFlip ? 'Flipped Image Preview' : isPixelate ? 'Pixelated Preview' : isRound ? 'Rounded Corners Preview' : isNoise ? 'Noise Applied Preview' : isBlur ? 'Blurred Image Preview' : 'Transparent Background Preview';
+
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '16px' }}>
+            <span style={{ fontSize: '11px', fontFamily: 'var(--font-mono)', color: '#27C93F', fontWeight: 700, textTransform: 'uppercase' }}>
+              {badgeText}
+            </span>
+            <h2 style={{ fontSize: '18px', fontWeight: 800, color: 'var(--white)', marginTop: '4px' }}>
+              {activeTopic.title} Result
+            </h2>
+          </div>
+
+          <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', alignItems: 'start' }}>
+            {resData.url && (
+              <div style={{ 
+                border: '1px solid var(--border-color)', 
+                padding: '8px', 
+                backgroundColor: showGridBg ? 'var(--black)' : '#111',
+                backgroundImage: showGridBg ? 'linear-gradient(45deg, #151515 25%, transparent 25%), linear-gradient(-45deg, #151515 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #151515 75%), linear-gradient(-45deg, transparent 75%, #151515 75%)' : 'none',
+                backgroundSize: '20px 20px',
+                backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px'
+              }}>
+                <img src={resData.url} referrerPolicy="no-referrer" alt={previewAlt} style={{ maxWidth: '320px', maxHeight: '320px', display: 'block', objectFit: 'contain' }} />
+              </div>
+            )}
+
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                {resData.width && resData.height && (
+                  <div style={{ border: '1px solid var(--border-color)', padding: '10px', backgroundColor: 'rgba(255,255,255,0.01)', gridColumn: 'span 2' }}>
+                    <span style={{ display: 'block', fontSize: '9px', color: 'var(--ash)', fontFamily: 'var(--font-mono)' }}>DIMENSIONS</span>
+                    <span style={{ fontSize: '13px', color: 'var(--white)', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>{resData.width} x {resData.height} px</span>
+                  </div>
+                )}
+              </div>
+
+              {resData.url && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px' }}>
+                  <span style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--ash)', display: 'block' }}>OUTPUT LINK</span>
+                  <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                    <a href={resData.url} target="_blank" rel="noreferrer" className="btn btn-gold" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none', padding: '8px 16px', fontSize: '11px', fontWeight: 700, flex: 1 }}>
+                      {downloadText}
+                    </a>
+                    <button onClick={() => copyToClipboard(resData.url)} className="btn btn-black" style={{ padding: '8px 16px', fontSize: '11px', fontWeight: 700, border: '1px solid var(--border-color)' }}>
+                      COPY LINK
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    }
 
     // 6. Downloader Layout
     if (activeTopic.category === 'Downloader' && resData) {
@@ -3079,7 +3698,15 @@ export default function Docs() {
                     alt={article.title}
                     referrerPolicy="no-referrer"
                     style={{ width: '80px', height: '55px', objectFit: 'cover', flexShrink: 0, border: '1px solid var(--border-color)' }}
-                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                    onError={(e) => {
+                      const currentSrc = e.currentTarget.src;
+                      if (currentSrc && !currentSrc.includes('/api/image-proxy')) {
+                        const host = (window.location.hostname === 'localhost' && window.location.port !== '3000') ? 'http://localhost:5000' : window.location.origin;
+                        e.currentTarget.src = `${host}/api/image-proxy?url=${encodeURIComponent(article.image)}`;
+                      } else {
+                        e.currentTarget.style.display = 'none';
+                      }
+                    }}
                   />
                 )}
                 <div style={{ flex: 1, minWidth: 0 }}>
@@ -3088,7 +3715,10 @@ export default function Docs() {
                     <span style={{ fontSize: '11px', color: 'var(--ash)', display: 'block', marginTop: '4px', lineHeight: 1.5 }}>{article.description}</span>
                   )}
                   <span style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--ash)', display: 'block', marginTop: '6px', opacity: 0.7 }}>
-                    {article.published ? new Date(article.published).toLocaleString() : ''}
+                    {article.published ? (() => {
+                      const d = new Date(article.published);
+                      return isNaN(d.getTime()) ? article.published : d.toLocaleString();
+                    })() : ''}
                   </span>
                 </div>
               </a>
@@ -3347,7 +3977,7 @@ export default function Docs() {
                 <div>
                   {activeTopic.parameters.map(param => {
                     const isRequired = param.required;
-                    const isUploaderUrl = (activeTopic.category === 'Media Uploaders' || activeTopic.category === 'File Uploaders') && uploadMode === 'url';
+                    const isUploaderUrl = (activeTopic.category === 'Media Uploaders' || activeTopic.category === 'File Uploaders' || activeTopic.category === 'Image Tools') && uploadMode === 'url';
                     const val = isUploaderUrl ? (formValues['url'] ?? '') : (formValues[param.name] ?? '');
                     const label = isUploaderUrl ? 'url' : param.name;
 

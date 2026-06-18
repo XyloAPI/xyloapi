@@ -7,6 +7,9 @@ import { File as MegaFile } from 'megajs';
 import { exec, execSync } from 'child_process';
 import { promisify } from 'util';
 import { Pool } from 'pg';
+import http from 'http';
+import https from 'https';
+import { URL } from 'url';
 
 const execAsync = promisify(exec);
 
@@ -207,9 +210,16 @@ const apiModules = [
   {
     id: "local-news",
     name: "Local News Scrapers Pack",
-    description: "Fetch latest local news from Indonesian sources: Detik News, Kompas News, CNN Indonesia, Liputan6 News, Sindonews, Antara News, BMKG News, Tempo, Bisnis.com, Okezone, CNBC Indonesia, TIMES Indonesia, Inilah.com, Bank Indonesia, Hukumonline, Media Indonesia, Berita Jakarta, and Tangerang Kota.",
+    description: "Fetch latest local news from Indonesian sources: Detik News, Kompas News, CNN Indonesia, Liputan6 News, Sindonews, Antara News, BMKG News, Tempo, Bisnis.com, Okezone, CNBC Indonesia, TIMES Indonesia, Inilah.com, Bank Indonesia, Hukumonline, Media Indonesia, Berita Jakarta, Tangerang Kota, Kompas TV, VIVA News, iNews, Terkini News, CNA Indonesia, Merdeka News, and The Jakarta Post.",
     status: "active",
-    endpointsCount: 18,
+    endpointsCount: 25,
+  },
+  {
+    id: "image-tools",
+    name: "Image Tools Pack",
+    description: "Process and edit images using tools like background removal, AI upscaling, vintage filters, color inversion, image flipping, retro pixelation, rounded corners, image splitting, adding noise, and image blurring.",
+    status: "active",
+    endpointsCount: 10,
   }
 ];
 
@@ -620,6 +630,98 @@ app.all('/api/news/:slug', async (req, res) => {
       error: "Failed to execute news pipeline",
       details: error.message || String(error)
     });
+  }
+});
+
+// 4e. Image Tools Route (e.g. /api/image-tool/removebg)
+app.all('/api/image-tool/:slug', async (req, res) => {
+  const { slug } = req.params;
+  const payload = {
+    ...req.query,
+    ...req.body
+  };
+
+  try {
+    const reqHost = req.headers.host || 'localhost:5000';
+    const protocol = req.secure || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
+
+    const result = await executePipeline(slug, payload, reqHost, protocol);
+
+    if (result && result.success === false) {
+      return res.status(400).json({
+        success: false,
+        creator: "XyloAPI",
+        ...result
+      });
+    }
+
+    return res.json({
+      success: true,
+      creator: "XyloAPI",
+      data: result.data || result
+    });
+
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      error: "Failed to execute image tool pipeline",
+      details: error.message || String(error)
+    });
+  }
+});
+
+// Helper to fetch image with redirect following and custom User-Agent
+async function fetchImageWithRedirects(imageUrl: string, redirectCount = 0): Promise<{ headers: any; stream: any }> {
+  if (redirectCount > 5) {
+    throw new Error('Too many redirects');
+  }
+
+  const urlObj = new URL(imageUrl);
+  const client = urlObj.protocol === 'https:' ? https : http;
+
+  const options = {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      'Accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
+    },
+    rejectUnauthorized: false
+  };
+
+  return new Promise((resolve, reject) => {
+    client.get(imageUrl, options, (res) => {
+      const statusCode = res.statusCode || 200;
+      if (statusCode >= 300 && statusCode < 400 && res.headers.location) {
+        const redirectUrl = new URL(res.headers.location, imageUrl).toString();
+        resolve(fetchImageWithRedirects(redirectUrl, redirectCount + 1));
+      } else if (statusCode >= 400) {
+        reject(new Error(`Server returned status code ${statusCode}`));
+      } else {
+        resolve({ headers: res.headers, stream: res });
+      }
+    }).on('error', (err) => {
+      reject(err);
+    });
+  });
+}
+
+// 4c. Image Proxy Route to bypass CORP and certificate issues
+app.get('/api/image-proxy', async (req, res) => {
+  const imageUrl = req.query.url as string;
+  if (!imageUrl) {
+    return res.status(400).send('Missing url parameter');
+  }
+
+  try {
+    const { headers, stream } = await fetchImageWithRedirects(imageUrl);
+    const contentType = headers['content-type'];
+    if (contentType) {
+      res.setHeader('Content-Type', contentType);
+    }
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+    stream.pipe(res);
+  } catch (error: any) {
+    res.status(500).send('Proxy error: ' + error.message);
   }
 });
 
