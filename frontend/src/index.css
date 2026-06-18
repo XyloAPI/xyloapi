@@ -62,7 +62,7 @@ body {
   font-family: var(--font-display);
   font-size: 16px;
   line-height: 1.5;
-  overflow-x: hidden;
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -1329,15 +1329,35 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Sidebar Navigation */
 .docs-sidebar {
-  position: sticky;
-  top: 120px;
-  max-height: calc(100vh - 140px);
+  position: fixed;
+  top: 140px;
+  left: 80px;
+  width: 280px;
+  max-height: calc(100vh - 180px);
   overflow-y: auto;
   background-color: var(--dark-iron);
   border: 1px solid var(--border-color);
   padding: 24px;
   scrollbar-width: thin;
   scrollbar-color: var(--border-color) transparent;
+  z-index: 10;
+}
+
+@media (max-width: 1024px) {
+  .docs-sidebar {
+    left: 48px;
+  }
+}
+
+@media (max-width: 900px) {
+  .docs-sidebar {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    max-height: none;
+    z-index: auto;
+  }
 }
 
 .docs-sidebar::-webkit-scrollbar {
