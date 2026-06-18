@@ -122,6 +122,7 @@ try:
     from antaranews_scraper import get_antara_news
     from bmkg_scraper import get_bmkg_news
     from tempo_scraper import get_tempo_news
+    from bisnis_scraper import get_bisnis_news
 except ImportError:
     # Fallback to local import if environment is weird
     import imgur_uploader
@@ -212,6 +213,7 @@ except ImportError:
     import antaranews_scraper
     import bmkg_scraper
     import tempo_scraper
+    import bisnis_scraper
     upload_imgur = imgur_uploader.upload_imgur
     upload_eight_uploads = eight_uploads_uploader.upload_eight_uploads
     upload_freeimage = freeimage_uploader.upload_freeimage
@@ -300,6 +302,7 @@ except ImportError:
     get_antara_news = antaranews_scraper.get_antara_news
     get_bmkg_news = bmkg_scraper.get_bmkg_news
     get_tempo_news = tempo_scraper.get_tempo_news
+    get_bisnis_news = bisnis_scraper.get_bisnis_news
 
 def run_pipeline(endpoint_id, payload):
     if endpoint_id in ["imgur", "image"]:
@@ -476,6 +479,8 @@ def run_pipeline(endpoint_id, payload):
         return get_bmkg_news(payload)
     elif endpoint_id in ["tempo", "tempo-news", "tempo-co"]:
         return get_tempo_news(payload)
+    elif endpoint_id in ["bisnis", "bisnis-news", "bisnis-com"]:
+        return get_bisnis_news(payload)
     else:
         return {
             "endpoint_id": endpoint_id,
