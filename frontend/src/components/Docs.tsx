@@ -1691,7 +1691,7 @@ const docTopics: DocTopic[] = [
   {
     id: 'nhl',
     title: 'NHL News',
-    category: 'Sports',
+    category: 'News',
     method: 'POST',
     path: '/api/news/nhl',
     pathTemplate: '/api/news/:slug',
