@@ -1781,7 +1781,7 @@ export default function Docs() {
               >
                 {article.image ? (
                   <img
-                    src={article.image}
+                    src={`/api/imgproxy?url=${encodeURIComponent(article.image)}`}
                     alt={article.title}
                     style={{ width: '100%', height: '160px', objectFit: 'cover', display: 'block', backgroundColor: '#111' }}
                     onError={(e) => {
