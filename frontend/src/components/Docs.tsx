@@ -2039,7 +2039,7 @@ docTopics.forEach(topic => {
 });
 
 export default function Docs() {
-  const [activeTopic, setActiveTopic] = useState<DocTopic>(docTopics[0]);
+  const [activeTopic, setActiveTopic] = useState<DocTopic | null>(null);
   const [formValues, setFormValues] = useState<{ [key: string]: any }>({});
   const [copied, setCopied] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -2049,9 +2049,7 @@ export default function Docs() {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [copiedText, setCopiedText] = useState<string>('');
   const [focusedField, setFocusedField] = useState<string | null>(null);
-  const [expandedCategories, setExpandedCategories] = useState<{ [key: string]: boolean }>({
-    [docTopics[0].category]: true
-  });
+  const [expandedCategories, setExpandedCategories] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
     if (activeTopic) {
@@ -2072,7 +2070,7 @@ export default function Docs() {
   // Populate dynamic form variables on topic selection
   useEffect(() => {
     const initial: { [key: string]: any } = {};
-    if (activeTopic.payloadTemplate) {
+    if (activeTopic && activeTopic.payloadTemplate) {
       Object.entries(activeTopic.payloadTemplate).forEach(([key, val]) => {
         initial[key] = val;
       });
@@ -2090,7 +2088,7 @@ export default function Docs() {
 
   // Construct JSON request payload programmatically from formState values
   const getPayloadJson = () => {
-    if (!activeTopic.payloadTemplate) return '';
+    if (!activeTopic || !activeTopic.payloadTemplate) return '';
     const bodyObj: any = {};
     Object.entries(formValues).forEach(([key, val]) => {
       bodyObj[key] = val;
@@ -2099,6 +2097,7 @@ export default function Docs() {
   };
 
   const getActiveMethod = () => {
+    if (!activeTopic) return 'GET';
     if (activeTopic.id === 'imgur') {
       return uploadMode === 'file' ? 'POST' : 'GET';
     }
@@ -2106,11 +2105,13 @@ export default function Docs() {
   };
 
   const getEvaluatedUrl = () => {
-    let path = activeTopic.path || '';
+    const topic = activeTopic;
+    if (!topic) return '';
+    let path = topic.path || '';
 
     // Replace route parameters if any (e.g. :id or :slug)
-    if (activeTopic.parameters) {
-      activeTopic.parameters.forEach(param => {
+    if (topic.parameters) {
+      topic.parameters.forEach(param => {
         const placeholder = `:${param.name}`;
         if (path.includes(placeholder)) {
           const val = formValues[param.name] || `:${param.name}`;
@@ -2126,16 +2127,16 @@ export default function Docs() {
     const method = getActiveMethod();
     if (method === 'GET') {
       const params = new URLSearchParams();
-      if (activeTopic.category === 'Media Uploaders' || activeTopic.category === 'File Uploaders') {
+      if (topic.category === 'Media Uploaders' || topic.category === 'File Uploaders') {
         const val = formValues['url'] !== undefined ? formValues['url'] : '';
         if (val) {
           params.append('url', String(val));
         } else {
           params.append('url', '');
         }
-      } else if (activeTopic.parameters) {
-        activeTopic.parameters.forEach(param => {
-          const isPathSnippet = path.includes(`:${param.name}`) || (activeTopic.path && activeTopic.path.includes(`:${param.name}`));
+      } else if (topic.parameters) {
+        topic.parameters.forEach(param => {
+          const isPathSnippet = path.includes(`:${param.name}`) || (topic.path && topic.path.includes(`:${param.name}`));
           if (!isPathSnippet) {
             const val = formValues[param.name] !== undefined ? formValues[param.name] : '';
             params.append(param.name, String(val));
@@ -2146,9 +2147,9 @@ export default function Docs() {
       if (qs) {
         url += `?${qs}`;
       }
-    } else if (activeTopic.parameters) {
+    } else if (topic.parameters) {
       // For POST: still show select-type params in URL for visual clarity
-      const selectParams = activeTopic.parameters.filter((p: any) => p.type === 'select');
+      const selectParams = topic.parameters.filter((p: any) => p.type === 'select');
       if (selectParams.length > 0) {
         const params = new URLSearchParams();
         selectParams.forEach((param: any) => {
@@ -2236,6 +2237,7 @@ export default function Docs() {
 
   // Generate copyable curl code string
   const getCurlCode = () => {
+    if (!activeTopic) return '';
     const method = getActiveMethod();
     const evalUrl = getEvaluatedUrl();
     if (method === 'GET') {
@@ -2249,7 +2251,7 @@ export default function Docs() {
 
   // Renders the beautifully formatted "visual" (Hasil Jadi) tab output
   const renderVisualResult = () => {
-    if (!responseJson) return null;
+    if (!activeTopic || !responseJson) return null;
 
     if (!responseJson.success) {
       console.error("Gateway response error data detail:", responseJson);
@@ -2590,7 +2592,7 @@ export default function Docs() {
                     <button
                       key={topic.id}
                       onClick={() => setActiveTopic(topic)}
-                      className={`docs-sidebar-link ${activeTopic.id === topic.id ? 'active' : ''}`}
+                      className={`docs-sidebar-link ${activeTopic && activeTopic.id === topic.id ? 'active' : ''}`}
                     >
                       {topic.title}
                       {topic.method && (
@@ -2608,12 +2610,41 @@ export default function Docs() {
 
       {/* Main Content Area */}
       <main className="docs-content">
-        <div className="docs-content-header">
-          <span className="docs-pretitle">{activeTopic.category.toUpperCase()}</span>
-          <h1 className="docs-title">{activeTopic.title}</h1>
-        </div>
+        {!activeTopic ? (
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: '60vh',
+            textAlign: 'center',
+            padding: '40px',
+            border: '1px dashed var(--border-color)',
+            backgroundColor: 'rgba(255, 255, 255, 0.01)'
+          }}>
+            <Globe size={48} style={{ color: 'var(--gold)', marginBottom: '24px', opacity: 0.8 }} />
+            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '28px', fontWeight: 800, color: 'var(--white)', marginBottom: '12px' }}>
+              Welcome to XyloAPI Gateway Docs
+            </h1>
+            <p style={{ fontSize: '15px', color: 'var(--ash)', maxWidth: '480px', lineHeight: 1.6, marginBottom: '24px' }}>
+              Select an API endpoint from the collapsible categories in the left sidebar to view request details, copy curl snippets, and test live queries.
+            </p>
+            <div style={{ display: 'flex', gap: '16px', fontSize: '11px', fontFamily: 'var(--font-mono)', color: 'var(--steel)' }}>
+              <span>✓ Media Uploaders</span>
+              <span>•</span>
+              <span>✓ Video Downloaders</span>
+              <span>•</span>
+              <span>✓ News Scrapers</span>
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="docs-content-header">
+              <span className="docs-pretitle">{activeTopic.category.toUpperCase()}</span>
+              <h1 className="docs-title">{activeTopic.title}</h1>
+            </div>
 
-        <p className="docs-description-text">{activeTopic.description}</p>
+            <p className="docs-description-text">{activeTopic.description}</p>
 
         {/* Subtle Endpoint Row with Copy Utilities */}
         {activeTopic.path && (
@@ -3024,6 +3055,8 @@ export default function Docs() {
               </div>
             </div>
           </div>
+        )}
+          </>
         )}
       </main>
     </div>
