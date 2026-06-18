@@ -200,9 +200,9 @@ const apiModules = [
   {
     id: "news",
     name: "News Scrapers Pack",
-    description: "Fetch latest news from: ST, CNA, BBC, CNN, Mothership SG, Al Jazeera, ABC News, The Washington Post, and AP News.",
+    description: "Fetch latest news from: ST, CNA, BBC, CNN, Mothership SG, Al Jazeera, ABC News, WaPo, AP News, and Fox News.",
     status: "active",
-    endpointsCount: 9,
+    endpointsCount: 10,
   }
 ];
 
