@@ -207,9 +207,9 @@ const apiModules = [
   {
     id: "local-news",
     name: "Local News Scrapers Pack",
-    description: "Fetch latest local news from Indonesian sources: Detik News, Kompas News, CNN Indonesia, Liputan6 News, Sindonews, Antara News, BMKG News, Tempo, Bisnis.com, Okezone, CNBC Indonesia, TIMES Indonesia, Inilah.com, Bank Indonesia, and Hukumonline.",
+    description: "Fetch latest local news from Indonesian sources: Detik News, Kompas News, CNN Indonesia, Liputan6 News, Sindonews, Antara News, BMKG News, Tempo, Bisnis.com, Okezone, CNBC Indonesia, TIMES Indonesia, Inilah.com, Bank Indonesia, Hukumonline, and Media Indonesia.",
     status: "active",
-    endpointsCount: 15,
+    endpointsCount: 16,
   }
 ];
 
