@@ -119,6 +119,7 @@ try:
     from cnnindonesia_scraper import get_cnn_news
     from liputan6_scraper import get_liputan6_news
     from sindonews_scraper import get_sindo_news
+    from antaranews_scraper import get_antara_news
 except ImportError:
     # Fallback to local import if environment is weird
     import imgur_uploader
@@ -206,6 +207,7 @@ except ImportError:
     import cnnindonesia_scraper
     import liputan6_scraper
     import sindonews_scraper
+    import antaranews_scraper
     upload_imgur = imgur_uploader.upload_imgur
     upload_eight_uploads = eight_uploads_uploader.upload_eight_uploads
     upload_freeimage = freeimage_uploader.upload_freeimage
@@ -291,6 +293,7 @@ except ImportError:
     get_cnn_news = cnnindonesia_scraper.get_cnn_news
     get_liputan6_news = liputan6_scraper.get_liputan6_news
     get_sindo_news = sindonews_scraper.get_sindo_news
+    get_antara_news = antaranews_scraper.get_antara_news
 
 def run_pipeline(endpoint_id, payload):
     if endpoint_id in ["imgur", "image"]:
@@ -461,6 +464,8 @@ def run_pipeline(endpoint_id, payload):
         return get_liputan6_news(payload)
     elif endpoint_id in ["sindonews", "sindo-news", "sindo"]:
         return get_sindo_news(payload)
+    elif endpoint_id in ["antaranews", "antara-news", "antara"]:
+        return get_antara_news(payload)
     else:
         return {
             "endpoint_id": endpoint_id,
