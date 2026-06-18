@@ -115,6 +115,7 @@ try:
     from independent_scraper import get_independent_news
     from punch_scraper import get_punch_news
     from detik_scraper import get_detik_news
+    from kompas_scraper import get_kompas_news
 except ImportError:
     # Fallback to local import if environment is weird
     import imgur_uploader
@@ -198,6 +199,7 @@ except ImportError:
     import independent_scraper
     import punch_scraper
     import detik_scraper
+    import kompas_scraper
     upload_imgur = imgur_uploader.upload_imgur
     upload_eight_uploads = eight_uploads_uploader.upload_eight_uploads
     upload_freeimage = freeimage_uploader.upload_freeimage
@@ -279,6 +281,7 @@ except ImportError:
     get_independent_news = independent_scraper.get_independent_news
     get_punch_news = punch_scraper.get_punch_news
     get_detik_news = detik_scraper.get_detik_news
+    get_kompas_news = kompas_scraper.get_kompas_news
 
 def run_pipeline(endpoint_id, payload):
     if endpoint_id in ["imgur", "image"]:
@@ -441,6 +444,8 @@ def run_pipeline(endpoint_id, payload):
         return get_punch_news(payload)
     elif endpoint_id in ["detik", "detik-news"]:
         return get_detik_news(payload)
+    elif endpoint_id in ["kompas", "kompas-news"]:
+        return get_kompas_news(payload)
     else:
         return {
             "endpoint_id": endpoint_id,
