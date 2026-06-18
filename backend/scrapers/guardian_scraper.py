@@ -35,7 +35,7 @@ def _cdata(text: str) -> str:
 
 
 def _best_guardian_image(item: ET.Element) -> str:
-    """Pick the media:content with the largest width, then upgrade to 1200px."""
+    """Pick the media:content with the largest width. Use URL as-is (signed CDN URL)."""
     best_url = ""
     best_width = 0
     for mc in item.findall(f"{{{MEDIA_NS}}}content"):
@@ -47,14 +47,6 @@ def _best_guardian_image(item: ET.Element) -> str:
         if url and w > best_width:
             best_width = w
             best_url = url
-
-    if best_url:
-        # Guardian image CDN: swap width= param for higher resolution
-        best_url = re.sub(r'width=\d+', 'width=1200', best_url)
-        best_url = re.sub(r'quality=\d+', 'quality=85', best_url)
-        # Remove signature (s=...) so CDN regenerates for new params
-        best_url = re.sub(r'&(?:amp;)?s=[a-f0-9]+', '', best_url)
-
     return best_url
 
 
