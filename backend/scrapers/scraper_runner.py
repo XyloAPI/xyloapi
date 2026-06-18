@@ -109,6 +109,7 @@ try:
     from freep_scraper import get_freep
     from masslive_scraper import get_masslive
     from wmtv_scraper import get_wmtv
+    from forbes_scraper import get_forbes
 except ImportError:
     # Fallback to local import if environment is weird
     import imgur_uploader
@@ -186,6 +187,7 @@ except ImportError:
     import freep_scraper
     import masslive_scraper
     import wmtv_scraper
+    import forbes_scraper
     upload_imgur = imgur_uploader.upload_imgur
     upload_eight_uploads = eight_uploads_uploader.upload_eight_uploads
     upload_freeimage = freeimage_uploader.upload_freeimage
@@ -261,6 +263,7 @@ except ImportError:
     get_freep = freep_scraper.get_freep
     get_masslive = masslive_scraper.get_masslive
     get_wmtv = wmtv_scraper.get_wmtv
+    get_forbes = forbes_scraper.get_forbes
 
 def run_pipeline(endpoint_id, payload):
     if endpoint_id in ["imgur", "image"]:
@@ -411,6 +414,8 @@ def run_pipeline(endpoint_id, payload):
         return get_masslive(payload)
     elif endpoint_id in ["wmtv", "wmtv-news", "wmtv15"]:
         return get_wmtv(payload)
+    elif endpoint_id in ["forbes", "forbes-news"]:
+        return get_forbes(payload)
     else:
         return {
             "endpoint_id": endpoint_id,
