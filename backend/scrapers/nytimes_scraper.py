@@ -32,14 +32,19 @@ def _cdata(text: str) -> str:
 
 
 def _best_media_image(item: ET.Element) -> str:
-    """Get image URL from media:content, prefer largest."""
+    """Get image URL from media:content, upgrade size suffix to superJumbo."""
     mc = item.find(f"{{{MEDIA_NS}}}content")
     if mc is not None:
         url = mc.get("url", "")
-        # NYT images: swap suffix for a cleaner large version
         if url:
-            # Remove NYT size suffix like -mediumSquareAt3X, -superJumbo etc.
-            url = re.sub(r'-(?:mediumSquareAt3X|superJumbo|jumbo|mediumFlexible|articleLarge|popup|blog480|blog427|blog533|slide|thumbnail|moth|filmstrip|square320|square640|tmagArticle|hpSmall|hpMedium|hpLarge)\b', '', url)
+            # Swap known small/medium NYT suffixes to superJumbo for best quality
+            url = re.sub(
+                r'-(mediumSquareAt3X|jumbo|mediumFlexible|articleLarge|popup|'
+                r'blog480|blog427|blog533|slide|thumbnail|moth|filmstrip|'
+                r'square320|square640|tmagArticle|hpSmall|hpMedium|hpLarge)\.',
+                '-superJumbo.',
+                url
+            )
             return url
     return ""
 
