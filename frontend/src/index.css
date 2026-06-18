@@ -1314,7 +1314,10 @@ h1, h2, h3, h4, h5, h6 {
   padding-top: 140px;
   padding-bottom: 120px;
   min-height: calc(100vh - 200px);
-  align-items: start;
+}
+
+.docs-sidebar-wrapper {
+  align-self: stretch;
 }
 
 @media (max-width: 900px) {

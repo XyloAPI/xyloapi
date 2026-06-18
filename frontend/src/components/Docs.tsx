@@ -2560,52 +2560,54 @@ export default function Docs() {
   return (
     <div className="docs-container container">
       {/* Sidebar Navigation */}
-      <aside className="docs-sidebar">
-        {Object.entries(categories)
-          .sort((a, b) => a[0].localeCompare(b[0]))
-          .map(([categoryName, topics]) => (
-            <div key={categoryName} className="docs-sidebar-group">
-              <div 
-                onClick={() => toggleCategory(categoryName)}
-                className="docs-sidebar-category"
-                style={{ 
-                  cursor: 'pointer', 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'space-between',
-                  userSelect: 'none'
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  {getCategoryIcon(categoryName)}
-                  <span>{categoryName}</span>
+      <aside className="docs-sidebar-wrapper">
+        <div className="docs-sidebar">
+          {Object.entries(categories)
+            .sort((a, b) => a[0].localeCompare(b[0]))
+            .map(([categoryName, topics]) => (
+              <div key={categoryName} className="docs-sidebar-group">
+                <div 
+                  onClick={() => toggleCategory(categoryName)}
+                  className="docs-sidebar-category"
+                  style={{ 
+                    cursor: 'pointer', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'space-between',
+                    userSelect: 'none'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    {getCategoryIcon(categoryName)}
+                    <span>{categoryName}</span>
+                  </div>
+                  {expandedCategories[categoryName] ? (
+                    <ChevronDown size={14} style={{ color: 'var(--steel)', flexShrink: 0 }} />
+                  ) : (
+                    <ChevronRight size={14} style={{ color: 'var(--steel)', flexShrink: 0 }} />
+                  )}
                 </div>
-                {expandedCategories[categoryName] ? (
-                  <ChevronDown size={14} style={{ color: 'var(--steel)', flexShrink: 0 }} />
-                ) : (
-                  <ChevronRight size={14} style={{ color: 'var(--steel)', flexShrink: 0 }} />
+                {expandedCategories[categoryName] && (
+                  <div className="docs-sidebar-links">
+                    {topics.map(topic => (
+                      <button
+                        key={topic.id}
+                        onClick={() => setActiveTopic(topic)}
+                        className={`docs-sidebar-link ${activeTopic && activeTopic.id === topic.id ? 'active' : ''}`}
+                      >
+                        {topic.title}
+                        {topic.method && (
+                          <span className={`method-badge ${topic.method.toLowerCase()}`}>
+                            {topic.method}
+                          </span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
                 )}
               </div>
-              {expandedCategories[categoryName] && (
-                <div className="docs-sidebar-links">
-                  {topics.map(topic => (
-                    <button
-                      key={topic.id}
-                      onClick={() => setActiveTopic(topic)}
-                      className={`docs-sidebar-link ${activeTopic && activeTopic.id === topic.id ? 'active' : ''}`}
-                    >
-                      {topic.title}
-                      {topic.method && (
-                        <span className={`method-badge ${topic.method.toLowerCase()}`}>
-                          {topic.method}
-                        </span>
-                      )}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
+            ))}
+        </div>
       </aside>
 
       {/* Main Content Area */}
