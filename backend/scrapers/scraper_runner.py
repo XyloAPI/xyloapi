@@ -91,6 +91,7 @@ try:
     from cbs_scraper import get_cbs_news
     from nytimes_scraper import get_nytimes
     from msnow_scraper import get_msnow
+    from wsj_scraper import get_wsj
 except ImportError:
     # Fallback to local import if environment is weird
     import imgur_uploader
@@ -150,6 +151,7 @@ except ImportError:
     import cbs_scraper
     import nytimes_scraper
     import msnow_scraper
+    import wsj_scraper
     upload_imgur = imgur_uploader.upload_imgur
     upload_eight_uploads = eight_uploads_uploader.upload_eight_uploads
     upload_freeimage = freeimage_uploader.upload_freeimage
@@ -207,6 +209,7 @@ except ImportError:
     get_cbs_news = cbs_scraper.get_cbs_news
     get_nytimes = nytimes_scraper.get_nytimes
     get_msnow = msnow_scraper.get_msnow
+    get_wsj = wsj_scraper.get_wsj
 
 def run_pipeline(endpoint_id, payload):
     if endpoint_id in ["imgur", "image"]:
@@ -321,6 +324,8 @@ def run_pipeline(endpoint_id, payload):
         return get_nytimes(payload)
     elif endpoint_id in ["msnow", "msnbc", "ms-now"]:
         return get_msnow(payload)
+    elif endpoint_id in ["wsj", "wall-street-journal"]:
+        return get_wsj(payload)
     else:
         return {
             "endpoint_id": endpoint_id,
