@@ -200,9 +200,9 @@ const apiModules = [
   {
     id: "news",
     name: "News Scrapers Pack",
-    description: "Fetch latest news from 13 sources: ST, CNA, BBC, CNN, Mothership SG, Al Jazeera, ABC, WaPo, AP News, Fox News, Reuters, CBS News, and NYT.",
+    description: "Fetch latest news from 14 sources: ST, CNA, BBC, CNN, Mothership, Al Jazeera, ABC, WaPo, AP News, Fox News, Reuters, CBS, NYT, and MS NOW.",
     status: "active",
-    endpointsCount: 13,
+    endpointsCount: 14,
   }
 ];
 
@@ -261,63 +261,7 @@ app.get('/api/status', async (req, res) => {
   });
 });
 
-// 1.2 Image Proxy — bypass hotlink protection for news article images
-app.get('/api/imgproxy', async (req, res) => {
-  const url = req.query.url as string;
-  if (!url) return res.status(400).json({ error: 'Missing url param' });
-
-  // Allowlist: only proxy from known news CDNs
-  const ALLOWED_HOSTS = [
-    'static01.nyt.com', 'nytimes.com',
-    'assets3.cbsnewsstatic.com', 'cbsnewsstatic.com',
-    'dims.apnews.com', 'apnews.com',
-    's.abcnews.com', 'abcnews.com',
-    'a57.foxnews.com', 'static.foxnews.com', 'foxnews.com',
-    'ichef.bbci.co.uk', 'bbci.co.uk',
-    'media.cnn.com', 'cnn.com',
-    'www.aljazeera.com', 'aljazeera.com',
-    'static.mothership.sg', 'mothership.sg',
-    'assets.straitstimes.com', 'straitstimes.com',
-    'onecms-res.cloudinary.com',
-    'wp-content', 'i2.cdn.turner.com',
-    'cloudfront.net', 'amazonaws.com',
-  ];
-
-  let parsedUrl: URL;
-  try {
-    parsedUrl = new URL(url);
-  } catch {
-    return res.status(400).json({ error: 'Invalid URL' });
-  }
-
-  const allowed = ALLOWED_HOSTS.some(h => parsedUrl.hostname.includes(h) || url.includes(h));
-  if (!allowed) return res.status(403).json({ error: 'Domain not allowed' });
-
-  try {
-    const response = await fetch(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        'Referer': parsedUrl.origin,
-        'Accept': 'image/webp,image/avif,image/*,*/*',
-      },
-      signal: AbortSignal.timeout(10000),
-    });
-
-    if (!response.ok) return res.status(response.status).end();
-
-    const contentType = response.headers.get('content-type') || 'image/jpeg';
-    res.setHeader('Content-Type', contentType);
-    res.setHeader('Cache-Control', 'public, max-age=86400');
-    res.setHeader('Access-Control-Allow-Origin', '*');
-
-    const buffer = Buffer.from(await response.arrayBuffer());
-    return res.end(buffer);
-  } catch (err) {
-    return res.status(502).json({ error: 'Failed to fetch image' });
-  }
-});
-
-
+// 1.5. Monitor Route (Live dashboard analytics)
 app.get('/api/monitor', async (req, res) => {
   const uptime = Math.floor((Date.now() - startTimestamp) / 1000);
   

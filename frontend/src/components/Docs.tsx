@@ -1399,6 +1399,38 @@ const docTopics: DocTopic[] = [
       category: 'home'
     }
   }
+  ,
+  {
+    id: 'msnow',
+    title: 'MS NOW (MSNBC)',
+    category: 'News',
+    method: 'POST',
+    path: '/api/news/msnow',
+    pathTemplate: '/api/news/:slug',
+    description: 'Fetch the latest news from MS NOW / MSNBC (ms.now) by category. Returns up to 20 articles with title, image, description, author, and publish date.',
+    parameters: [
+      {
+        name: 'category',
+        type: 'select',
+        required: true,
+        desc: 'Select an MS NOW category.',
+        options: [
+          { value: 'latest', label: 'Latest' },
+          { value: 'news', label: 'News' },
+          { value: 'politics', label: 'Politics' },
+          { value: 'opinion', label: 'Opinion' },
+          { value: 'world', label: 'World' },
+          { value: 'business', label: 'Business' },
+          { value: 'health', label: 'Health' },
+          { value: 'culture', label: 'Culture' },
+          { value: 'sports', label: 'Sports' },
+        ]
+      } as any
+    ],
+    payloadTemplate: {
+      category: 'news'
+    }
+  }
 ];
 
 export default function Docs() {
@@ -1762,52 +1794,38 @@ export default function Docs() {
           <div style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '16px' }}>
             <span style={{ fontSize: '11px', fontFamily: 'var(--font-mono)', color: '#27C93F', fontWeight: 700, textTransform: 'uppercase' }}>✓ NEWS FETCHED</span>
             <h2 style={{ fontSize: '18px', fontWeight: 800, color: 'var(--white)', marginTop: '4px' }}>
-              {resData.source || 'News'}
+              {resData.source || 'The Straits Times'}
             </h2>
             <span style={{ fontSize: '11px', fontFamily: 'var(--font-mono)', color: 'var(--ash)', marginTop: '4px', display: 'block' }}>
               CATEGORY: <span style={{ color: 'var(--gold-text)' }}>{resData.category}</span> · {resData.total} ARTICLES
             </span>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '14px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {resData.articles.map((article: any, idx: number) => (
               <a
                 key={idx}
                 href={article.url}
                 target="_blank"
                 rel="noreferrer"
-                style={{ display: 'flex', flexDirection: 'column', border: '1px solid var(--border-color)', backgroundColor: 'rgba(255,255,255,0.02)', textDecoration: 'none', transition: 'border-color 0.2s, transform 0.15s', cursor: 'pointer', overflow: 'hidden' }}
-                onMouseOver={(e) => { e.currentTarget.style.borderColor = 'var(--gold)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-                onMouseOut={(e) => { e.currentTarget.style.borderColor = 'var(--border-color)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+                style={{ display: 'flex', gap: '14px', alignItems: 'start', padding: '14px', border: '1px solid var(--border-color)', backgroundColor: 'rgba(255,255,255,0.01)', textDecoration: 'none', transition: 'border-color 0.2s', cursor: 'pointer' }}
+                onMouseOver={(e) => (e.currentTarget.style.borderColor = 'var(--gold)')}
+                onMouseOut={(e) => (e.currentTarget.style.borderColor = 'var(--border-color)')}
               >
-                {article.image ? (
+                {article.image && (
                   <img
-                    src={`/api/imgproxy?url=${encodeURIComponent(article.image)}`}
+                    src={article.image}
                     alt={article.title}
-                    style={{ width: '100%', height: '160px', objectFit: 'cover', display: 'block', backgroundColor: '#111' }}
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                      const ph = e.currentTarget.nextElementSibling as HTMLElement;
-                      if (ph) ph.style.display = 'flex';
-                    }}
+                    referrerPolicy="no-referrer"
+                    style={{ width: '80px', height: '55px', objectFit: 'cover', flexShrink: 0, border: '1px solid var(--border-color)' }}
+                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
                   />
-                ) : null}
-                <div
-                  style={{
-                    display: article.image ? 'none' : 'flex',
-                    width: '100%', height: '100px',
-                    alignItems: 'center', justifyContent: 'center',
-                    backgroundColor: '#0d0d0d', color: 'var(--ash)', fontSize: '11px',
-                    fontFamily: 'var(--font-mono)', letterSpacing: '0.05em',
-                  }}
-                >
-                  NO IMAGE
-                </div>
-                <div style={{ flex: 1, padding: '12px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--white)', lineHeight: 1.4 }}>{article.title}</span>
+                )}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--white)', display: 'block', lineHeight: 1.4 }}>{article.title}</span>
                   {article.description && (
-                    <span style={{ fontSize: '11px', color: 'var(--ash)', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as any, overflow: 'hidden' }}>{article.description}</span>
+                    <span style={{ fontSize: '11px', color: 'var(--ash)', display: 'block', marginTop: '4px', lineHeight: 1.5 }}>{article.description}</span>
                   )}
-                  <span style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--ash)', opacity: 0.6, marginTop: 'auto', paddingTop: '4px' }}>
+                  <span style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--ash)', display: 'block', marginTop: '6px', opacity: 0.7 }}>
                     {article.published ? new Date(article.published).toLocaleString() : ''}
                   </span>
                 </div>
