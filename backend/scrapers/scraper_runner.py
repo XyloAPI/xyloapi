@@ -111,6 +111,7 @@ try:
     from wmtv_scraper import get_wmtv
     from forbes_scraper import get_forbes
     from euronews_scraper import get_euronews
+    from usatoday_scraper import get_usatoday
 except ImportError:
     # Fallback to local import if environment is weird
     import imgur_uploader
@@ -187,9 +188,10 @@ except ImportError:
     import nasa_scraper
     import freep_scraper
     import masslive_scraper
-    import wmtv_scraper
     import forbes_scraper
     import euronews_scraper
+    import usatoday_scraper
+    import wmtv_scraper
     upload_imgur = imgur_uploader.upload_imgur
     upload_eight_uploads = eight_uploads_uploader.upload_eight_uploads
     upload_freeimage = freeimage_uploader.upload_freeimage
@@ -267,6 +269,7 @@ except ImportError:
     get_wmtv = wmtv_scraper.get_wmtv
     get_forbes = forbes_scraper.get_forbes
     get_euronews = euronews_scraper.get_euronews
+    get_usatoday = usatoday_scraper.get_usatoday
 
 def run_pipeline(endpoint_id, payload):
     if endpoint_id in ["imgur", "image"]:
@@ -421,6 +424,8 @@ def run_pipeline(endpoint_id, payload):
         return get_forbes(payload)
     elif endpoint_id in ["euronews", "euro-news"]:
         return get_euronews(payload)
+    elif endpoint_id in ["usatoday", "usa-today"]:
+        return get_usatoday(payload)
     else:
         return {
             "endpoint_id": endpoint_id,
