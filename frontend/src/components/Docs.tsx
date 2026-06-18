@@ -2031,6 +2031,13 @@ const docTopics: DocTopic[] = [
   }
 ];
 
+// Adjust methods dynamically based on category: GET for News and Downloader
+docTopics.forEach(topic => {
+  if (topic.category === 'News' || topic.category === 'Downloader') {
+    topic.method = 'GET';
+  }
+});
+
 export default function Docs() {
   const [activeTopic, setActiveTopic] = useState<DocTopic>(docTopics[0]);
   const [formValues, setFormValues] = useState<{ [key: string]: any }>({});
