@@ -102,6 +102,7 @@ try:
     from nhl_scraper import get_nhl
     from news24_scraper import get_news24
     from newsweek_scraper import get_newsweek
+    from yahoonews_scraper import get_yahoonews
 except ImportError:
     # Fallback to local import if environment is weird
     import imgur_uploader
@@ -172,6 +173,7 @@ except ImportError:
     import nhl_scraper
     import news24_scraper
     import newsweek_scraper
+    import yahoonews_scraper
     upload_imgur = imgur_uploader.upload_imgur
     upload_eight_uploads = eight_uploads_uploader.upload_eight_uploads
     upload_freeimage = freeimage_uploader.upload_freeimage
@@ -240,6 +242,7 @@ except ImportError:
     get_nhl = nhl_scraper.get_nhl
     get_news24 = news24_scraper.get_news24
     get_newsweek = newsweek_scraper.get_newsweek
+    get_yahoonews = yahoonews_scraper.get_yahoonews
 
 def run_pipeline(endpoint_id, payload):
     if endpoint_id in ["imgur", "image"]:
@@ -376,6 +379,8 @@ def run_pipeline(endpoint_id, payload):
         return get_news24(payload)
     elif endpoint_id in ["newsweek", "news-week"]:
         return get_newsweek(payload)
+    elif endpoint_id in ["yahoonews", "yahoo-news", "yahoo"]:
+        return get_yahoonews(payload)
     else:
         return {
             "endpoint_id": endpoint_id,
