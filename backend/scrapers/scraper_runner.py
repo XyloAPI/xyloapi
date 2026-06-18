@@ -99,6 +99,7 @@ try:
     from bloomberg_scraper import get_bloomberg
     from thetimes_scraper import get_thetimes
     from dw_scraper import get_dw
+    from nhl_scraper import get_nhl
 except ImportError:
     # Fallback to local import if environment is weird
     import imgur_uploader
@@ -166,6 +167,7 @@ except ImportError:
     import bloomberg_scraper
     import thetimes_scraper
     import dw_scraper
+    import nhl_scraper
     upload_imgur = imgur_uploader.upload_imgur
     upload_eight_uploads = eight_uploads_uploader.upload_eight_uploads
     upload_freeimage = freeimage_uploader.upload_freeimage
@@ -231,6 +233,7 @@ except ImportError:
     get_bloomberg = bloomberg_scraper.get_bloomberg
     get_thetimes = thetimes_scraper.get_thetimes
     get_dw = dw_scraper.get_dw
+    get_nhl = nhl_scraper.get_nhl
 
 def run_pipeline(endpoint_id, payload):
     if endpoint_id in ["imgur", "image"]:
@@ -361,6 +364,8 @@ def run_pipeline(endpoint_id, payload):
         return get_thetimes(payload)
     elif endpoint_id in ["dw", "deutsche-welle"]:
         return get_dw(payload)
+    elif endpoint_id in ["nhl"]:
+        return get_nhl(payload)
     else:
         return {
             "endpoint_id": endpoint_id,
