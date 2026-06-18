@@ -3,7 +3,7 @@ import requests
 import io
 import time
 import os
-import numpy as np
+import random
 from PIL import Image
 
 try:
@@ -52,45 +52,97 @@ def get_noised_image(payload):
     except Exception as e:
         return {"success": False, "error": f"Failed to retrieve image data: {str(e)}"}
 
-    # 2. Add noise
+    # 2. Add noise using pure Python and PIL (zero NumPy dependency for easy deployment)
     try:
         img = Image.open(io.BytesIO(img_bytes))
         width, height = img.size
+        pixels = list(img.getdata())
+        is_rgba = len(pixels[0]) == 4
 
-        img_arr = np.array(img).astype(np.float32)
+        pool_size = 50000
 
         if noise_type == "gaussian":
             std = (amount / 100.0) * 128.0
-            noise = np.random.normal(0, std, img_arr.shape)
-            if img_arr.shape[-1] == 4:
-                img_arr[..., :3] += noise[..., :3]
-            else:
-                img_arr += noise
+            gauss = random.gauss
+            noise_pool = [int(gauss(0, std)) for _ in range(pool_size)]
+            
+            new_pixels = []
+            pool_idx = 0
+            for p in pixels:
+                if pool_idx + 3 >= pool_size:
+                    pool_idx = 0
+                
+                nr = noise_pool[pool_idx]
+                ng = noise_pool[pool_idx + 1]
+                nb = noise_pool[pool_idx + 2]
+                pool_idx += 3
+                
+                r = max(0, min(255, p[0] + nr))
+                g = max(0, min(255, p[1] + ng))
+                b = max(0, min(255, p[2] + nb))
+                
+                if is_rgba:
+                    new_pixels.append((r, g, b, p[3]))
+                else:
+                    new_pixels.append((r, g, b))
+                    
         elif noise_type == "uniform":
             limit = (amount / 100.0) * 127.5
-            noise = np.random.uniform(-limit, limit, img_arr.shape)
-            if img_arr.shape[-1] == 4:
-                img_arr[..., :3] += noise[..., :3]
-            else:
-                img_arr += noise
+            uniform = random.uniform
+            noise_pool = [int(uniform(-limit, limit)) for _ in range(pool_size)]
+            
+            new_pixels = []
+            pool_idx = 0
+            for p in pixels:
+                if pool_idx + 3 >= pool_size:
+                    pool_idx = 0
+                
+                nr = noise_pool[pool_idx]
+                ng = noise_pool[pool_idx + 1]
+                nb = noise_pool[pool_idx + 2]
+                pool_idx += 3
+                
+                r = max(0, min(255, p[0] + nr))
+                g = max(0, min(255, p[1] + ng))
+                b = max(0, min(255, p[2] + nb))
+                
+                if is_rgba:
+                    new_pixels.append((r, g, b, p[3]))
+                else:
+                    new_pixels.append((r, g, b))
+                    
         elif noise_type == "salt_and_pepper":
             prob = (amount / 100.0) * 0.5
-            random_matrix = np.random.random(img_arr.shape[:2])
-            salt_mask = random_matrix < (prob / 2.0)
-            pepper_mask = (random_matrix >= (prob / 2.0)) & (random_matrix < prob)
+            rand_func = random.random
+            rand_pool = [rand_func() for _ in range(pool_size)]
             
-            if img_arr.shape[-1] == 4:
-                img_arr[salt_mask, :3] = 255
-                img_arr[pepper_mask, :3] = 0
-            else:
-                img_arr[salt_mask] = 255
-                img_arr[pepper_mask] = 0
+            new_pixels = []
+            pool_idx = 0
+            for p in pixels:
+                if pool_idx >= pool_size:
+                    pool_idx = 0
+                
+                val = rand_pool[pool_idx]
+                pool_idx += 1
+                
+                if val < (prob / 2.0):
+                    # Salt (white)
+                    r, g, b = 255, 255, 255
+                elif val < prob:
+                    # Pepper (black)
+                    r, g, b = 0, 0, 0
+                else:
+                    r, g, b = p[0], p[1], p[2]
+                    
+                if is_rgba:
+                    new_pixels.append((r, g, b, p[3]))
+                else:
+                    new_pixels.append((r, g, b))
 
-        img_arr = np.clip(img_arr, 0, 255).astype(np.uint8)
-        res_img = Image.fromarray(img_arr)
+        res_img = img.copy()
+        res_img.putdata(new_pixels)
 
         out_buf = io.BytesIO()
-        # Preserve original format or default to PNG/JPEG
         fmt = img.format if img.format else "PNG"
         res_img.save(out_buf, format=fmt)
         noised_bytes = out_buf.getvalue()
