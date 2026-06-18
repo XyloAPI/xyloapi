@@ -113,6 +113,7 @@ try:
     from euronews_scraper import get_euronews
     from usatoday_scraper import get_usatoday
     from independent_scraper import get_independent_news
+    from punch_scraper import get_punch_news
 except ImportError:
     # Fallback to local import if environment is weird
     import imgur_uploader
@@ -194,6 +195,7 @@ except ImportError:
     import usatoday_scraper
     import wmtv_scraper
     import independent_scraper
+    import punch_scraper
     upload_imgur = imgur_uploader.upload_imgur
     upload_eight_uploads = eight_uploads_uploader.upload_eight_uploads
     upload_freeimage = freeimage_uploader.upload_freeimage
@@ -273,6 +275,7 @@ except ImportError:
     get_euronews = euronews_scraper.get_euronews
     get_usatoday = usatoday_scraper.get_usatoday
     get_independent_news = independent_scraper.get_independent_news
+    get_punch_news = punch_scraper.get_punch_news
 
 def run_pipeline(endpoint_id, payload):
     if endpoint_id in ["imgur", "image"]:
@@ -431,6 +434,8 @@ def run_pipeline(endpoint_id, payload):
         return get_usatoday(payload)
     elif endpoint_id in ["independent", "independent-news", "the-independent"]:
         return get_independent_news(payload)
+    elif endpoint_id in ["punch", "punch-news"]:
+        return get_punch_news(payload)
     else:
         return {
             "endpoint_id": endpoint_id,
