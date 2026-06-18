@@ -126,6 +126,7 @@ try:
     from okezone_scraper import get_okezone_news
     from cnbc_scraper import get_cnbc_news
     from times_scraper import get_times_news
+    from inilah_scraper import get_inilah_news
 except ImportError:
     # Fallback to local import if environment is weird
     import imgur_uploader
@@ -220,6 +221,7 @@ except ImportError:
     import okezone_scraper
     import cnbc_scraper
     import times_scraper
+    import inilah_scraper
     upload_imgur = imgur_uploader.upload_imgur
     upload_eight_uploads = eight_uploads_uploader.upload_eight_uploads
     upload_freeimage = freeimage_uploader.upload_freeimage
@@ -312,6 +314,7 @@ except ImportError:
     get_okezone_news = okezone_scraper.get_okezone_news
     get_cnbc_news = cnbc_scraper.get_cnbc_news
     get_times_news = times_scraper.get_times_news
+    get_inilah_news = inilah_scraper.get_inilah_news
 
 def run_pipeline(endpoint_id, payload):
     if endpoint_id in ["imgur", "image"]:
@@ -496,6 +499,8 @@ def run_pipeline(endpoint_id, payload):
         return get_cnbc_news(payload)
     elif endpoint_id in ["times", "timesindonesia", "times-news"]:
         return get_times_news(payload)
+    elif endpoint_id in ["inilah", "inilah-com", "inilah-news"]:
+        return get_inilah_news(payload)
     else:
         return {
             "endpoint_id": endpoint_id,
