@@ -217,9 +217,30 @@ const apiModules = [
   {
     id: "image-tools",
     name: "Image Tools Pack",
-    description: "Process and edit images using tools like background removal, AI upscaling, vintage filters, color inversion, image flipping, retro pixelation, rounded corners, image splitting, adding noise, and image blurring.",
+    description: "Process and edit images using tools like background removal, AI upscaling, vintage filters, color inversion, image flipping, retro pixelation, rounded corners, image splitting, adding noise, image blurring, image sharpening, solarize filters, glow effects, posterize effects, blur face effects, and AI image enhancement.",
     status: "active",
-    endpointsCount: 10,
+    endpointsCount: 16,
+  },
+  {
+    id: "qr-tools",
+    name: "QR Tools Pack",
+    description: "Generate, style, and decode high-quality QR codes and barcodes online instantly.",
+    status: "active",
+    endpointsCount: 2,
+  },
+  {
+    id: "shortlink-tools",
+    name: "Shortlink Tools Pack",
+    description: "Generate and manage shortened urls using popular platforms like TinyURL, is.gd, v.gd, ulvis.net, da.gd, and cleanuri.com.",
+    status: "active",
+    endpointsCount: 6,
+  },
+  {
+    id: "ai-chat",
+    name: "AI Chat Tools Pack",
+    description: "Interact with state-of-the-art language models like Llama 3.3, Groq Compound, Qwen 2.5, MiniMax, DeepSeek, and Kimi.",
+    status: "active",
+    endpointsCount: 6,
   }
 ];
 
@@ -669,6 +690,118 @@ app.all('/api/image-tool/:slug', async (req, res) => {
     });
   }
 });
+
+// 4f. QR Tools Route (e.g. /api/qr-tool/generate)
+app.all('/api/qr-tool/:slug', async (req, res) => {
+  const { slug } = req.params;
+  const payload = {
+    ...req.query,
+    ...req.body
+  };
+
+  try {
+    const reqHost = req.headers.host || 'localhost:5000';
+    const protocol = req.secure || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
+
+    const result = await executePipeline(slug, payload, reqHost, protocol);
+
+    if (result && result.success === false) {
+      return res.status(400).json({
+        success: false,
+        creator: "XyloAPI",
+        ...result
+      });
+    }
+
+    return res.json({
+      success: true,
+      creator: "XyloAPI",
+      data: result.data || result
+    });
+
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      error: "Failed to execute QR tool pipeline",
+      details: error.message || String(error)
+    });
+  }
+});
+
+// 4g. Shortlink Route (e.g. /api/shortlink/tinyurl)
+app.all('/api/shortlink/:slug', async (req, res) => {
+  const { slug } = req.params;
+  const payload = {
+    ...req.query,
+    ...req.body
+  };
+
+  try {
+    const reqHost = req.headers.host || 'localhost:5000';
+    const protocol = req.secure || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
+
+    const result = await executePipeline(slug, payload, reqHost, protocol);
+
+    if (result && result.success === false) {
+      return res.status(400).json({
+        success: false,
+        creator: "XyloAPI",
+        ...result
+      });
+    }
+
+    return res.json({
+      success: true,
+      creator: "XyloAPI",
+      data: result.data || result
+    });
+
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      error: "Failed to execute shortlink pipeline",
+      details: error.message || String(error)
+    });
+  }
+});
+
+// 4h. AI Chat Route (e.g. /api/ai-chat/llama)
+app.all('/api/ai-chat/:slug', async (req, res) => {
+  const { slug } = req.params;
+  const payload = {
+    ...req.query,
+    ...req.body
+  };
+
+  try {
+    const reqHost = req.headers.host || 'localhost:5000';
+    const protocol = req.secure || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
+
+    const result = await executePipeline(slug, payload, reqHost, protocol);
+
+    if (result && result.success === false) {
+      return res.status(400).json({
+        success: false,
+        creator: "XyloAPI",
+        ...result
+      });
+    }
+
+    return res.json({
+      success: true,
+      creator: "XyloAPI",
+      data: result.data || result
+    });
+
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      error: "Failed to execute AI Chat pipeline",
+      details: error.message || String(error)
+    });
+  }
+});
+
 
 // Helper to fetch image with redirect following and custom User-Agent
 async function fetchImageWithRedirects(imageUrl: string, redirectCount = 0): Promise<{ headers: any; stream: any }> {

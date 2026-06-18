@@ -149,6 +149,26 @@ try:
     from split_scraper import get_split_image
     from noise_scraper import get_noised_image
     from blur_scraper import get_blurred_image
+    from sharpen_scraper import get_sharpen_image
+    from solarize_scraper import get_solarized_image
+    from glow_scraper import get_glow_image
+    from posterize_scraper import get_posterized_image
+    from blurface_scraper import get_blurface_image
+    from enhance_scraper import get_enhanced_image
+    from qr_scraper import get_qr_code
+    from qr_decoder_scraper import get_decoded_qr
+    from tinyurl_scraper import get_short_url
+    from isgd_scraper import get_isgd_url
+    from vgd_scraper import get_vgd_url
+    from ulvis_scraper import get_ulvis_url
+    from dagd_scraper import get_dagd_url
+    from cleanuri_scraper import get_cleanuri_url
+    from llama_scraper import get_llama_chat
+    from groq_scraper import get_groq_chat
+    from qwen_scraper import get_qwen_chat
+    from minimax_scraper import get_minimax_chat
+    from deepseek_scraper import get_deepseek_chat
+    from kimi_scraper import get_kimi_chat
 except ImportError:
     # Fallback to local import if environment is weird
     import imgur_uploader
@@ -266,6 +286,26 @@ except ImportError:
     import split_scraper
     import noise_scraper
     import blur_scraper
+    import sharpen_scraper
+    import solarize_scraper
+    import glow_scraper
+    import posterize_scraper
+    import blurface_scraper
+    import enhance_scraper
+    import qr_scraper
+    import qr_decoder_scraper
+    import tinyurl_scraper
+    import isgd_scraper
+    import vgd_scraper
+    import ulvis_scraper
+    import dagd_scraper
+    import cleanuri_scraper
+    import llama_scraper
+    import groq_scraper
+    import qwen_scraper
+    import minimax_scraper
+    import deepseek_scraper
+    import kimi_scraper
     upload_imgur = imgur_uploader.upload_imgur
     upload_eight_uploads = eight_uploads_uploader.upload_eight_uploads
     upload_freeimage = freeimage_uploader.upload_freeimage
@@ -381,6 +421,26 @@ except ImportError:
     get_split_image = split_scraper.get_split_image
     get_noised_image = noise_scraper.get_noised_image
     get_blurred_image = blur_scraper.get_blurred_image
+    get_sharpen_image = sharpen_scraper.get_sharpen_image
+    get_solarized_image = solarize_scraper.get_solarized_image
+    get_glow_image = glow_scraper.get_glow_image
+    get_posterized_image = posterize_scraper.get_posterized_image
+    get_blurface_image = blurface_scraper.get_blurface_image
+    get_enhanced_image = enhance_scraper.get_enhanced_image
+    get_qr_code = qr_scraper.get_qr_code
+    get_decoded_qr = qr_decoder_scraper.get_decoded_qr
+    get_short_url = tinyurl_scraper.get_short_url
+    get_isgd_url = isgd_scraper.get_isgd_url
+    get_vgd_url = vgd_scraper.get_vgd_url
+    get_ulvis_url = ulvis_scraper.get_ulvis_url
+    get_dagd_url = dagd_scraper.get_dagd_url
+    get_cleanuri_url = cleanuri_scraper.get_cleanuri_url
+    get_llama_chat = llama_scraper.get_llama_chat
+    get_groq_chat = groq_scraper.get_groq_chat
+    get_qwen_chat = qwen_scraper.get_qwen_chat
+    get_minimax_chat = minimax_scraper.get_minimax_chat
+    get_deepseek_chat = deepseek_scraper.get_deepseek_chat
+    get_kimi_chat = kimi_scraper.get_kimi_chat
 
 def run_pipeline(endpoint_id, payload):
     if endpoint_id in ["imgur", "image"]:
@@ -611,6 +671,46 @@ def run_pipeline(endpoint_id, payload):
         return get_noised_image(payload)
     elif endpoint_id in ["blur", "blur-image"]:
         return get_blurred_image(payload)
+    elif endpoint_id in ["sharpen", "sharpen-image"]:
+        return get_sharpen_image(payload)
+    elif endpoint_id in ["solarize", "solarize-effect"]:
+        return get_solarized_image(payload)
+    elif endpoint_id in ["glow", "glow-effect"]:
+        return get_glow_image(payload)
+    elif endpoint_id in ["posterize", "posterize-effect"]:
+        return get_posterized_image(payload)
+    elif endpoint_id in ["blurface", "blur-faces", "blurface-effect"]:
+        return get_blurface_image(payload)
+    elif endpoint_id in ["enhance", "enhance-image", "enhance-effect"]:
+        return get_enhanced_image(payload)
+    elif endpoint_id in ["qr", "qr-generator", "qr-code", "generate-qr", "generate"]:
+        return get_qr_code(payload)
+    elif endpoint_id in ["qr-decode", "qr-decoder", "decode-qr", "qr-read"]:
+        return get_decoded_qr(payload)
+    elif endpoint_id in ["tinyurl", "shorten", "shortlink"]:
+        return get_short_url(payload)
+    elif endpoint_id in ["isgd", "is.gd", "shorten-isgd"]:
+        return get_isgd_url(payload)
+    elif endpoint_id in ["vgd", "v.gd", "shorten-vgd"]:
+        return get_vgd_url(payload)
+    elif endpoint_id in ["ulvis", "ulvis.net", "shorten-ulvis"]:
+        return get_ulvis_url(payload)
+    elif endpoint_id in ["dagd", "da.gd", "shorten-dagd"]:
+        return get_dagd_url(payload)
+    elif endpoint_id in ["cleanuri", "cleanuri.com", "shorten-cleanuri"]:
+        return get_cleanuri_url(payload)
+    elif endpoint_id in ["llama", "llama-ai", "llama-chat"]:
+        return get_llama_chat(payload)
+    elif endpoint_id in ["groq", "groq-ai", "groq-chat", "groq-compound"]:
+        return get_groq_chat(payload)
+    elif endpoint_id in ["qwen", "qwen-ai", "qwen-chat", "qwen-compound"]:
+        return get_qwen_chat(payload)
+    elif endpoint_id in ["minimax", "minimax-ai", "minimax-chat", "minimax-m3"]:
+        return get_minimax_chat(payload)
+    elif endpoint_id in ["deepseek", "deepseek-ai", "deepseek-chat", "deepseek-v4", "deepseek-v4-pro"]:
+        return get_deepseek_chat(payload)
+    elif endpoint_id in ["kimi", "kimi-ai", "kimi-chat", "kimi-k2.6"]:
+        return get_kimi_chat(payload)
     else:
         return {
             "endpoint_id": endpoint_id,

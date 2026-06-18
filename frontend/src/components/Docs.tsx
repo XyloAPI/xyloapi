@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { Globe, RefreshCw, Send, Check, Upload, Download, Newspaper, ChevronDown, ChevronRight } from 'lucide-react';
+import { Globe, RefreshCw, Send, Check, Upload, Download, Newspaper, ChevronDown, ChevronRight, MessageSquare } from 'lucide-react';
+
 
 interface CustomVideoPlayerProps {
   src: string;
@@ -352,7 +353,7 @@ function CustomDropdown({ value, options, onChange }: CustomDropdownProps) {
           width="10" height="10" viewBox="0 0 10 10" fill="none"
           style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s', flexShrink: 0 }}
         >
-          <path d="M1 3L5 7L9 3" stroke="var(--gold)" strokeWidth="1.5" strokeLinecap="square"/>
+          <path d="M1 3L5 7L9 3" stroke="var(--gold)" strokeWidth="1.5" strokeLinecap="square" />
         </svg>
       </div>
 
@@ -394,7 +395,7 @@ function CustomDropdown({ value, options, onChange }: CustomDropdownProps) {
                 <span>{opt.label}</span>
                 {isActive && (
                   <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-                    <path d="M1 4L3.5 6.5L9 1" stroke="var(--gold)" strokeWidth="1.5" strokeLinecap="square"/>
+                    <path d="M1 4L3.5 6.5L9 1" stroke="var(--gold)" strokeWidth="1.5" strokeLinecap="square" />
                   </svg>
                 )}
               </div>
@@ -3072,12 +3073,334 @@ const docTopics: DocTopic[] = [
       image: '',
       radius: 10
     }
+  },
+  {
+    id: 'sharpen',
+    title: 'Sharpen Image',
+    category: 'Image Tools',
+    method: 'POST',
+    path: '/api/image-tool/sharpen',
+    pathTemplate: '/api/image-tool/:slug',
+    description: 'Sharpen the details of your images online with adjustable intensity. Upload an image file or provide a direct image URL.',
+    parameters: [
+      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' },
+      { name: 'intensity', type: 'number', required: false, desc: 'Sharpen intensity from 0 to 100. Default is 50.' }
+    ],
+    payloadTemplate: {
+      image: '',
+      intensity: 50
+    }
+  },
+  {
+    id: 'solarize',
+    title: 'Solarize Effect',
+    category: 'Image Tools',
+    method: 'POST',
+    path: '/api/image-tool/solarize',
+    pathTemplate: '/api/image-tool/:slug',
+    description: 'Invert colors of an image above a specified brightness threshold to create a surreal solarized effect. Upload an image file or provide a direct image URL.',
+    parameters: [
+      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' },
+      { name: 'threshold', type: 'number', required: false, desc: 'Brightness threshold from 0 to 255. Default is 128.' }
+    ],
+    payloadTemplate: {
+      image: '',
+      threshold: 128
+    }
+  },
+  {
+    id: 'glow',
+    title: 'Glow Effect',
+    category: 'Image Tools',
+    method: 'POST',
+    path: '/api/image-tool/glow',
+    pathTemplate: '/api/image-tool/:slug',
+    description: 'Add a beautiful, radiant glow effect with custom color, intensity, and blur radius to your images online. Upload an image file or provide a direct image URL.',
+    parameters: [
+      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' },
+      { name: 'intensity', type: 'number', required: false, desc: 'Glow intensity from 1 to 100. Default is 20.' },
+      { name: 'radius', type: 'number', required: false, desc: 'Glow blur radius from 1 to 50. Default is 10.' },
+      { name: 'color', type: 'text', required: false, desc: 'Hex color code of the glow (e.g. "#ffffff" or "#ff00bb"). Default is "#ffffff".' }
+    ],
+    payloadTemplate: {
+      image: '',
+      intensity: 20,
+      radius: 10,
+      color: '#ffffff'
+    }
+  },
+  {
+    id: 'posterize',
+    title: 'Posterize Effect',
+    category: 'Image Tools',
+    method: 'POST',
+    path: '/api/image-tool/posterize',
+    pathTemplate: '/api/image-tool/:slug',
+    description: 'Reduce the number of colors in your image to create a retro, artistic posterized effect. Upload an image file or provide a direct image URL.',
+    parameters: [
+      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' },
+      { name: 'color_levels', type: 'number', required: false, desc: 'Number of color levels from 2 to 256. Default is 8.' }
+    ],
+    payloadTemplate: {
+      image: '',
+      color_levels: 8
+    }
+  },
+  {
+    id: 'blurface',
+    title: 'Blur Face Effect',
+    category: 'Image Tools',
+    method: 'POST',
+    path: '/api/image-tool/blurface',
+    pathTemplate: '/api/image-tool/:slug',
+    description: 'Automatically detect and blur all faces in an image online using AI-powered face detection. Upload an image file or provide a direct image URL.',
+    parameters: [
+      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' },
+      { name: 'strength', type: 'number', required: false, desc: 'Blur strength from 1 to 2000. Default is 500.' }
+    ],
+    payloadTemplate: {
+      image: '',
+      strength: 500
+    }
+  },
+  {
+    id: 'enhance',
+    title: 'AI Image Enhancer',
+    category: 'Image Tools',
+    method: 'POST',
+    path: '/api/image-tool/enhance',
+    pathTemplate: '/api/image-tool/:slug',
+    description: 'Enhance your images online automatically using AI. Balances exposure, colors, contrast, and clarity instantly. Upload an image file or provide a direct image URL.',
+    parameters: [
+      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' }
+    ],
+    payloadTemplate: {
+      image: ''
+    }
+  },
+  {
+    id: 'qr-generator',
+    title: 'QR Code Generator',
+    category: 'QR Tools',
+    method: 'GET',
+    path: '/api/qr-tool/generate',
+    pathTemplate: '/api/qr-tool/:slug',
+    description: 'Generate high-quality customizable QR Codes online instantly. Enter your data, customize the size, margin, and color.',
+    parameters: [
+      { name: 'data', type: 'text', required: true, desc: 'The text or URL to encode into the QR code.' },
+      { name: 'size', type: 'text', required: false, desc: 'Size in widthxheight format (e.g. 500x500 or 1000x1000). Default is 500x500.' },
+      { name: 'margin', type: 'number', required: false, desc: 'Quiet margin around the QR code. Default is 1.' },
+      { name: 'color', type: 'text', required: false, desc: 'Hex color code of the QR code pixels (e.g. "#ff00bb" or "#000000"). Default is "#000000".' }
+    ],
+    payloadTemplate: {
+      data: 'Example',
+      size: '500x500',
+      margin: 1,
+      color: '#000000'
+    }
+  },
+  {
+    id: 'qr-decoder',
+    title: 'QR Code Decoder',
+    category: 'QR Tools',
+    method: 'POST',
+    path: '/api/qr-tool/qr-decode',
+    pathTemplate: '/api/qr-tool/:slug',
+    description: 'Decode and extract text content from any QR Code or barcode image. Upload an image file or provide a direct image URL.',
+    parameters: [
+      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' }
+    ],
+    payloadTemplate: {
+      image: ''
+    }
+  },
+  {
+    id: 'tinyurl',
+    title: 'TinyURL Shortener',
+    category: 'Shortlink Tools',
+    method: 'GET',
+    path: '/api/shortlink/tinyurl',
+    pathTemplate: '/api/shortlink/:slug',
+    description: 'Shorten long URLs instantly using the TinyURL shortening service.',
+    parameters: [
+      { name: 'url', type: 'text', required: true, desc: 'The long URL to be shortened.' }
+    ],
+    payloadTemplate: {
+      url: ''
+    }
+  },
+  {
+    id: 'isgd',
+    title: 'is.gd Shortener',
+    category: 'Shortlink Tools',
+    method: 'GET',
+    path: '/api/shortlink/isgd',
+    pathTemplate: '/api/shortlink/:slug',
+    description: 'Shorten long URLs instantly using the is.gd shortening service.',
+    parameters: [
+      { name: 'url', type: 'text', required: true, desc: 'The long URL to be shortened.' }
+    ],
+    payloadTemplate: {
+      url: ''
+    }
+  },
+  {
+    id: 'vgd',
+    title: 'v.gd Shortener',
+    category: 'Shortlink Tools',
+    method: 'GET',
+    path: '/api/shortlink/vgd',
+    pathTemplate: '/api/shortlink/:slug',
+    description: 'Shorten long URLs instantly using the v.gd shortening service.',
+    parameters: [
+      { name: 'url', type: 'text', required: true, desc: 'The long URL to be shortened.' }
+    ],
+    payloadTemplate: {
+      url: ''
+    }
+  },
+  {
+    id: 'ulvis',
+    title: 'ulvis.net Shortener',
+    category: 'Shortlink Tools',
+    method: 'GET',
+    path: '/api/shortlink/ulvis',
+    pathTemplate: '/api/shortlink/:slug',
+    description: 'Shorten long URLs instantly using the ulvis.net shortening service.',
+    parameters: [
+      { name: 'url', type: 'text', required: true, desc: 'The long URL to be shortened.' }
+    ],
+    payloadTemplate: {
+      url: ''
+    }
+  },
+  {
+    id: 'dagd',
+    title: 'da.gd Shortener',
+    category: 'Shortlink Tools',
+    method: 'GET',
+    path: '/api/shortlink/dagd',
+    pathTemplate: '/api/shortlink/:slug',
+    description: 'Shorten long URLs instantly using the da.gd shortening service. Optionally, specify a custom short URL suffix.',
+    parameters: [
+      { name: 'url', type: 'text', required: true, desc: 'The long URL to be shortened.' },
+      { name: 'shorturl', type: 'text', required: false, desc: 'Custom short URL suffix (optional).' }
+    ],
+    payloadTemplate: {
+      url: '',
+      shorturl: ''
+    }
+  },
+  {
+    id: 'cleanuri',
+    title: 'CleanURI Shortener',
+    category: 'Shortlink Tools',
+    method: 'GET',
+    path: '/api/shortlink/cleanuri',
+    pathTemplate: '/api/shortlink/:slug',
+    description: 'Shorten long URLs instantly using the CleanURI shortening service.',
+    parameters: [
+      { name: 'url', type: 'text', required: true, desc: 'The long URL to be shortened.' }
+    ],
+    payloadTemplate: {
+      url: ''
+    }
+  },
+  {
+    id: 'llama',
+    title: 'Llama AI',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/llama',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with the state-of-the-art Llama AI model. Ask questions, translate texts, generate code, or analyze details.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
+  },
+  {
+    id: 'groq',
+    title: 'Groq AI',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/groq',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with Groq\'s Compound AI model featuring advanced tools like web search, code interpreter, and website visits.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the Compound AI model.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
+  },
+  {
+    id: 'qwen',
+    title: 'Qwen AI',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/qwen',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with the state-of-the-art Qwen LLM. Ask questions, get help, translate, or chat informally.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
+  },
+  {
+    id: 'minimax',
+    title: 'MiniMax AI',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/minimax',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with the multimodal MiniMax AI model. Ask questions, translate texts, generate code, or analyze details.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
+  },
+  {
+    id: 'deepseek',
+    title: 'DeepSeek AI',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/deepseek',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with the state-of-the-art DeepSeek V4 Pro AI model. Ask questions, translate texts, generate code, or analyze details.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
+  },
+  {
+    id: 'kimi',
+    title: 'Kimi AI',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/kimi',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with the state-of-the-art Kimi-K2.6 AI model. Ask questions, translate texts, generate code, or analyze details.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
   }
 ];
 
 // Adjust methods dynamically based on category: GET for News and Downloader
 docTopics.forEach(topic => {
-  if (topic.category === 'News' || topic.category === 'Local News' || topic.category === 'Downloader') {
+  if (topic.category === 'News' || topic.category === 'Local News' || topic.category === 'Downloader' || (topic.category === 'QR Tools' && topic.id !== 'qr-decoder') || topic.category === 'Shortlink Tools' || topic.category === 'AI Chat') {
     topic.method = 'GET';
   }
 });
@@ -3142,7 +3465,7 @@ export default function Docs() {
 
   const getActiveMethod = () => {
     if (!activeTopic) return 'GET';
-    if (activeTopic.id === 'imgur') {
+    if (activeTopic.category === 'Media Uploaders' || activeTopic.category === 'File Uploaders' || activeTopic.category === 'Image Tools' || activeTopic.id === 'qr-decoder') {
       return uploadMode === 'file' ? 'POST' : 'GET';
     }
     return activeTopic.method || 'GET';
@@ -3158,8 +3481,9 @@ export default function Docs() {
       topic.parameters.forEach(param => {
         const placeholder = `:${param.name}`;
         if (path.includes(placeholder)) {
-          const val = formValues[param.name] || `:${param.name}`;
-          path = path.replace(placeholder, encodeURIComponent(String(val)));
+          const val = formValues[param.name];
+          const displayVal = val ? encodeURIComponent(String(val)) : `:${param.name}`;
+          path = path.replace(placeholder, displayVal);
         }
       });
     }
@@ -3170,26 +3494,34 @@ export default function Docs() {
     // Append remaining parameters as query string for GET
     const method = getActiveMethod();
     if (method === 'GET') {
-      const params = new URLSearchParams();
-      if (topic.category === 'Media Uploaders' || topic.category === 'File Uploaders') {
+      const queryParts: string[] = [];
+      if (topic.category === 'Media Uploaders' || topic.category === 'File Uploaders' || topic.category === 'Image Tools' || topic.id === 'qr-decoder') {
         const val = formValues['url'] !== undefined ? formValues['url'] : '';
-        if (val) {
-          params.append('url', String(val));
-        } else {
-          params.append('url', '');
+        const displayVal = val ? encodeURIComponent(String(val)) : ':url';
+        queryParts.push(`url=${displayVal}`);
+
+        // For Image Tools: also append other query parameters (intensity, radius, etc.)
+        if (topic.category === 'Image Tools' && topic.parameters) {
+          topic.parameters.forEach(param => {
+            if (param.name !== 'image' && param.name !== 'url') {
+              const val = formValues[param.name] !== undefined ? formValues[param.name] : '';
+              const displayVal = val !== '' ? encodeURIComponent(String(val)) : `:${param.name}`;
+              queryParts.push(`${param.name}=${displayVal}`);
+            }
+          });
         }
       } else if (topic.parameters) {
         topic.parameters.forEach(param => {
           const isPathSnippet = path.includes(`:${param.name}`) || (topic.path && topic.path.includes(`:${param.name}`));
           if (!isPathSnippet) {
             const val = formValues[param.name] !== undefined ? formValues[param.name] : '';
-            params.append(param.name, String(val));
+            const displayVal = val !== '' ? encodeURIComponent(String(val)) : `:${param.name}`;
+            queryParts.push(`${param.name}=${displayVal}`);
           }
         });
       }
-      const qs = params.toString();
-      if (qs) {
-        url += `?${qs}`;
+      if (queryParts.length > 0) {
+        url += `?${queryParts.join('&')}`;
       }
     } else if (topic.parameters) {
       // For POST: still show select-type params in URL for visual clarity
@@ -3277,6 +3609,7 @@ export default function Docs() {
       case 'News': return <Newspaper size={14} />;
       case 'Local News': return <Newspaper size={14} />;
       case 'Image Tools': return <Upload size={14} />;
+      case 'AI Chat': return <MessageSquare size={14} />;
       default: return <Globe size={14} />;
     }
   };
@@ -3290,11 +3623,19 @@ export default function Docs() {
       return `curl "${evalUrl}"`;
     }
     if (activeTopic.category === 'Media Uploaders' || activeTopic.category === 'File Uploaders' || activeTopic.category === 'Image Tools') {
-      if (uploadMode === 'file') {
-        return `curl -X POST "${evalUrl}" \\\n  -H "Content-Type: application/json" \\\n  -d '{"image": "data:image/jpeg;base64,..."}'`;
+      const payload: any = {};
+      if (activeTopic.payloadTemplate) {
+        Object.entries(activeTopic.payloadTemplate).forEach(([k, v]) => {
+          if (k === 'image' || k === 'url' || k === 'data') {
+            payload[k] = uploadMode === 'file' ? 'data:image/jpeg;base64,...' : 'https://example.com/photo.jpg';
+          } else {
+            payload[k] = v;
+          }
+        });
       } else {
-        return `curl -X POST "${evalUrl}" \\\n  -H "Content-Type: application/json" \\\n  -d '{"url": "https://example.com/photo.jpg"}'`;
+        payload[uploadMode === 'file' ? 'image' : 'url'] = uploadMode === 'file' ? 'data:image/jpeg;base64,...' : 'https://example.com/photo.jpg';
       }
+      return `curl -X POST "${evalUrl}" \\\n  -H "Content-Type: application/json" \\\n  -d '${JSON.stringify(payload, null, 2).replace(/\n/g, '\n    ')}'`;
     }
     return `curl -X POST "${evalUrl}" \\\n  -H "Content-Type: application/json" \\\n  -d '${getPayloadJson().replace(/\n/g, '\n    ')}'`;
   };
@@ -3330,7 +3671,7 @@ export default function Docs() {
 
 
     // 5. Image Tools Layout
-    if (activeTopic.category === 'Image Tools' && resData) {
+    if ((activeTopic.category === 'Image Tools' || activeTopic.category === 'QR Tools') && resData) {
       const isSplit = activeTopic.id === 'split';
       if (isSplit && resData.slices) {
         const gridCols = resData.cols || 2;
@@ -3365,9 +3706,9 @@ export default function Docs() {
                   maxWidth: '340px'
                 }}>
                   {resData.slices.map((slice: any, idx: number) => (
-                    <div 
-                      key={idx} 
-                      style={{ 
+                    <div
+                      key={idx}
+                      style={{
                         position: 'relative',
                         border: '1px dashed var(--gold)',
                         overflow: 'hidden',
@@ -3377,10 +3718,10 @@ export default function Docs() {
                       onClick={() => window.open(slice.url, '_blank')}
                       title={`Slice ${slice.row + 1}, ${slice.col + 1} (${slice.width}x${slice.height}px)`}
                     >
-                      <img 
-                        src={slice.url} 
+                      <img
+                        src={slice.url}
                         referrerPolicy="no-referrer"
-                        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} 
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                       />
                       <div style={{
                         position: 'absolute',
@@ -3406,11 +3747,11 @@ export default function Docs() {
                 </span>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxHeight: '320px', overflowY: 'auto', paddingRight: '4px' }}>
                   {resData.slices.map((slice: any, idx: number) => (
-                    <div 
+                    <div
                       key={idx}
-                      style={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
                         justifyContent: 'space-between',
                         padding: '8px 12px',
                         backgroundColor: 'rgba(255,255,255,0.02)',
@@ -3422,18 +3763,18 @@ export default function Docs() {
                         Part {idx + 1} (R{slice.row + 1}, C{slice.col + 1}) - {slice.width}x{slice.height}px
                       </span>
                       <div style={{ display: 'flex', gap: '6px', flexShrink: 0 }}>
-                        <a 
-                          href={slice.url} 
-                          target="_blank" 
-                          rel="noreferrer" 
-                          className="btn btn-gold" 
+                        <a
+                          href={slice.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="btn btn-gold"
                           style={{ textDecoration: 'none', padding: '4px 8px', fontSize: '9px', fontWeight: 700 }}
                         >
                           DOWNLOAD
                         </a>
-                        <button 
-                          onClick={() => copyToClipboard(slice.url)} 
-                          className="btn btn-black" 
+                        <button
+                          onClick={() => copyToClipboard(slice.url)}
+                          className="btn btn-black"
                           style={{ padding: '4px 8px', fontSize: '9px', fontWeight: 700, border: '1px solid var(--border-color)' }}
                         >
                           COPY
@@ -3456,7 +3797,14 @@ export default function Docs() {
       const isRound = activeTopic.id === 'round-corners';
       const isNoise = activeTopic.id === 'add-noise';
       const isBlur = activeTopic.id === 'blur';
-      
+      const isSharpen = activeTopic.id === 'sharpen';
+      const isSolarize = activeTopic.id === 'solarize';
+      const isGlow = activeTopic.id === 'glow';
+      const isPosterize = activeTopic.id === 'posterize';
+      const isBlurFace = activeTopic.id === 'blurface';
+      const isEnhance = activeTopic.id === 'enhance';
+      const isQR = activeTopic.category === 'QR Tools';
+
       let badgeText = '✓ BACKGROUND REMOVED';
       if (isUpscale) badgeText = '✓ IMAGE UPSCALED';
       if (isSepia) badgeText = '✓ SEPIA FILTER APPLIED';
@@ -3466,6 +3814,13 @@ export default function Docs() {
       if (isRound) badgeText = '✓ CORNERS ROUNDED';
       if (isNoise) badgeText = '✓ NOISE FILTER APPLIED';
       if (isBlur) badgeText = '✓ IMAGE BLURRED';
+      if (isSharpen) badgeText = '✓ IMAGE SHARPENED';
+      if (isSolarize) badgeText = '✓ SOLARIZE EFFECT APPLIED';
+      if (isGlow) badgeText = '✓ GLOW EFFECT APPLIED';
+      if (isPosterize) badgeText = '✓ POSTERIZE EFFECT APPLIED';
+      if (isBlurFace) badgeText = '✓ FACES BLURRED';
+      if (isEnhance) badgeText = '✓ IMAGE ENHANCED';
+      if (isQR) badgeText = '✓ QR CODE GENERATED';
 
       let downloadText = 'DOWNLOAD TRANSPARENT IMAGE';
       if (isUpscale) downloadText = 'DOWNLOAD UPSCALED IMAGE';
@@ -3476,9 +3831,16 @@ export default function Docs() {
       if (isRound) downloadText = 'DOWNLOAD ROUNDED IMAGE';
       if (isNoise) downloadText = 'DOWNLOAD NOISED IMAGE';
       if (isBlur) downloadText = 'DOWNLOAD BLURRED IMAGE';
+      if (isSharpen) downloadText = 'DOWNLOAD SHARPENED IMAGE';
+      if (isSolarize) downloadText = 'DOWNLOAD SOLARIZED IMAGE';
+      if (isGlow) downloadText = 'DOWNLOAD GLOW IMAGE';
+      if (isPosterize) downloadText = 'DOWNLOAD POSTERIZED IMAGE';
+      if (isBlurFace) downloadText = 'DOWNLOAD FACE BLURRED IMAGE';
+      if (isEnhance) downloadText = 'DOWNLOAD ENHANCED IMAGE';
+      if (isQR) downloadText = 'DOWNLOAD QR CODE';
 
-      const showGridBg = !isUpscale && !isSepia && !isInvert && !isFlip && !isPixelate && !isNoise && !isBlur;
-      const previewAlt = isUpscale ? 'Upscaled Preview' : isSepia ? 'Sepia Filter Preview' : isInvert ? 'Inverted Colors Preview' : isFlip ? 'Flipped Image Preview' : isPixelate ? 'Pixelated Preview' : isRound ? 'Rounded Corners Preview' : isNoise ? 'Noise Applied Preview' : isBlur ? 'Blurred Image Preview' : 'Transparent Background Preview';
+      const showGridBg = !isUpscale && !isSepia && !isInvert && !isFlip && !isPixelate && !isRound && !isNoise && !isBlur && !isSharpen && !isSolarize && !isGlow && !isPosterize && !isBlurFace && !isEnhance && !isQR;
+      const previewAlt = isUpscale ? 'Upscaled Preview' : isSepia ? 'Sepia Filter Preview' : isInvert ? 'Inverted Colors Preview' : isFlip ? 'Flipped Image Preview' : isPixelate ? 'Pixelated Preview' : isRound ? 'Rounded Corners Preview' : isNoise ? 'Noise Applied Preview' : isBlur ? 'Blurred Image Preview' : isSharpen ? 'Sharpened Image Preview' : isSolarize ? 'Solarized Preview' : isGlow ? 'Glow Preview' : isPosterize ? 'Posterized Preview' : isBlurFace ? 'Face Blurred Preview' : isEnhance ? 'Enhanced Image Preview' : isQR ? 'QR Code Preview' : 'Transparent Background Preview';
 
       return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -3493,9 +3855,9 @@ export default function Docs() {
 
           <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', alignItems: 'start' }}>
             {resData.url && (
-              <div style={{ 
-                border: '1px solid var(--border-color)', 
-                padding: '8px', 
+              <div style={{
+                border: '1px solid var(--border-color)',
+                padding: '8px',
                 backgroundColor: showGridBg ? 'var(--black)' : '#111',
                 backgroundImage: showGridBg ? 'linear-gradient(45deg, #151515 25%, transparent 25%), linear-gradient(-45deg, #151515 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #151515 75%), linear-gradient(-45deg, transparent 75%, #151515 75%)' : 'none',
                 backgroundSize: '20px 20px',
@@ -3529,6 +3891,133 @@ export default function Docs() {
                 </div>
               )}
             </div>
+          </div>
+        </div>
+      );
+    }
+
+    // 7. QR Decoder Layout
+    if (activeTopic.id === 'qr-decoder' && resData) {
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '16px' }}>
+            <span style={{ fontSize: '11px', fontFamily: 'var(--font-mono)', color: '#27C93F', fontWeight: 700, textTransform: 'uppercase' }}>
+              ✓ QR CODE DECODED SUCCESSFULLY
+            </span>
+            <h2 style={{ fontSize: '18px', fontWeight: 800, color: 'var(--white)', marginTop: '4px' }}>
+              Decoded Content
+            </h2>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ border: '1px solid var(--border-color)', padding: '16px', backgroundColor: 'var(--black)', borderRadius: '4px' }}>
+              <span style={{ display: 'block', fontSize: '9px', color: 'var(--ash)', fontFamily: 'var(--font-mono)', marginBottom: '8px' }}>
+                DECODED TEXT / URL
+              </span>
+              <div style={{
+                fontSize: '14px',
+                color: 'var(--white)',
+                fontFamily: 'var(--font-sans)',
+                lineHeight: '1.6',
+                whiteSpace: 'pre-wrap',
+                wordBreak: 'break-all'
+              }}>
+                {resData.text}
+              </div>
+              {resData.text && (resData.text.startsWith('http://') || resData.text.startsWith('https://')) && (
+                <a
+                  href={resData.text}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn btn-gold"
+                  style={{ display: 'inline-flex', marginTop: '12px', textDecoration: 'none', padding: '6px 12px', fontSize: '10px', fontWeight: 700 }}
+                >
+                  OPEN LINK
+                </a>
+              )}
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+              {resData.format && (
+                <div style={{ border: '1px solid var(--border-color)', padding: '10px', backgroundColor: 'rgba(255,255,255,0.01)' }}>
+                  <span style={{ display: 'block', fontSize: '9px', color: 'var(--ash)', fontFamily: 'var(--font-mono)' }}>BARCODE FORMAT</span>
+                  <span style={{ fontSize: '13px', color: 'var(--white)', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>{resData.format}</span>
+                </div>
+              )}
+              {resData.type && (
+                <div style={{ border: '1px solid var(--border-color)', padding: '10px', backgroundColor: 'rgba(255,255,255,0.01)' }}>
+                  <span style={{ display: 'block', fontSize: '9px', color: 'var(--ash)', fontFamily: 'var(--font-mono)' }}>RESULT TYPE</span>
+                  <span style={{ fontSize: '13px', color: 'var(--white)', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>{resData.type}</span>
+                </div>
+              )}
+              {resData.raw_bytes && (
+                <div style={{ border: '1px solid var(--border-color)', padding: '10px', backgroundColor: 'rgba(255,255,255,0.01)', gridColumn: 'span 2' }}>
+                  <span style={{ display: 'block', fontSize: '9px', color: 'var(--ash)', fontFamily: 'var(--font-mono)', marginBottom: '4px' }}>RAW BYTES</span>
+                  <span style={{ fontSize: '11px', color: 'var(--ash)', fontFamily: 'var(--font-mono)', display: 'block', whiteSpace: 'pre-wrap', maxHeight: '100px', overflowY: 'auto' }}>
+                    {resData.raw_bytes}
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // 8. Shortlink Layout
+    if (activeTopic.category === 'Shortlink Tools' && resData) {
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '16px' }}>
+            <span style={{ fontSize: '11px', fontFamily: 'var(--font-mono)', color: '#27C93F', fontWeight: 700, textTransform: 'uppercase' }}>
+              ✓ URL SHORTENED SUCCESSFULLY
+            </span>
+            <h2 style={{ fontSize: '18px', fontWeight: 800, color: 'var(--white)', marginTop: '4px' }}>
+              Shortlink Result
+            </h2>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ border: '1px solid var(--border-color)', padding: '16px', backgroundColor: 'var(--black)', borderRadius: '4px' }}>
+              <span style={{ display: 'block', fontSize: '9px', color: 'var(--ash)', fontFamily: 'var(--font-mono)', marginBottom: '8px' }}>
+                SHORTENED URL
+              </span>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <input
+                  type="text"
+                  readOnly
+                  value={resData.short || ''}
+                  style={{ flex: 1, padding: '8px 12px', backgroundColor: '#111', color: 'var(--white)', border: '1px solid var(--border-color)', fontFamily: 'var(--font-mono)', fontSize: '13px', outline: 'none' }}
+                />
+                <button
+                  onClick={() => copyToClipboard(resData.short || '')}
+                  className="btn btn-gold"
+                  style={{ padding: '8px 16px', fontSize: '11px', fontWeight: 700 }}
+                >
+                  COPY
+                </button>
+              </div>
+              {resData.short && (
+                <a
+                  href={resData.short}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn btn-gold"
+                  style={{ display: 'inline-flex', marginTop: '12px', textDecoration: 'none', padding: '6px 12px', fontSize: '10px', fontWeight: 700 }}
+                >
+                  VISIT LINK
+                </a>
+              )}
+            </div>
+
+            {resData.original && (
+              <div style={{ border: '1px solid var(--border-color)', padding: '12px', backgroundColor: 'rgba(255,255,255,0.01)' }}>
+                <span style={{ display: 'block', fontSize: '9px', color: 'var(--ash)', fontFamily: 'var(--font-mono)', marginBottom: '4px' }}>ORIGINAL LONG URL</span>
+                <span style={{ fontSize: '11px', color: 'var(--ash)', fontFamily: 'var(--font-mono)', wordBreak: 'break-all' }}>
+                  {resData.original}
+                </span>
+              </div>
+            )}
           </div>
         </div>
       );
@@ -3816,6 +4305,40 @@ export default function Docs() {
       );
     }
 
+    // 9. AI Chat Layout
+    if (activeTopic.category === 'AI Chat' && resData) {
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '16px' }}>
+            <span style={{ fontSize: '11px', fontFamily: 'var(--font-mono)', color: '#27C93F', fontWeight: 700, textTransform: 'uppercase' }}>
+              ✓ RESPONSE GENERATED
+            </span>
+            <h2 style={{ fontSize: '18px', fontWeight: 800, color: 'var(--white)', marginTop: '4px' }}>
+              {activeTopic.title} Response
+            </h2>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {/* Main response card */}
+            <div style={{
+              border: '1px solid var(--border-color)',
+              padding: '24px',
+              backgroundColor: 'var(--black)',
+              borderRadius: '4px',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '14px',
+              lineHeight: '1.7',
+              color: 'var(--white)',
+              whiteSpace: 'pre-wrap',
+              wordBreak: 'break-word'
+            }}>
+              {resData.response}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <pre className="response-pre">
         <code>{JSON.stringify(responseJson, null, 2)}</code>
@@ -3831,13 +4354,13 @@ export default function Docs() {
           .sort((a, b) => a[0].localeCompare(b[0]))
           .map(([categoryName, topics]) => (
             <div key={categoryName} className="docs-sidebar-group">
-              <div 
+              <div
                 onClick={() => toggleCategory(categoryName)}
                 className="docs-sidebar-category"
-                style={{ 
-                  cursor: 'pointer', 
-                  display: 'flex', 
-                  alignItems: 'center', 
+                style={{
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
                   justifyContent: 'space-between',
                   userSelect: 'none'
                 }}
@@ -3912,416 +4435,416 @@ export default function Docs() {
 
             <p className="docs-description-text">{activeTopic.description}</p>
 
-        {/* Subtle Endpoint Row with Copy Utilities */}
-        {activeTopic.path && (
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            border: '1px solid var(--border-color)',
-            padding: '12px 16px',
-            backgroundColor: 'var(--black)',
-            marginBottom: '24px',
-            flexWrap: 'wrap',
-            gap: '12px'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span className={`method-badge ${getActiveMethod().toLowerCase()}`} style={{
-                padding: '4px 8px',
-                fontSize: '10px',
-                fontWeight: 700,
-                fontFamily: 'var(--font-mono)'
+            {/* Subtle Endpoint Row with Copy Utilities */}
+            {activeTopic.path && (
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                border: '1px solid var(--border-color)',
+                padding: '12px 16px',
+                backgroundColor: 'var(--black)',
+                marginBottom: '24px',
+                flexWrap: 'wrap',
+                gap: '12px'
               }}>
-                {getActiveMethod()}
-              </span>
-              <code style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--white)', fontWeight: 700 }}>
-                {getEvaluatedUrl()}
-              </code>
-            </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <span className={`method-badge ${getActiveMethod().toLowerCase()}`} style={{
+                    padding: '4px 8px',
+                    fontSize: '10px',
+                    fontWeight: 700,
+                    fontFamily: 'var(--font-mono)'
+                  }}>
+                    {getActiveMethod()}
+                  </span>
+                  <code style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--white)', fontWeight: 700 }}>
+                    {getEvaluatedUrl()}
+                  </code>
+                </div>
 
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(getCurlCode());
-                  setCopiedText('curl');
-                  setTimeout(() => setCopiedText(''), 2000);
-                }}
-                style={{
-                  padding: '6px 12px',
-                  backgroundColor: 'var(--dark-iron)',
-                  color: 'var(--white)',
-                  border: '1px solid var(--border-color)',
-                  fontSize: '10px',
-                  fontFamily: 'var(--font-mono)',
-                  cursor: 'pointer',
-                  borderRadius: '0px',
-                  transition: 'border-color 0.2s'
-                }}
-                onMouseOver={(e) => e.currentTarget.style.borderColor = 'var(--gold)'}
-                onMouseOut={(e) => e.currentTarget.style.borderColor = 'var(--border-color)'}
-              >
-                {copiedText === 'curl' ? '✓ COPIED' : 'COPY'}
-              </button>
-            </div>
-          </div>
-        )}
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(getCurlCode());
+                      setCopiedText('curl');
+                      setTimeout(() => setCopiedText(''), 2000);
+                    }}
+                    style={{
+                      padding: '6px 12px',
+                      backgroundColor: 'var(--dark-iron)',
+                      color: 'var(--white)',
+                      border: '1px solid var(--border-color)',
+                      fontSize: '10px',
+                      fontFamily: 'var(--font-mono)',
+                      cursor: 'pointer',
+                      borderRadius: '0px',
+                      transition: 'border-color 0.2s'
+                    }}
+                    onMouseOver={(e) => e.currentTarget.style.borderColor = 'var(--gold)'}
+                    onMouseOut={(e) => e.currentTarget.style.borderColor = 'var(--border-color)'}
+                  >
+                    {copiedText === 'curl' ? '✓ COPIED' : 'COPY'}
+                  </button>
+                </div>
+              </div>
+            )}
 
 
 
-        {/* Dynamic Interactive Parameters Form */}
-        {activeTopic.method && (
-          <div className="docs-section">
-            <h3 className="section-title">Endpoint Parameters Form</h3>
-            <div style={{ border: '1px solid var(--border-color)', padding: '24px', backgroundColor: 'var(--dark-iron)', marginTop: '16px' }}>
-              {activeTopic.parameters && activeTopic.parameters.length > 0 ? (
-                <div>
-                  {activeTopic.parameters.map(param => {
-                    const isRequired = param.required;
-                    const isUploaderUrl = (activeTopic.category === 'Media Uploaders' || activeTopic.category === 'File Uploaders' || activeTopic.category === 'Image Tools') && uploadMode === 'url';
-                    const val = isUploaderUrl ? (formValues['url'] ?? '') : (formValues[param.name] ?? '');
-                    const label = isUploaderUrl ? 'url' : param.name;
+            {/* Dynamic Interactive Parameters Form */}
+            {activeTopic.method && (
+              <div className="docs-section">
+                <h3 className="section-title">Endpoint Parameters Form</h3>
+                <div style={{ border: '1px solid var(--border-color)', padding: '24px', backgroundColor: 'var(--dark-iron)', marginTop: '16px' }}>
+                  {activeTopic.parameters && activeTopic.parameters.length > 0 ? (
+                    <div>
+                      {activeTopic.parameters.map(param => {
+                        const isRequired = param.required;
+                        const isUploaderUrl = (activeTopic.category === 'Media Uploaders' || activeTopic.category === 'File Uploaders' || activeTopic.category === 'Image Tools') && uploadMode === 'url';
+                        const val = isUploaderUrl ? (formValues['url'] ?? '') : (formValues[param.name] ?? '');
+                        const label = isUploaderUrl ? 'url' : param.name;
 
-                    return (
-                      <div key={param.name} className="docs-form-field" style={{ marginBottom: '20px' }}>
-                        <label style={{ display: 'block', fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 700, color: 'var(--white)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                          {label} {isRequired && <span style={{ color: 'var(--gold-text)' }}>*</span>}
-                        </label>
-                        {param.type === 'file' ? (
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                            {/* Tab toggles */}
-                            <div style={{ display: 'flex', gap: '1px', backgroundColor: 'var(--border-color)', width: 'fit-content', marginBottom: '8px' }}>
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setUploadMode('file');
-                                  setFormValues({ image: '' });
-                                }}
-                                style={{
-                                  padding: '6px 12px',
-                                  fontSize: '10px',
-                                  fontFamily: 'var(--font-mono)',
-                                  fontWeight: 700,
-                                  backgroundColor: uploadMode === 'file' ? 'var(--dark-iron)' : 'var(--black)',
-                                  color: uploadMode === 'file' ? 'var(--white)' : 'var(--ash)',
-                                  border: 'none',
-                                  cursor: 'pointer',
-                                  borderRadius: '0px'
-                                }}
-                              >
-                                FILE UPLOAD
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setUploadMode('url');
-                                  setFormValues({ url: '' });
-                                }}
-                                style={{
-                                  padding: '6px 12px',
-                                  fontSize: '10px',
-                                  fontFamily: 'var(--font-mono)',
-                                  fontWeight: 700,
-                                  backgroundColor: uploadMode === 'url' ? 'var(--dark-iron)' : 'var(--black)',
-                                  color: uploadMode === 'url' ? 'var(--white)' : 'var(--ash)',
-                                  border: 'none',
-                                  cursor: 'pointer',
-                                  borderRadius: '0px'
-                                }}
-                              >
-                                FILE URL
-                              </button>
-                            </div>
-
-                            {uploadMode === 'file' ? (
-                              <>
-                                <input
-                                  type="file"
-                                  accept={activeTopic.category === 'File Uploaders' ? '*/*' : 'image/*'}
-                                  onChange={(e) => {
-                                    const file = e.target.files?.[0];
-                                    if (file) {
-                                      const reader = new FileReader();
-                                      reader.onloadend = () => {
-                                        setFormValues(prev => ({ ...prev, [param.name]: reader.result }));
-                                      };
-                                      reader.readAsDataURL(file);
-                                    }
-                                  }}
-                                  style={{ display: 'none' }}
-                                  id="docs-file-input"
-                                />
-                                <label
-                                  htmlFor="docs-file-input"
-                                  onDragOver={(e) => {
-                                    e.preventDefault();
-                                    setIsDragging(true);
-                                  }}
-                                  onDragLeave={() => setIsDragging(false)}
-                                  onDrop={(e) => {
-                                    e.preventDefault();
-                                    setIsDragging(false);
-                                    const file = e.dataTransfer.files?.[0];
-                                    if (file && (activeTopic.category === 'File Uploaders' || file.type.startsWith('image/'))) {
-                                      const reader = new FileReader();
-                                      reader.onloadend = () => {
-                                        setFormValues(prev => ({ ...prev, [param.name]: reader.result }));
-                                      };
-                                      reader.readAsDataURL(file);
-                                    }
-                                  }}
-                                  style={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    border: isDragging ? '1px dashed var(--gold)' : '1px dashed var(--border-color)',
-                                    padding: '32px 20px',
-                                    minHeight: '160px',
-                                    cursor: 'pointer',
-                                    backgroundColor: isDragging ? 'rgba(255,192,0,0.03)' : 'var(--black)',
-                                    color: 'var(--ash)',
-                                    fontFamily: 'var(--font-mono)',
-                                    fontSize: '11px',
-                                    textAlign: 'center',
-                                    transition: 'all 0.2s',
-                                    width: '100%',
-                                    boxSizing: 'border-box'
-                                  }}
-                                  onMouseOver={(e) => e.currentTarget.style.borderColor = 'var(--gold)'}
-                                  onMouseOut={(e) => e.currentTarget.style.borderColor = isDragging ? 'var(--gold)' : 'var(--border-color)'}
-                                >
-                                  {val && String(val).startsWith('data:') ? (
-                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
-                                      <span style={{ color: '#27C93F', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', letterSpacing: '0.05em' }}>
-                                        <Check size={14} strokeWidth={3} /> {String(val).startsWith('data:image/') ? 'IMAGE' : 'FILE'} READY FOR GATEWAY
-                                      </span>
-                                      <div style={{ border: '1px solid var(--border-color)', padding: '6px', backgroundColor: 'var(--black)', display: 'inline-block' }}>
-                                        {String(val).startsWith('data:image/') ? (
-                                          <img src={String(val)} alt="Upload preview" style={{ maxWidth: '120px', maxHeight: '120px', display: 'block', objectFit: 'contain' }} />
-                                        ) : (
-                                          <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'var(--ash)', fontFamily: 'var(--font-mono)', fontSize: '10px', gap: '8px' }}>
-                                            <Upload size={24} style={{ color: 'var(--gold)' }} />
-                                            <span>{String(val).split(';')[0].split(':')[1] || 'BINARY FILE'}</span>
-                                          </div>
-                                        )}
-                                      </div>
-                                      <span style={{ fontSize: '9px', color: 'var(--ash)', textTransform: 'uppercase', opacity: 0.8 }}>
-                                        CLICK OR DROP ANOTHER {activeTopic.category === 'File Uploaders' ? 'FILE' : 'IMAGE'} TO REPLACE
-                                      </span>
-                                    </div>
-                                  ) : (
-                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
-                                      <Upload size={20} style={{ color: 'var(--ash)' }} />
-                                      <span style={{ fontWeight: 700, letterSpacing: '0.05em' }}>
-                                        CLICK OR DRAG {activeTopic.category === 'File Uploaders' ? 'FILE' : 'IMAGE FILE'} HERE
-                                      </span>
-                                    </div>
-                                  )}
-                                </label>
-                              </>
-                            ) : (
+                        return (
+                          <div key={param.name} className="docs-form-field" style={{ marginBottom: '20px' }}>
+                            <label style={{ display: 'block', fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 700, color: 'var(--white)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                              {label} {isRequired && <span style={{ color: 'var(--gold-text)' }}>*</span>}
+                            </label>
+                            {param.type === 'file' ? (
                               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                <input
-                                  type="text"
-                                  placeholder={activeTopic.category === 'File Uploaders' ? "Enter or paste file URL (e.g. https://example.com/document.zip)" : "Enter or paste image URL (e.g. https://example.com/photo.jpg)"}
-                                  value={val && !String(val).startsWith('data:') ? String(val) : ''}
-                                  onChange={(e) => setFormValues(prev => ({ ...prev, [isUploaderUrl ? 'url' : param.name]: e.target.value }))}
-                                  className="docs-input"
-                                  style={{
-                                    width: '100%',
-                                    padding: '12px',
-                                    backgroundColor: 'var(--black)',
-                                    color: 'var(--white)',
-                                    border: focusedField === param.name ? '1px solid var(--gold)' : '1px solid #2B2B2B',
-                                    borderRadius: '0px',
-                                    outline: 'none',
-                                    fontFamily: 'var(--font-mono)',
-                                    fontSize: '12px',
-                                    transition: 'border-color 0.2s'
-                                  }}
-                                  onFocus={() => setFocusedField(param.name)}
-                                  onBlur={() => setFocusedField(null)}
-                                />
-                                {val && !String(val).startsWith('data:') && (
-                                  <div style={{ border: '1px solid var(--border-color)', padding: '8px', backgroundColor: 'var(--black)', display: 'inline-block', width: 'fit-content' }}>
-                                    <img
-                                      src={String(val)}
-                                      alt="URL preview"
-                                      style={{ maxWidth: '80px', maxHeight: '80px', objectFit: 'contain', display: 'block' }}
-                                      onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                                {/* Tab toggles */}
+                                <div style={{ display: 'flex', gap: '1px', backgroundColor: 'var(--border-color)', width: 'fit-content', marginBottom: '8px' }}>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setUploadMode('file');
+                                      setFormValues({ image: '' });
+                                    }}
+                                    style={{
+                                      padding: '6px 12px',
+                                      fontSize: '10px',
+                                      fontFamily: 'var(--font-mono)',
+                                      fontWeight: 700,
+                                      backgroundColor: uploadMode === 'file' ? 'var(--dark-iron)' : 'var(--black)',
+                                      color: uploadMode === 'file' ? 'var(--white)' : 'var(--ash)',
+                                      border: 'none',
+                                      cursor: 'pointer',
+                                      borderRadius: '0px'
+                                    }}
+                                  >
+                                    FILE UPLOAD
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setUploadMode('url');
+                                      setFormValues({ url: '' });
+                                    }}
+                                    style={{
+                                      padding: '6px 12px',
+                                      fontSize: '10px',
+                                      fontFamily: 'var(--font-mono)',
+                                      fontWeight: 700,
+                                      backgroundColor: uploadMode === 'url' ? 'var(--dark-iron)' : 'var(--black)',
+                                      color: uploadMode === 'url' ? 'var(--white)' : 'var(--ash)',
+                                      border: 'none',
+                                      cursor: 'pointer',
+                                      borderRadius: '0px'
+                                    }}
+                                  >
+                                    FILE URL
+                                  </button>
+                                </div>
+
+                                {uploadMode === 'file' ? (
+                                  <>
+                                    <input
+                                      type="file"
+                                      accept={activeTopic.category === 'File Uploaders' ? '*/*' : 'image/*'}
+                                      onChange={(e) => {
+                                        const file = e.target.files?.[0];
+                                        if (file) {
+                                          const reader = new FileReader();
+                                          reader.onloadend = () => {
+                                            setFormValues(prev => ({ ...prev, [param.name]: reader.result }));
+                                          };
+                                          reader.readAsDataURL(file);
+                                        }
+                                      }}
+                                      style={{ display: 'none' }}
+                                      id="docs-file-input"
                                     />
+                                    <label
+                                      htmlFor="docs-file-input"
+                                      onDragOver={(e) => {
+                                        e.preventDefault();
+                                        setIsDragging(true);
+                                      }}
+                                      onDragLeave={() => setIsDragging(false)}
+                                      onDrop={(e) => {
+                                        e.preventDefault();
+                                        setIsDragging(false);
+                                        const file = e.dataTransfer.files?.[0];
+                                        if (file && (activeTopic.category === 'File Uploaders' || file.type.startsWith('image/'))) {
+                                          const reader = new FileReader();
+                                          reader.onloadend = () => {
+                                            setFormValues(prev => ({ ...prev, [param.name]: reader.result }));
+                                          };
+                                          reader.readAsDataURL(file);
+                                        }
+                                      }}
+                                      style={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        border: isDragging ? '1px dashed var(--gold)' : '1px dashed var(--border-color)',
+                                        padding: '32px 20px',
+                                        minHeight: '160px',
+                                        cursor: 'pointer',
+                                        backgroundColor: isDragging ? 'rgba(255,192,0,0.03)' : 'var(--black)',
+                                        color: 'var(--ash)',
+                                        fontFamily: 'var(--font-mono)',
+                                        fontSize: '11px',
+                                        textAlign: 'center',
+                                        transition: 'all 0.2s',
+                                        width: '100%',
+                                        boxSizing: 'border-box'
+                                      }}
+                                      onMouseOver={(e) => e.currentTarget.style.borderColor = 'var(--gold)'}
+                                      onMouseOut={(e) => e.currentTarget.style.borderColor = isDragging ? 'var(--gold)' : 'var(--border-color)'}
+                                    >
+                                      {val && String(val).startsWith('data:') ? (
+                                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
+                                          <span style={{ color: '#27C93F', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', letterSpacing: '0.05em' }}>
+                                            <Check size={14} strokeWidth={3} /> {String(val).startsWith('data:image/') ? 'IMAGE' : 'FILE'} READY FOR GATEWAY
+                                          </span>
+                                          <div style={{ border: '1px solid var(--border-color)', padding: '6px', backgroundColor: 'var(--black)', display: 'inline-block' }}>
+                                            {String(val).startsWith('data:image/') ? (
+                                              <img src={String(val)} alt="Upload preview" style={{ maxWidth: '120px', maxHeight: '120px', display: 'block', objectFit: 'contain' }} />
+                                            ) : (
+                                              <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'var(--ash)', fontFamily: 'var(--font-mono)', fontSize: '10px', gap: '8px' }}>
+                                                <Upload size={24} style={{ color: 'var(--gold)' }} />
+                                                <span>{String(val).split(';')[0].split(':')[1] || 'BINARY FILE'}</span>
+                                              </div>
+                                            )}
+                                          </div>
+                                          <span style={{ fontSize: '9px', color: 'var(--ash)', textTransform: 'uppercase', opacity: 0.8 }}>
+                                            CLICK OR DROP ANOTHER {activeTopic.category === 'File Uploaders' ? 'FILE' : 'IMAGE'} TO REPLACE
+                                          </span>
+                                        </div>
+                                      ) : (
+                                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+                                          <Upload size={20} style={{ color: 'var(--ash)' }} />
+                                          <span style={{ fontWeight: 700, letterSpacing: '0.05em' }}>
+                                            CLICK OR DRAG {activeTopic.category === 'File Uploaders' ? 'FILE' : 'IMAGE FILE'} HERE
+                                          </span>
+                                        </div>
+                                      )}
+                                    </label>
+                                  </>
+                                ) : (
+                                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                    <input
+                                      type="text"
+                                      placeholder={activeTopic.category === 'File Uploaders' ? "Enter or paste file URL (e.g. https://example.com/document.zip)" : "Enter or paste image URL (e.g. https://example.com/photo.jpg)"}
+                                      value={val && !String(val).startsWith('data:') ? String(val) : ''}
+                                      onChange={(e) => setFormValues(prev => ({ ...prev, [isUploaderUrl ? 'url' : param.name]: e.target.value }))}
+                                      className="docs-input"
+                                      style={{
+                                        width: '100%',
+                                        padding: '12px',
+                                        backgroundColor: 'var(--black)',
+                                        color: 'var(--white)',
+                                        border: focusedField === param.name ? '1px solid var(--gold)' : '1px solid #2B2B2B',
+                                        borderRadius: '0px',
+                                        outline: 'none',
+                                        fontFamily: 'var(--font-mono)',
+                                        fontSize: '12px',
+                                        transition: 'border-color 0.2s'
+                                      }}
+                                      onFocus={() => setFocusedField(param.name)}
+                                      onBlur={() => setFocusedField(null)}
+                                    />
+                                    {val && !String(val).startsWith('data:') && (
+                                      <div style={{ border: '1px solid var(--border-color)', padding: '8px', backgroundColor: 'var(--black)', display: 'inline-block', width: 'fit-content' }}>
+                                        <img
+                                          src={String(val)}
+                                          alt="URL preview"
+                                          style={{ maxWidth: '80px', maxHeight: '80px', objectFit: 'contain', display: 'block' }}
+                                          onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                                        />
+                                      </div>
+                                    )}
                                   </div>
                                 )}
                               </div>
+                            ) : param.type === 'number' ? (
+                              <input
+                                type="number"
+                                placeholder={`Enter ${param.name}...`}
+                                value={val}
+                                onChange={(e) => setFormValues(prev => ({ ...prev, [param.name]: Number(e.target.value) }))}
+                                className="docs-input"
+                                style={{
+                                  width: '100%',
+                                  padding: '12px',
+                                  backgroundColor: 'var(--black)',
+                                  color: 'var(--white)',
+                                  border: focusedField === param.name ? '1px solid var(--gold)' : '1px solid #2B2B2B',
+                                  borderRadius: '0px',
+                                  outline: 'none',
+                                  fontFamily: 'var(--font-mono)',
+                                  fontSize: '12px',
+                                  transition: 'border-color 0.2s'
+                                }}
+                                onFocus={() => setFocusedField(param.name)}
+                                onBlur={() => setFocusedField(null)}
+                              />
+                            ) : label === 'text' ? (
+                              <textarea
+                                value={val}
+                                placeholder={`Enter ${param.name}...`}
+                                onChange={(e) => setFormValues(prev => ({ ...prev, [param.name]: e.target.value }))}
+                                className="docs-input"
+                                rows={3}
+                                style={{
+                                  width: '100%',
+                                  padding: '12px',
+                                  backgroundColor: 'var(--black)',
+                                  color: 'var(--white)',
+                                  border: focusedField === param.name ? '1px solid var(--gold)' : '1px solid #2B2B2B',
+                                  borderRadius: '0px',
+                                  outline: 'none',
+                                  fontFamily: 'var(--font-mono)',
+                                  fontSize: '12px',
+                                  resize: 'vertical',
+                                  transition: 'border-color 0.2s'
+                                }}
+                                onFocus={() => setFocusedField(param.name)}
+                                onBlur={() => setFocusedField(null)}
+                              />
+                            ) : param.type === 'select' ? (
+                              <CustomDropdown
+                                value={String(val)}
+                                options={(param as any).options ?? []}
+                                onChange={(v) => setFormValues(prev => ({ ...prev, [param.name]: v }))}
+                              />
+                            ) : (
+                              <input
+                                type="text"
+                                placeholder={`Enter ${param.name}...`}
+                                value={val}
+                                onChange={(e) => setFormValues(prev => ({ ...prev, [param.name]: e.target.value }))}
+                                className="docs-input"
+                                style={{
+                                  width: '100%',
+                                  padding: '12px',
+                                  backgroundColor: 'var(--black)',
+                                  color: 'var(--white)',
+                                  border: focusedField === param.name ? '1px solid var(--gold)' : '1px solid #2B2B2B',
+                                  borderRadius: '0px',
+                                  outline: 'none',
+                                  fontFamily: 'var(--font-mono)',
+                                  fontSize: '12px',
+                                  transition: 'border-color 0.2s'
+                                }}
+                                onFocus={() => setFocusedField(param.name)}
+                                onBlur={() => setFocusedField(null)}
+                              />
                             )}
+                            <span style={{ fontSize: '11px', color: 'var(--ash)', marginTop: '6px', display: 'block', fontFamily: 'var(--font-display)' }}>{param.desc}</span>
                           </div>
-                        ) : param.type === 'number' ? (
-                          <input
-                            type="number"
-                            placeholder={`Enter ${param.name}...`}
-                            value={val}
-                            onChange={(e) => setFormValues(prev => ({ ...prev, [param.name]: Number(e.target.value) }))}
-                            className="docs-input"
-                            style={{
-                              width: '100%',
-                              padding: '12px',
-                              backgroundColor: 'var(--black)',
-                              color: 'var(--white)',
-                              border: focusedField === param.name ? '1px solid var(--gold)' : '1px solid #2B2B2B',
-                              borderRadius: '0px',
-                              outline: 'none',
-                              fontFamily: 'var(--font-mono)',
-                              fontSize: '12px',
-                              transition: 'border-color 0.2s'
-                            }}
-                            onFocus={() => setFocusedField(param.name)}
-                            onBlur={() => setFocusedField(null)}
-                          />
-                        ) : label === 'text' ? (
-                          <textarea
-                            value={val}
-                            placeholder={`Enter ${param.name}...`}
-                            onChange={(e) => setFormValues(prev => ({ ...prev, [param.name]: e.target.value }))}
-                            className="docs-input"
-                            rows={3}
-                            style={{
-                              width: '100%',
-                              padding: '12px',
-                              backgroundColor: 'var(--black)',
-                              color: 'var(--white)',
-                              border: focusedField === param.name ? '1px solid var(--gold)' : '1px solid #2B2B2B',
-                              borderRadius: '0px',
-                              outline: 'none',
-                              fontFamily: 'var(--font-mono)',
-                              fontSize: '12px',
-                              resize: 'vertical',
-                              transition: 'border-color 0.2s'
-                            }}
-                            onFocus={() => setFocusedField(param.name)}
-                            onBlur={() => setFocusedField(null)}
-                          />
-                        ) : param.type === 'select' ? (
-                          <CustomDropdown
-                            value={String(val)}
-                            options={(param as any).options ?? []}
-                            onChange={(v) => setFormValues(prev => ({ ...prev, [param.name]: v }))}
-                          />
-                        ) : (
-                          <input
-                            type="text"
-                            placeholder={`Enter ${param.name}...`}
-                            value={val}
-                            onChange={(e) => setFormValues(prev => ({ ...prev, [param.name]: e.target.value }))}
-                            className="docs-input"
-                            style={{
-                              width: '100%',
-                              padding: '12px',
-                              backgroundColor: 'var(--black)',
-                              color: 'var(--white)',
-                              border: focusedField === param.name ? '1px solid var(--gold)' : '1px solid #2B2B2B',
-                              borderRadius: '0px',
-                              outline: 'none',
-                              fontFamily: 'var(--font-mono)',
-                              fontSize: '12px',
-                              transition: 'border-color 0.2s'
-                            }}
-                            onFocus={() => setFocusedField(param.name)}
-                            onBlur={() => setFocusedField(null)}
-                          />
-                        )}
-                        <span style={{ fontSize: '11px', color: 'var(--ash)', marginTop: '6px', display: 'block', fontFamily: 'var(--font-display)' }}>{param.desc}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              ) : (
-                <span style={{ fontSize: '13px', color: 'var(--ash)' }}>No additional request configuration payload required.</span>
-              )}
-
-              <button
-                onClick={handleSendRequest}
-                className="btn btn-gold"
-                style={{ width: '100%', padding: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', cursor: 'pointer', marginTop: '24px' }}
-                disabled={loading}
-              >
-                {loading ? <RefreshCw size={14} className="animate-spin" /> : <Send size={14} />}
-                {loading ? 'RUNNING DATA...' : 'SEND REQUEST'}
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Sandbox Response Viewer */}
-        {activeTopic.method && (
-          <div className="docs-section">
-            <h3 className="section-title">Execution Response</h3>
-
-            <div className="sandbox-panel" style={{ marginTop: '16px' }}>
-              <div className="sandbox-panel-header" style={{ padding: '0px' }}>
-                <div style={{ display: 'flex' }}>
-                  <button
-                    onClick={() => setResponseTab('visual')}
-                    className={`nav-link`}
-                    style={{
-                      padding: '16px 24px',
-                      background: responseTab === 'visual' ? 'var(--dark-iron)' : 'transparent',
-                      color: responseTab === 'visual' ? 'var(--white)' : 'var(--ash)',
-                      border: 'none',
-                      borderRight: '1px solid var(--border-color)',
-                      fontSize: '11px',
-                      fontWeight: 700,
-                      cursor: 'pointer',
-                      borderRadius: '0px'
-                    }}
-                  >
-                    PREVIEW
-                  </button>
-                  <button
-                    onClick={() => setResponseTab('json')}
-                    className={`nav-link`}
-                    style={{
-                      padding: '16px 24px',
-                      background: responseTab === 'json' ? 'var(--dark-iron)' : 'transparent',
-                      color: responseTab === 'json' ? 'var(--white)' : 'var(--ash)',
-                      border: 'none',
-                      borderRight: '1px solid var(--border-color)',
-                      fontSize: '11px',
-                      fontWeight: 700,
-                      cursor: 'pointer',
-                      borderRadius: '0px'
-                    }}
-                  >
-                    RAW JSON
-                  </button>
-                </div>
-
-                <button
-                  onClick={() => copyToClipboard(responseJson ? JSON.stringify(responseJson, null, 2) : getCurlCode())}
-                  className="btn-text-copy"
-                  style={{ marginRight: '16px' }}
-                >
-                  {copied ? <Check size={12} style={{ color: '#27C93F' }} /> : responseJson ? 'COPY JSON' : 'COPY CURL'}
-                </button>
-              </div>
-
-              <div className="sandbox-response-container" style={{ backgroundColor: 'var(--dark-iron)', padding: '24px', minHeight: '280px' }}>
-                {responseJson ? (
-                  responseTab === 'visual' ? (
-                    renderVisualResult()
+                        );
+                      })}
+                    </div>
                   ) : (
-                    <pre className="response-pre">
-                      <code style={{ color: 'var(--smoke)' }}>{JSON.stringify(responseJson, null, 2)}</code>
-                    </pre>
-                  )
-                ) : (
-                  <div className="sandbox-empty-message">
-                    <span>Click "SEND REQUEST" above to trigger a live scraper request execution and preview results.</span>
-                  </div>
-                )}
+                    <span style={{ fontSize: '13px', color: 'var(--ash)' }}>No additional request configuration payload required.</span>
+                  )}
+
+                  <button
+                    onClick={handleSendRequest}
+                    className="btn btn-gold"
+                    style={{ width: '100%', padding: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', cursor: 'pointer', marginTop: '24px' }}
+                    disabled={loading}
+                  >
+                    {loading ? <RefreshCw size={14} className="animate-spin" /> : <Send size={14} />}
+                    {loading ? 'RUNNING DATA...' : 'SEND REQUEST'}
+                  </button>
+                </div>
               </div>
-            </div>
-          </div>
-        )}
+            )}
+
+            {/* Sandbox Response Viewer */}
+            {activeTopic.method && (
+              <div className="docs-section">
+                <h3 className="section-title">Execution Response</h3>
+
+                <div className="sandbox-panel" style={{ marginTop: '16px' }}>
+                  <div className="sandbox-panel-header" style={{ padding: '0px' }}>
+                    <div style={{ display: 'flex' }}>
+                      <button
+                        onClick={() => setResponseTab('visual')}
+                        className={`nav-link`}
+                        style={{
+                          padding: '16px 24px',
+                          background: responseTab === 'visual' ? 'var(--dark-iron)' : 'transparent',
+                          color: responseTab === 'visual' ? 'var(--white)' : 'var(--ash)',
+                          border: 'none',
+                          borderRight: '1px solid var(--border-color)',
+                          fontSize: '11px',
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                          borderRadius: '0px'
+                        }}
+                      >
+                        PREVIEW
+                      </button>
+                      <button
+                        onClick={() => setResponseTab('json')}
+                        className={`nav-link`}
+                        style={{
+                          padding: '16px 24px',
+                          background: responseTab === 'json' ? 'var(--dark-iron)' : 'transparent',
+                          color: responseTab === 'json' ? 'var(--white)' : 'var(--ash)',
+                          border: 'none',
+                          borderRight: '1px solid var(--border-color)',
+                          fontSize: '11px',
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                          borderRadius: '0px'
+                        }}
+                      >
+                        RAW JSON
+                      </button>
+                    </div>
+
+                    <button
+                      onClick={() => copyToClipboard(responseJson ? JSON.stringify(responseJson, null, 2) : getCurlCode())}
+                      className="btn-text-copy"
+                      style={{ marginRight: '16px' }}
+                    >
+                      {copied ? <Check size={12} style={{ color: '#27C93F' }} /> : responseJson ? 'COPY JSON' : 'COPY CURL'}
+                    </button>
+                  </div>
+
+                  <div className="sandbox-response-container" style={{ backgroundColor: 'var(--dark-iron)', padding: '24px', minHeight: '280px' }}>
+                    {responseJson ? (
+                      responseTab === 'visual' ? (
+                        renderVisualResult()
+                      ) : (
+                        <pre className="response-pre">
+                          <code style={{ color: 'var(--smoke)' }}>{JSON.stringify(responseJson, null, 2)}</code>
+                        </pre>
+                      )
+                    ) : (
+                      <div className="sandbox-empty-message">
+                        <span>Click "SEND REQUEST" above to trigger a live scraper request execution and preview results.</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
           </>
         )}
       </main>
