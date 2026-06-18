@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Activity, Clock, CheckCircle2, XCircle, ArrowUpRight, BarChart3, RefreshCw } from 'lucide-react';
+import { Activity, Clock, CheckCircle2, XCircle, ArrowUpRight, BarChart3, RefreshCw, Database, Layers } from 'lucide-react';
 
 interface RequestLog {
   id: number;
@@ -26,6 +26,8 @@ interface MonitorData {
   uptime: number;
   stats: {
     requestsToday: number;
+    totalRequests?: number;
+    totalEndpoints?: number;
     averageLatencyMs: number;
     successRatePercent: number;
     errorRatePercent: number;
@@ -98,6 +100,8 @@ export default function Monitor() {
   // Active metrics or fallback parameters
   const stats = data?.stats || {
     requestsToday: 0,
+    totalRequests: 0,
+    totalEndpoints: 0,
     averageLatencyMs: 0,
     successRatePercent: 100.00,
     errorRatePercent: 0.00,
@@ -145,7 +149,7 @@ export default function Monitor() {
         </div>
       </div>
 
-      {/* Grid: 4 Metric Cards */}
+      {/* Grid: Metric Cards */}
       <div className="monitor-stats-grid">
         <div className="monitor-stat-card">
           <div className="stat-card-header">
@@ -162,6 +166,22 @@ export default function Monitor() {
           </div>
           <span className="stat-card-value">{stats.requestsToday.toLocaleString()}</span>
           <span className="stat-card-label">Total logs recorded since midnight</span>
+        </div>
+        <div className="monitor-stat-card">
+          <div className="stat-card-header">
+            <span>TOTAL REQUESTS</span>
+            <Database size={16} style={{ color: 'var(--gold)' }} />
+          </div>
+          <span className="stat-card-value">{(stats.totalRequests || 0).toLocaleString()}</span>
+          <span className="stat-card-label">All-time request logs recorded</span>
+        </div>
+        <div className="monitor-stat-card">
+          <div className="stat-card-header">
+            <span>TOTAL ENDPOINTS</span>
+            <Layers size={16} style={{ color: 'var(--gold)' }} />
+          </div>
+          <span className="stat-card-value">{(stats.totalEndpoints || 72).toLocaleString()}</span>
+          <span className="stat-card-label">Total active route groupings</span>
         </div>
         <div className="monitor-stat-card">
           <div className="stat-card-header">

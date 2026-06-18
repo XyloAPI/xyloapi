@@ -266,6 +266,8 @@ app.get('/api/monitor', async (req, res) => {
   const uptime = Math.floor((Date.now() - startTimestamp) / 1000);
   
   let requestsToday = liveRequestsCount;
+  let totalRequests = liveRequestsCount;
+  const totalEndpoints = apiModules.reduce((acc, m) => acc + m.endpointsCount, 0);
   let avgLatency = liveRequestsCount > 0 ? Math.round(liveTotalLatencyMs / liveRequestsCount) : 0;
   let successRate = liveRequestsCount > 0 ? parseFloat(((liveSuccessRequestsCount / liveRequestsCount) * 100).toFixed(2)) : 100.00;
   let lastRequests: any[] = [];
@@ -279,6 +281,11 @@ app.get('/api/monitor', async (req, res) => {
         "SELECT COUNT(*)::integer as count FROM request_logs WHERE created_at >= CURRENT_DATE"
       );
       requestsToday = countRes.rows[0]?.count || 0;
+
+      const totalCountRes = await pool.query(
+        "SELECT COUNT(*)::integer as count FROM request_logs"
+      );
+      totalRequests = totalCountRes.rows[0]?.count || 0;
 
       const latencyRes = await pool.query(
         "SELECT AVG(latency_ms)::float as avg_lat FROM request_logs"
@@ -324,6 +331,8 @@ app.get('/api/monitor', async (req, res) => {
     uptime,
     stats: {
       requestsToday,
+      totalRequests,
+      totalEndpoints,
       averageLatencyMs: avgLatency,
       successRatePercent: successRate,
       errorRatePercent: parseFloat((100 - successRate).toFixed(2))
