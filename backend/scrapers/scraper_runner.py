@@ -131,6 +131,7 @@ try:
     from hukumonline_scraper import get_hukumonline_news
     from mediaindonesia_scraper import get_mi_news
     from beritajakarta_scraper import get_bj_news
+    from tangerangkota_scraper import get_tk_news
 except ImportError:
     # Fallback to local import if environment is weird
     import imgur_uploader
@@ -230,6 +231,7 @@ except ImportError:
     import hukumonline_scraper
     import mediaindonesia_scraper
     import beritajakarta_scraper
+    import tangerangkota_scraper
     upload_imgur = imgur_uploader.upload_imgur
     upload_eight_uploads = eight_uploads_uploader.upload_eight_uploads
     upload_freeimage = freeimage_uploader.upload_freeimage
@@ -327,6 +329,7 @@ except ImportError:
     get_hukumonline_news = hukumonline_scraper.get_hukumonline_news
     get_mi_news = mediaindonesia_scraper.get_mi_news
     get_bj_news = beritajakarta_scraper.get_bj_news
+    get_tk_news = tangerangkota_scraper.get_tk_news
 
 def run_pipeline(endpoint_id, payload):
     if endpoint_id in ["imgur", "image"]:
@@ -521,6 +524,8 @@ def run_pipeline(endpoint_id, payload):
         return get_mi_news(payload)
     elif endpoint_id in ["beritajakarta", "berita-jakarta", "beritajakarta-news"]:
         return get_bj_news(payload)
+    elif endpoint_id in ["tangerangkota", "tangerang-kota", "tangerangkota-news"]:
+        return get_tk_news(payload)
     else:
         return {
             "endpoint_id": endpoint_id,
