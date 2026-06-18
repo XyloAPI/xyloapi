@@ -96,6 +96,7 @@ try:
     from time_scraper import get_time_news
     from skynews_scraper import get_skynews
     from npr_scraper import get_npr
+    from bloomberg_scraper import get_bloomberg
 except ImportError:
     # Fallback to local import if environment is weird
     import imgur_uploader
@@ -160,6 +161,7 @@ except ImportError:
     import time_scraper
     import skynews_scraper
     import npr_scraper
+    import bloomberg_scraper
     upload_imgur = imgur_uploader.upload_imgur
     upload_eight_uploads = eight_uploads_uploader.upload_eight_uploads
     upload_freeimage = freeimage_uploader.upload_freeimage
@@ -222,6 +224,7 @@ except ImportError:
     get_time_news = time_scraper.get_time_news
     get_skynews = skynews_scraper.get_skynews
     get_npr = npr_scraper.get_npr
+    get_bloomberg = bloomberg_scraper.get_bloomberg
 
 def run_pipeline(endpoint_id, payload):
     if endpoint_id in ["imgur", "image"]:
@@ -346,6 +349,8 @@ def run_pipeline(endpoint_id, payload):
         return get_skynews(payload)
     elif endpoint_id in ["npr", "national-public-radio"]:
         return get_npr(payload)
+    elif endpoint_id in ["bloomberg", "bbg"]:
+        return get_bloomberg(payload)
     else:
         return {
             "endpoint_id": endpoint_id,
