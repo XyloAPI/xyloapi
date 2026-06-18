@@ -107,6 +107,7 @@ try:
     from nbc_scraper import get_nbc
     from nasa_scraper import get_nasa
     from freep_scraper import get_freep
+    from masslive_scraper import get_masslive
 except ImportError:
     # Fallback to local import if environment is weird
     import imgur_uploader
@@ -182,6 +183,7 @@ except ImportError:
     import nbc_scraper
     import nasa_scraper
     import freep_scraper
+    import masslive_scraper
     upload_imgur = imgur_uploader.upload_imgur
     upload_eight_uploads = eight_uploads_uploader.upload_eight_uploads
     upload_freeimage = freeimage_uploader.upload_freeimage
@@ -255,6 +257,7 @@ except ImportError:
     get_nbc = nbc_scraper.get_nbc
     get_nasa = nasa_scraper.get_nasa
     get_freep = freep_scraper.get_freep
+    get_masslive = masslive_scraper.get_masslive
 
 def run_pipeline(endpoint_id, payload):
     if endpoint_id in ["imgur", "image"]:
@@ -401,6 +404,8 @@ def run_pipeline(endpoint_id, payload):
         return get_nasa(payload)
     elif endpoint_id in ["detroit", "freep", "detroit-free-press"]:
         return get_freep(payload)
+    elif endpoint_id in ["masslive", "mass-live"]:
+        return get_masslive(payload)
     else:
         return {
             "endpoint_id": endpoint_id,
