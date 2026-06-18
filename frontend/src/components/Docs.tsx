@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Globe, RefreshCw, Send, Check, Upload, Download, Newspaper } from 'lucide-react';
+import { Globe, RefreshCw, Send, Check, Upload, Download, Newspaper, ChevronDown, ChevronRight } from 'lucide-react';
 
 interface CustomVideoPlayerProps {
   src: string;
@@ -2049,6 +2049,25 @@ export default function Docs() {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [copiedText, setCopiedText] = useState<string>('');
   const [focusedField, setFocusedField] = useState<string | null>(null);
+  const [expandedCategories, setExpandedCategories] = useState<{ [key: string]: boolean }>({
+    [docTopics[0].category]: true
+  });
+
+  useEffect(() => {
+    if (activeTopic) {
+      setExpandedCategories(prev => ({
+        ...prev,
+        [activeTopic.category]: true
+      }));
+    }
+  }, [activeTopic]);
+
+  const toggleCategory = (categoryName: string) => {
+    setExpandedCategories(prev => ({
+      ...prev,
+      [categoryName]: !prev[categoryName]
+    }));
+  };
 
   // Populate dynamic form variables on topic selection
   useEffect(() => {
@@ -2544,26 +2563,45 @@ export default function Docs() {
           .sort((a, b) => a[0].localeCompare(b[0]))
           .map(([categoryName, topics]) => (
             <div key={categoryName} className="docs-sidebar-group">
-              <div className="docs-sidebar-category">
-                {getCategoryIcon(categoryName)}
-                <span>{categoryName}</span>
+              <div 
+                onClick={() => toggleCategory(categoryName)}
+                className="docs-sidebar-category"
+                style={{ 
+                  cursor: 'pointer', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'space-between',
+                  userSelect: 'none'
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  {getCategoryIcon(categoryName)}
+                  <span>{categoryName}</span>
+                </div>
+                {expandedCategories[categoryName] ? (
+                  <ChevronDown size={14} style={{ color: 'var(--steel)', flexShrink: 0 }} />
+                ) : (
+                  <ChevronRight size={14} style={{ color: 'var(--steel)', flexShrink: 0 }} />
+                )}
               </div>
-              <div className="docs-sidebar-links">
-                {topics.map(topic => (
-                  <button
-                    key={topic.id}
-                    onClick={() => setActiveTopic(topic)}
-                    className={`docs-sidebar-link ${activeTopic.id === topic.id ? 'active' : ''}`}
-                  >
-                    {topic.title}
-                    {topic.method && (
-                      <span className={`method-badge ${topic.method.toLowerCase()}`}>
-                        {topic.method}
-                      </span>
-                    )}
-                  </button>
-                ))}
-              </div>
+              {expandedCategories[categoryName] && (
+                <div className="docs-sidebar-links">
+                  {topics.map(topic => (
+                    <button
+                      key={topic.id}
+                      onClick={() => setActiveTopic(topic)}
+                      className={`docs-sidebar-link ${activeTopic.id === topic.id ? 'active' : ''}`}
+                    >
+                      {topic.title}
+                      {topic.method && (
+                        <span className={`method-badge ${topic.method.toLowerCase()}`}>
+                          {topic.method}
+                        </span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
       </aside>
