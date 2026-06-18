@@ -1325,42 +1325,11 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Sidebar Navigation */
 .docs-sidebar {
-  position: sticky;
-  top: 120px;
-  max-height: calc(100vh - 140px);
-  overflow-y: auto;
-  align-self: start;
   background-color: var(--dark-iron);
   border: 1px solid var(--border-color);
   padding: 24px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-color) transparent;
 }
 
-@media (max-width: 900px) {
-  .docs-sidebar {
-    position: relative;
-    top: auto;
-    max-height: none;
-  }
-}
-
-.docs-sidebar::-webkit-scrollbar {
-  width: 4px;
-}
-
-.docs-sidebar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.docs-sidebar::-webkit-scrollbar-thumb {
-  background-color: var(--border-color);
-  border-radius: 0;
-}
-
-.docs-sidebar::-webkit-scrollbar-thumb:hover {
-  background-color: var(--gold);
-}
 
 .docs-sidebar-group {
   margin-bottom: 24px;
