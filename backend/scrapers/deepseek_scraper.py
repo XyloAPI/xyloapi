@@ -70,16 +70,14 @@ def get_deepseek_chat(payload):
             "temperature": temperature,
             "max_tokens": max_tokens,
             "top_p": top_p,
-            "extra_body": {
-                "chat_template_kwargs": {
-                    "thinking": False
-                }
+            "chat_template_kwargs": {
+                "thinking": False
             },
             "stream": False
         }
 
         session = requests.Session()
-        r = session.post(url, json=api_payload, headers=headers, timeout=30)
+        r = session.post(url, json=api_payload, headers=headers, timeout=90)
         
         if r.status_code != 200:
             try:
