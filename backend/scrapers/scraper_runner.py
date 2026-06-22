@@ -25,8 +25,9 @@ def load_dotenv():
                         if '=' in line:
                             key, val = line.split('=', 1)
                             val = val.strip().strip('"').strip("'")
-                            os.environ[key.strip()] = val
-                break
+                            # Do NOT overwrite keys already set (first file wins for same key)
+                            if key.strip() not in os.environ:
+                                os.environ[key.strip()] = val
             except Exception:
                 pass
 
