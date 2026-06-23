@@ -25,9 +25,10 @@ def load_dotenv():
                         if '=' in line:
                             key, val = line.split('=', 1)
                             val = val.strip().strip('"').strip("'")
-                            # Do NOT overwrite keys already set (first file wins for same key)
-                            if key.strip() not in os.environ:
-                                os.environ[key.strip()] = val
+                            # Overwrite only if key is not set OR currently empty
+                            key = key.strip()
+                            if key not in os.environ or not os.environ[key]:
+                                os.environ[key] = val
             except Exception:
                 pass
 
@@ -169,7 +170,28 @@ try:
     from qwen_scraper import get_qwen_chat
     from minimax_scraper import get_minimax_chat
     from deepseek_scraper import get_deepseek_chat
+    from deepseek_flash_scraper import get_deepseek_flash_chat
     from kimi_scraper import get_kimi_chat
+    from glm_scraper import get_glm_chat
+    from nemotron_scraper import get_nemotron_chat
+    from chatgpt_scraper import get_chatgpt_chat
+    from granite_scraper import get_granite_chat
+    from mistral_scraper import get_mistral_chat
+    from quillbot_scraper import get_quillbot_chat
+    from perplexity_scraper import get_perplexity_chat
+    from gemini_scraper import get_gemini_chat
+    from pollinations_scraper import get_pollinations_chat
+    from asynt_scraper import get_asynt_chat
+    from muslimai_scraper import get_muslimai_chat
+    from gitaai_scraper import get_gitaai_chat
+    from powerbrainai_scraper import get_powerbrainai_chat
+    from felo_scraper import get_felo_chat
+    from mathgpt_scraper import get_mathgpt_chat
+    from jeeves_scraper import get_jeeves_chat
+    from sahabatai_scraper import get_sahabatai_chat
+    from aya_scraper import get_aya_chat
+    from ansari_scraper import get_ansari_chat
+    from olabiba_scraper import get_olabiba_chat
 except ImportError:
     # Fallback to local import if environment is weird
     import imgur_uploader
@@ -306,7 +328,28 @@ except ImportError:
     import qwen_scraper
     import minimax_scraper
     import deepseek_scraper
+    import deepseek_flash_scraper
     import kimi_scraper
+    import glm_scraper
+    import nemotron_scraper
+    import chatgpt_scraper
+    import granite_scraper
+    import mistral_scraper
+    import quillbot_scraper
+    import perplexity_scraper
+    import gemini_scraper
+    import pollinations_scraper
+    import asynt_scraper
+    import muslimai_scraper
+    import gitaai_scraper
+    import powerbrainai_scraper
+    import felo_scraper
+    import mathgpt_scraper
+    import jeeves_scraper
+    import sahabatai_scraper
+    import aya_scraper
+    import ansari_scraper
+    import olabiba_scraper
     upload_imgur = imgur_uploader.upload_imgur
     upload_eight_uploads = eight_uploads_uploader.upload_eight_uploads
     upload_freeimage = freeimage_uploader.upload_freeimage
@@ -441,7 +484,28 @@ except ImportError:
     get_qwen_chat = qwen_scraper.get_qwen_chat
     get_minimax_chat = minimax_scraper.get_minimax_chat
     get_deepseek_chat = deepseek_scraper.get_deepseek_chat
+    get_deepseek_flash_chat = deepseek_flash_scraper.get_deepseek_flash_chat
     get_kimi_chat = kimi_scraper.get_kimi_chat
+    get_glm_chat = glm_scraper.get_glm_chat
+    get_nemotron_chat = nemotron_scraper.get_nemotron_chat
+    get_chatgpt_chat = chatgpt_scraper.get_chatgpt_chat
+    get_granite_chat = granite_scraper.get_granite_chat
+    get_mistral_chat = mistral_scraper.get_mistral_chat
+    get_quillbot_chat = quillbot_scraper.get_quillbot_chat
+    get_perplexity_chat = perplexity_scraper.get_perplexity_chat
+    get_gemini_chat = gemini_scraper.get_gemini_chat
+    get_pollinations_chat = pollinations_scraper.get_pollinations_chat
+    get_asynt_chat = asynt_scraper.get_asynt_chat
+    get_muslimai_chat = muslimai_scraper.get_muslimai_chat
+    get_gitaai_chat = gitaai_scraper.get_gitaai_chat
+    get_powerbrainai_chat = powerbrainai_scraper.get_powerbrainai_chat
+    get_felo_chat = felo_scraper.get_felo_chat
+    get_mathgpt_chat = mathgpt_scraper.get_mathgpt_chat
+    get_jeeves_chat = jeeves_scraper.get_jeeves_chat
+    get_sahabatai_chat = sahabatai_scraper.get_sahabatai_chat
+    get_aya_chat = aya_scraper.get_aya_chat
+    get_ansari_chat = ansari_scraper.get_ansari_chat
+    get_olabiba_chat = olabiba_scraper.get_olabiba_chat
 
 def run_pipeline(endpoint_id, payload):
     if endpoint_id in ["imgur", "image"]:
@@ -710,8 +774,50 @@ def run_pipeline(endpoint_id, payload):
         return get_minimax_chat(payload)
     elif endpoint_id in ["deepseek", "deepseek-ai", "deepseek-chat", "deepseek-v4", "deepseek-v4-pro"]:
         return get_deepseek_chat(payload)
+    elif endpoint_id in ["deepseek-flash", "deepseek-v4-flash", "deepseek-ai-flash"]:
+        return get_deepseek_flash_chat(payload)
     elif endpoint_id in ["kimi", "kimi-ai", "kimi-chat", "kimi-k2.6"]:
         return get_kimi_chat(payload)
+    elif endpoint_id in ["glm", "glm-5.1", "z-ai-glm"]:
+        return get_glm_chat(payload)
+    elif endpoint_id in ["nemotron", "nemotron-3", "nemotron-3-ultra"]:
+        return get_nemotron_chat(payload)
+    elif endpoint_id in ["chatgpt", "gpt", "gpt-oss", "gpt-oss-120b", "openai-gpt"]:
+        return get_chatgpt_chat(payload)
+    elif endpoint_id in ["granite", "granite-4", "granite-4.0", "ibm-granite"]:
+        return get_granite_chat(payload)
+    elif endpoint_id in ["mistral", "mistral-ai", "mistral-medium", "mistral-chat"]:
+        return get_mistral_chat(payload)
+    elif endpoint_id in ["quillbot", "quillbot-ai", "quillbot-chat"]:
+        return get_quillbot_chat(payload)
+    elif endpoint_id in ["perplexity", "perplexity-ai", "perplexity-chat"]:
+        return get_perplexity_chat(payload)
+    elif endpoint_id in ["gemini", "gemini-ai", "gemini-chat", "google-gemini"]:
+        return get_gemini_chat(payload)
+    elif endpoint_id in ["pollinations", "pollinations-ai", "pollinations-chat"]:
+        return get_pollinations_chat(payload)
+    elif endpoint_id in ["asynt", "asynt-ai", "asyntai"]:
+        return get_asynt_chat(payload)
+    elif endpoint_id in ["muslimai", "muslim-ai", "muslim"]:
+        return get_muslimai_chat(payload)
+    elif endpoint_id in ["gitaai", "gita-ai", "gita", "askthegita"]:
+        return get_gitaai_chat(payload)
+    elif endpoint_id in ["powerbrainai", "powerbrain", "powerbrain-ai"]:
+        return get_powerbrainai_chat(payload)
+    elif endpoint_id in ["felo", "felo-ai", "feloai"]:
+        return get_felo_chat(payload)
+    elif endpoint_id in ["mathgpt", "math-gpt", "mathgpt-ai"]:
+        return get_mathgpt_chat(payload)
+    elif endpoint_id in ["jeeves", "jeeves-ai", "jeevesai"]:
+        return get_jeeves_chat(payload)
+    elif endpoint_id in ["sahabatai", "sahabat-ai", "sahabat"]:
+        return get_sahabatai_chat(payload)
+    elif endpoint_id in ["aya", "aya-ai", "ayaai", "cohere-aya"]:
+        return get_aya_chat(payload)
+    elif endpoint_id in ["ansari", "ansari-ai", "ansariai", "askansari"]:
+        return get_ansari_chat(payload)
+    elif endpoint_id in ["olabiba", "olabiba-ai", "labia"]:
+        return get_olabiba_chat(payload)
     else:
         return {
             "endpoint_id": endpoint_id,

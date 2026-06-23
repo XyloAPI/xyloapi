@@ -3353,7 +3353,7 @@ const docTopics: DocTopic[] = [
   },
   {
     id: 'minimax',
-    title: 'MiniMax AI',
+    title: 'MiniMax M3',
     category: 'AI Chat',
     method: 'GET',
     path: '/api/ai-chat/minimax',
@@ -3368,7 +3368,7 @@ const docTopics: DocTopic[] = [
   },
   {
     id: 'deepseek',
-    title: 'DeepSeek AI',
+    title: 'DeepSeek V4 Pro',
     category: 'AI Chat',
     method: 'GET',
     path: '/api/ai-chat/deepseek',
@@ -3382,13 +3382,328 @@ const docTopics: DocTopic[] = [
     }
   },
   {
+    id: 'deepseek-flash',
+    title: 'DeepSeek V4 Flash',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/deepseek-flash',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with the DeepSeek V4 Flash AI model. A fast and efficient model for coding, translation, and general queries.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
+  },
+  {
     id: 'kimi',
-    title: 'Kimi AI',
+    title: 'Kimi 2.6',
     category: 'AI Chat',
     method: 'GET',
     path: '/api/ai-chat/kimi',
     pathTemplate: '/api/ai-chat/:slug',
     description: 'Interact with the state-of-the-art Kimi-K2.6 AI model. Ask questions, translate texts, generate code, or analyze details.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
+  },
+  {
+    id: 'glm-5.1',
+    title: 'GLM 5.1',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/glm',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with GLM 5.1, an advanced AI model. Supports deep reasoning, coding, and translation capabilities.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
+  },
+  {
+    id: 'nemotron',
+    title: 'Nemotron 3 Ultra',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/nemotron',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with Nemotron 3 Ultra 550B by NVIDIA. A massive LLM designed for high reasoning capability.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
+  },
+  {
+    id: 'chatgpt',
+    title: 'ChatGPT',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/chatgpt',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with ChatGPT (GPT-OSS 120B). Ask questions, generate code, translate texts, or chat freely.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
+  },
+  {
+    id: 'granite',
+    title: 'Granite 4.0',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/granite',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with IBM Granite 4.0. A fast and efficient model for coding, reasoning, and general chat.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
+  },
+  {
+    id: 'mistral',
+    title: 'Mistral AI',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/mistral',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with Mistral Medium. A powerful model for reasoning, coding, translation, and general conversation.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
+  },
+  {
+    id: 'quillbot',
+    title: 'QuillBot AI',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/quillbot',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with QuillBot AI. Generate drafts, brainstorm ideas, and get writing assistance.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
+  },
+  {
+    id: 'perplexity',
+    title: 'Perplexity AI',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/perplexity',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with Perplexity AI. Get real-time web-grounded answers with source citations stripped.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
+  },
+  {
+    id: 'gemini',
+    title: 'Google Gemini',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/gemini',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with Google Gemini. Ask questions, generate content, translate texts, or chat freely.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
+  },
+  {
+    id: 'pollinations',
+    title: 'Pollinations AI',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/pollinations',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with Pollinations AI. A free and open AI model for general chat and text generation.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
+  },
+  {
+    id: 'asynt',
+    title: 'Asynt AI',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/asynt',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with Asynt AI. A conversational AI assistant for general questions and information.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
+  },
+  {
+    id: 'muslimai',
+    title: 'Muslim AI',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/muslimai',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with Muslim AI. Get answers grounded in the Quran with cited surah references.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
+  },
+  {
+    id: 'gitaai',
+    title: 'Gita AI',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/gitaai',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with Gita AI. Get spiritual guidance and wisdom inspired by the Bhagavad Gita.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
+  },
+  {
+    id: 'powerbrainai',
+    title: 'PowerBrain AI',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/powerbrainai',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with PowerBrain AI. A general-purpose AI assistant for questions, ideas, and conversations.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
+  },
+  {
+    id: 'felo',
+    title: 'Felo AI',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/felo',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with Felo AI. A multilingual AI search assistant for research and general conversation.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
+  },
+  {
+    id: 'mathgpt',
+    title: 'MathGPT',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/mathgpt',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with MathGPT. An AI model specialized in solving math problems and step-by-step explanations.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The math problem or question to solve.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
+  },
+  {
+    id: 'jeeves',
+    title: 'Jeeves AI',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/jeeves',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with Jeeves AI. A fast and conversational AI assistant for general questions and tasks.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
+  },
+  {
+    id: 'sahabatai',
+    title: 'Sahabat AI',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/sahabatai',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with Sahabat AI by Indosat Ooredoo Hutchison. A conversational AI assistant in Indonesian.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
+  },
+  {
+    id: 'aya',
+    title: 'Aya AI',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/aya',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with Aya AI by Cohere. A powerful multilingual model for reasoning, translation, and chat.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
+  },
+  {
+    id: 'ansari',
+    title: 'Ansari AI',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/ansari',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with Ansari AI. An Islamic AI assistant for questions about Islam, Quran, and daily guidance.',
+    parameters: [
+      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    ],
+    payloadTemplate: {
+      prompt: ''
+    }
+  },
+  {
+    id: 'olabiba',
+    title: 'Olabiba AI',
+    category: 'AI Chat',
+    method: 'GET',
+    path: '/api/ai-chat/olabiba',
+    pathTemplate: '/api/ai-chat/:slug',
+    description: 'Interact with Olabiba AI. A friendly conversational AI companion powered by DeepSeek.',
     parameters: [
       { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
     ],

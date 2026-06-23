@@ -19,7 +19,6 @@ function killPortOwner(port: number) {
     try {
       output = execSync(`netstat -ano | findstr :${port}`, { stdio: ['pipe', 'pipe', 'pipe'] }).toString();
     } catch (e: any) {
-      console.log(`[XyloAPI Server] No active process on port ${port} (netstat returned exit code 1 or failed: ${e.message})`);
       return;
     }
 
@@ -33,13 +32,11 @@ function killPortOwner(port: number) {
         const pid = parts[4];
         if (localAddr.endsWith(':' + port) && pid && pid !== '0' && parseInt(pid) !== process.pid) {
           if (!killedPids.has(pid)) {
-            console.log(`[XyloAPI Server] Port ${port} is occupied by process PID ${pid}. Terminating it...`);
             try {
               execSync(`taskkill /F /PID ${pid}`, { stdio: 'ignore' });
               killedPids.add(pid);
-              console.log(`[XyloAPI Server] Successfully killed PID ${pid}.`);
             } catch (err: any) {
-              console.log(`[XyloAPI Server] Failed to kill PID ${pid}: ${err.message}`);
+              // silent
             }
             // Sleep 500ms
             const start = Date.now();
@@ -56,12 +53,10 @@ function killPortOwner(port: number) {
       return;
     }
     if (pid && parseInt(pid) !== process.pid) {
-      console.log(`[XyloAPI Server] Port ${port} is occupied by process PID ${pid}. Terminating it...`);
       try {
         execSync(`kill -9 ${pid}`, { stdio: 'ignore' });
-        console.log(`[XyloAPI Server] Successfully killed PID ${pid}.`);
       } catch (err: any) {
-        console.log(`[XyloAPI Server] Failed to kill PID ${pid}: ${err.message}`);
+        // silent
       }
       // Sleep 500ms
       const start = Date.now();
@@ -111,7 +106,6 @@ app.use((req, res, next) => {
 // Initialize Neon PostgreSQL Connection Pool if DATABASE_URL is available
 let pool: Pool | null = null;
 if (process.env.DATABASE_URL) {
-  console.log('[XyloAPI DB] Database URL detected. Initializing pool...');
   pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: {
@@ -119,7 +113,6 @@ if (process.env.DATABASE_URL) {
     }
   });
 } else {
-  console.log('[XyloAPI DB] No DATABASE_URL found. Running in in-memory mode.');
 }
 
 // Database schema initialization
@@ -135,9 +128,8 @@ async function initDatabase() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       )
     `);
-    console.log('[XyloAPI DB] request_logs table check completed successfully.');
   } catch (err) {
-    console.error('[XyloAPI DB] Failed to initialize database:', err);
+    // silent
   }
 }
 initDatabase();
@@ -176,7 +168,7 @@ app.use((req, res, next) => {
           [req.path, res.statusCode, durationMs]
         );
       } catch (dbErr) {
-        console.error('[XyloAPI DB] Failed to persist request log:', dbErr);
+        // silent
       }
     }
   });
@@ -238,9 +230,9 @@ const apiModules = [
   {
     id: "ai-chat",
     name: "AI Chat Tools Pack",
-    description: "Interact with state-of-the-art language models like Llama 3.3, Groq Compound, Qwen 2.5, MiniMax, DeepSeek, and Kimi.",
+    description: "Interact with state-of-the-art language models like Llama 3.3, Groq Compound, Qwen 2.5, MiniMax, DeepSeek, Kimi, GLM 5.1, Nemotron Ultra, ChatGPT, IBM Granite 4.0, Mistral AI, QuillBot AI, Perplexity AI, Google Gemini, Pollinations AI, Asynt AI, Muslim AI, Gita AI, PowerBrain AI, Felo AI, MathGPT, Jeeves AI, Sahabat AI, Aya AI, Ansari AI, and Olabiba AI.",
     status: "active",
-    endpointsCount: 6,
+    endpointsCount: 26,
   }
 ];
 
@@ -281,7 +273,7 @@ app.get('/api/status', async (req, res) => {
       const success = successRes.rows[0]?.success || 0;
       successRate = total > 0 ? parseFloat(((success / total) * 100).toFixed(2)) : 100.00;
     } catch (dbErr) {
-      console.error('[XyloAPI DB] Error querying stats from database:', dbErr);
+      // silent
     }
   }
 
@@ -360,7 +352,7 @@ app.get('/api/monitor', async (req, res) => {
         latency: row.avg_latency
       }));
     } catch (dbErr) {
-      console.error('[XyloAPI DB] Error querying monitor stats:', dbErr);
+      // silent
     }
   }
 
@@ -388,7 +380,6 @@ async function executePipeline(slug: string, payload: any, reqHost: string, prot
   if (!reqHost.includes('localhost') && !reqHost.includes('127.0.0.1')) {
     try {
       const scrapersUrl = `${protocol}://${reqHost}/_/scrapers`;
-      console.log(`[XyloAPI Node] Attempting HTTP pipeline call to: ${scrapersUrl} for slug: ${slug}`);
       
       const response = await (global as any).fetch(scrapersUrl, {
         method: 'POST',
@@ -400,13 +391,12 @@ async function executePipeline(slug: string, payload: any, reqHost: string, prot
       
       if (response.ok) {
         const result = await response.json();
-        console.log(`[XyloAPI Node] HTTP pipeline call succeeded for slug: ${slug}`);
         return result;
       } else {
-        console.warn(`[XyloAPI Node] HTTP pipeline call returned status ${response.status}. Falling back to local process execution.`);
+        // silent
       }
     } catch (httpError: any) {
-      console.warn(`[XyloAPI Node] HTTP pipeline call failed: ${httpError.message}. Falling back to local process execution.`);
+      // silent
     }
   }
 
@@ -872,7 +862,7 @@ app.get('/api/downloads/:fileId/:filename', async (req, res) => {
           fs.rmSync(dirPath, { recursive: true, force: true });
         }
       } catch (rmErr) {
-        console.error(`[XyloAPI Node] Failed to clean up download dir ${dirPath}:`, rmErr);
+        // silent
       }
     });
   } else {
@@ -912,7 +902,6 @@ app.get('/api/downloads/mega/:urlBase64/:filename', async (req, res) => {
 
     const stream = file.download({});
     stream.on('error', (err: any) => {
-      console.error('[XyloAPI Node] MEGA Stream Error:', err);
       if (!res.headersSent) {
         res.status(500).send("Error streaming MEGA file");
       }
@@ -920,7 +909,6 @@ app.get('/api/downloads/mega/:urlBase64/:filename', async (req, res) => {
 
     stream.pipe(res);
   } catch (error: any) {
-    console.error('[XyloAPI Node] MEGA Downloader Error:', error);
     if (!res.headersSent) {
       res.status(500).send("Failed to start MEGA stream");
     }
@@ -930,5 +918,4 @@ app.get('/api/downloads/mega/:urlBase64/:filename', async (req, res) => {
 // Start Server - watch test restart 2
 killPortOwner(Number(PORT));
 app.listen(PORT, () => {
-  console.log(`[XyloAPI Server] Running at http://localhost:${PORT}`);
 });
