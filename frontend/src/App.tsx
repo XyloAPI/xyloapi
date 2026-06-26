@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import Features from './components/Features';
 import Monitor from './components/Monitor';
 import Docs from './components/Docs';
 import Footer from './components/Footer';
@@ -62,8 +61,7 @@ function App() {
           <Docs />
         ) : (
           <>
-            <Hero />
-            <Features />
+            <Hero onViewChange={setCurrentView} />
           </>
         )}
       </main>

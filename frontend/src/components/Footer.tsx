@@ -1,4 +1,5 @@
 import { Terminal } from 'lucide-react';
+import './Footer.css';
 
 export default function Footer() {
   return (

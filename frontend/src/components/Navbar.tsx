@@ -1,4 +1,5 @@
 import { Terminal, Sun, Moon } from 'lucide-react';
+import './Navbar.css';
 
 interface NavbarProps {
   currentView: 'landing' | 'monitor' | 'docs';
@@ -65,7 +66,7 @@ export default function Navbar({ currentView, onViewChange, theme, onToggleTheme
         </div>
 
         {/* Right action status - Dark/Light Theme Toggle */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+        <div className="header-actions">
           <button 
             onClick={onToggleTheme} 
             className="theme-toggle-btn"

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Activity, Clock, CheckCircle2, XCircle, ArrowUpRight, BarChart3, RefreshCw, Database, Layers } from 'lucide-react';
+import './Monitor.css';
 
 interface RequestLog {
   id: number;
@@ -84,6 +85,21 @@ export default function Monitor() {
     } catch {
       return dateStr;
     }
+  };
+
+  const formatHourLabel = (timeStr: string) => {
+    try {
+      const date = new Date(timeStr);
+      const hours = String(date.getHours()).padStart(2, '0');
+      return `${hours}:00`;
+    } catch {
+      return timeStr;
+    }
+  };
+
+  const formatLatencyLabel = (ms: number) => {
+    if (ms >= 1000) return `${(ms / 1000).toFixed(1)}s`;
+    return `${ms}ms`;
   };
 
   if (loading) {
@@ -315,7 +331,7 @@ export default function Monitor() {
                 {/* Grid Lines */}
                 <line x1={paddingX} y1={paddingY} x2={chartWidth - 20} y2={paddingY} stroke="#1A1A1A" strokeDasharray="3,3" />
                 <line x1={paddingX} y1={chartHeight / 2} x2={chartWidth - 20} y2={chartHeight / 2} stroke="#1A1A1A" strokeDasharray="3,3" />
-                <line x1={paddingX} y1={chartHeight - paddingY} x2={chartWidth - 20} y2={chartHeight - paddingY} stroke="#333" />
+                <line x1={paddingX} y1={chartHeight - paddingY} x2={chartWidth - 20} y2={chartHeight - paddingY} stroke="#222" />
                 
                 {/* Labels Y */}
                 <text x={paddingX - 10} y={paddingY + 4} textAnchor="end" className="chart-label">{maxCount}</text>
@@ -326,7 +342,7 @@ export default function Monitor() {
                 {hourlyData.map((d, i) => {
                   const step = (chartWidth - paddingX - 20) / hourlyData.length;
                   const x = paddingX + i * step + step * 0.15;
-                  const barWidth = step * 0.7;
+                  const barWidth = Math.max(step * 0.7 - 2, 2);
                   const barHeight = ((d.count / maxCount) * (chartHeight - paddingY * 2));
                   const y = chartHeight - paddingY - barHeight;
 
@@ -343,7 +359,7 @@ export default function Monitor() {
                       {/* X Label for every 4th element */}
                       {i % 4 === 0 && (
                         <text x={x + barWidth / 2} y={chartHeight - 4} textAnchor="middle" className="chart-label-x">
-                          {d.time}
+                          {formatHourLabel(d.time)}
                         </text>
                       )}
                     </g>
@@ -355,7 +371,7 @@ export default function Monitor() {
 
           {/* Chart 2: Latency Trend */}
           <div className="monitor-chart-card">
-            <h4 className="chart-card-title">HOURLY AVERAGE LATENCY (ms)</h4>
+            <h4 className="chart-card-title">HOURLY AVERAGE LATENCY</h4>
             {hourlyData.length === 0 ? (
               <div className="chart-fallback">
                 <span>NO GRAPH DATA AVAILABLE</span>
@@ -363,17 +379,23 @@ export default function Monitor() {
               </div>
             ) : (
               <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} className="svg-chart">
+                <defs>
+                  <linearGradient id="latencyGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="var(--cyan-pulse)" stopOpacity="0.25" />
+                    <stop offset="100%" stopColor="var(--cyan-pulse)" stopOpacity="0.0" />
+                  </linearGradient>
+                </defs>
                 {/* Grid Lines */}
                 <line x1={paddingX} y1={paddingY} x2={chartWidth - 20} y2={paddingY} stroke="#1A1A1A" strokeDasharray="3,3" />
                 <line x1={paddingX} y1={chartHeight / 2} x2={chartWidth - 20} y2={chartHeight / 2} stroke="#1A1A1A" strokeDasharray="3,3" />
-                <line x1={paddingX} y1={chartHeight - paddingY} x2={chartWidth - 20} y2={chartHeight - paddingY} stroke="#333" />
+                <line x1={paddingX} y1={chartHeight - paddingY} x2={chartWidth - 20} y2={chartHeight - paddingY} stroke="#222" />
 
                 {/* Labels Y */}
-                <text x={paddingX - 10} y={paddingY + 4} textAnchor="end" className="chart-label">{maxLatency}ms</text>
-                <text x={paddingX - 10} y={chartHeight / 2 + 4} textAnchor="end" className="chart-label">{Math.round(maxLatency / 2)}ms</text>
+                <text x={paddingX - 10} y={paddingY + 4} textAnchor="end" className="chart-label">{formatLatencyLabel(maxLatency)}</text>
+                <text x={paddingX - 10} y={chartHeight / 2 + 4} textAnchor="end" className="chart-label">{formatLatencyLabel(Math.round(maxLatency / 2))}</text>
                 <text x={paddingX - 10} y={chartHeight - paddingY + 4} textAnchor="end" className="chart-label">0ms</text>
 
-                {/* Polyline Path */}
+                {/* Path & Fill */}
                 {(() => {
                   const step = (chartWidth - paddingX - 20) / (hourlyData.length > 1 ? hourlyData.length - 1 : 1);
                   const points = hourlyData.map((d, i) => {
@@ -383,17 +405,25 @@ export default function Monitor() {
                     return `${x},${y}`;
                   }).join(' ');
 
+                  const areaPoints = `${paddingX},${chartHeight - paddingY} ${points} ${paddingX + (hourlyData.length - 1) * step},${chartHeight - paddingY}`;
+
                   return (
-                    <polyline 
-                      fill="none" 
-                      stroke="var(--cyan-pulse)" 
-                      strokeWidth="2" 
-                      points={points} 
-                    />
+                    <>
+                      <polygon 
+                        points={areaPoints}
+                        fill="url(#latencyGrad)"
+                      />
+                      <polyline 
+                        fill="none" 
+                        stroke="var(--cyan-pulse)" 
+                        strokeWidth="1.5" 
+                        points={points} 
+                      />
+                    </>
                   );
                 })()}
 
-                {/* Dots & Labels X */}
+                {/* Dots (Brutalist Tiny Squares) & Labels X */}
                 {hourlyData.map((d, i) => {
                   const step = (chartWidth - paddingX - 20) / (hourlyData.length > 1 ? hourlyData.length - 1 : 1);
                   const x = paddingX + i * step;
@@ -402,11 +432,11 @@ export default function Monitor() {
 
                   return (
                     <g key={i}>
-                      <circle cx={x} cy={y} r="3" fill="var(--cyan-pulse)" />
+                      <rect x={x - 2} y={y - 2} width="4" height="4" fill="var(--cyan-pulse)" />
                       {/* X Label for every 4th element */}
                       {i % 4 === 0 && (
                         <text x={x} y={chartHeight - 4} textAnchor="middle" className="chart-label-x">
-                          {d.time}
+                          {formatHourLabel(d.time)}
                         </text>
                       )}
                     </g>
