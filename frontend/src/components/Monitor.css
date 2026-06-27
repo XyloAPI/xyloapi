@@ -136,12 +136,21 @@
   }
 
   .monitor-stat-card {
-    padding: 12px;
-    min-height: 100px;
+    padding: 10px !important;
+    min-height: 85px !important;
+  }
+
+  .stat-card-header {
+    font-size: 9px !important;
   }
 
   .stat-card-value {
-    font-size: 22px;
+    font-size: 16px !important;
+    margin: 6px 0 2px 0 !important;
+  }
+
+  .stat-card-label {
+    font-size: 9px !important;
   }
 
   .monitor-card {
@@ -164,8 +173,8 @@
   }
 
   .monitor-stats-grid {
-    grid-template-columns: 1fr !important;
-    gap: 12px !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
   }
 
   /* Sembunyikan hanya kolom Timestamp (1) di mobile untuk menghemat space */
