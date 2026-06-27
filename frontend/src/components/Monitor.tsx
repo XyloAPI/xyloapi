@@ -414,7 +414,6 @@ export default function Monitor() {
                   stroke="var(--border-color)"
                   strokeWidth="10"
                   strokeDasharray="376.99 1000"
-                  strokeDashoffset="0"
                   strokeLinecap="round"
                   transform="rotate(135 100 100)"
                 />
@@ -424,7 +423,7 @@ export default function Monitor() {
                   cy="100"
                   r="80"
                   fill="none"
-                  stroke={testPhase === 'upload' ? 'var(--gold)' : 'var(--cyan-pulse)'}
+                  stroke={currentDisplayVal > 0 ? (testPhase === 'upload' ? 'var(--gold)' : 'var(--cyan-pulse)') : 'transparent'}
                   strokeWidth="10"
                   strokeDasharray={`${(Math.min(currentDisplayVal, 1000) / 1000) * 376.99} 1000`}
                   strokeDashoffset="0"
@@ -489,8 +488,8 @@ export default function Monitor() {
                       height: '90px',
                       borderRadius: '50%',
                       backgroundColor: 'var(--black)',
-                      border: '2px solid var(--cyan-pulse)',
-                      color: 'var(--cyan-pulse)',
+                      border: '2px solid var(--border-color)',
+                      color: 'var(--ash)',
                       fontFamily: 'var(--font-display)',
                       fontSize: '16px',
                       fontWeight: 900,
@@ -499,20 +498,20 @@ export default function Monitor() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      boxShadow: '0 0 15px rgba(0, 240, 255, 0.15)',
+                      boxShadow: 'none',
                       transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
                       outline: 'none'
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = 'var(--cyan-pulse)';
-                      e.currentTarget.style.color = 'var(--black)';
-                      e.currentTarget.style.boxShadow = '0 0 25px var(--cyan-pulse)';
+                      e.currentTarget.style.borderColor = 'var(--cyan-pulse)';
+                      e.currentTarget.style.color = 'var(--cyan-pulse)';
+                      e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 240, 255, 0.15)';
                       e.currentTarget.style.transform = 'scale(1.05)';
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = 'var(--black)';
-                      e.currentTarget.style.color = 'var(--cyan-pulse)';
-                      e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 240, 255, 0.15)';
+                      e.currentTarget.style.borderColor = 'var(--border-color)';
+                      e.currentTarget.style.color = 'var(--ash)';
+                      e.currentTarget.style.boxShadow = 'none';
                       e.currentTarget.style.transform = 'scale(1)';
                     }}
                   >
