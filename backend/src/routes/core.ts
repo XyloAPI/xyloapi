@@ -189,24 +189,15 @@ router.post('/monitor/speedtest', async (req, res) => {
     const downloadWorkers = Array.from({ length: downloadConcurrency }, async () => {
       while (Date.now() - startDownload < downloadTimeout) {
         try {
-          const downRes = await fetch('https://speed.cloudflare.com/__down?bytes=10000000', {
+          const downRes = await fetch('https://speed.cloudflare.com/__down?bytes=3000000', {
             headers: { 'User-Agent': userAgent }
           });
           if (!downRes.ok) {
             await new Promise(resolve => setTimeout(resolve, 200));
             continue;
           }
-          if (downRes.body) {
-            const reader = downRes.body.getReader();
-            while (Date.now() - startDownload < downloadTimeout) {
-              const { done, value } = await reader.read();
-              if (done) break;
-              if (value) {
-                downloadedBytes += value.length || value.byteLength || 0;
-              }
-            }
-            try { await reader.cancel(); } catch (_) {}
-          }
+          const buf = await downRes.arrayBuffer();
+          downloadedBytes += buf.byteLength;
         } catch (e) {
           await new Promise(resolve => setTimeout(resolve, 200));
         }
