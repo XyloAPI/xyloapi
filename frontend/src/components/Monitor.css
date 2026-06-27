@@ -138,6 +138,11 @@
     grid-template-columns: 1fr !important;
     gap: 20px !important;
   }
+
+  .monitor-stats-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
 }
 
 .monitor-card {

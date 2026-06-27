@@ -371,7 +371,7 @@ export default function Docs() {
                 marginBottom: '20px',
                 gap: '12px'
               }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0, flex: 1 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0, flex: 1, flexWrap: 'wrap' }}>
                   <span className={`method-badge ${getActiveMethod().toLowerCase()}`}>
                     {getActiveMethod()}
                   </span>

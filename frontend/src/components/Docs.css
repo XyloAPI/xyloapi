@@ -778,6 +778,26 @@ input[type=number] {
     text-align: center !important;
     box-sizing: border-box;
   }
+
+  /* Prevent category headers from overflowing */
+  .docs-category-header {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  .docs-category-title {
+    white-space: normal !important;
+    font-size: 11px !important;
+    flex: 1 !important;
+  }
+
+  .docs-category-rule {
+    display: none !important;
+  }
+
+  .docs-category-count {
+    font-size: 8px !important;
+  }
 }
 
 

@@ -559,7 +559,8 @@ export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard
             border: '1px solid var(--border-color)',
             padding: '24px',
             backgroundColor: '#111',
-            width: '320px',
+            width: '100%',
+            maxWidth: '320px',
             height: '240px',
             display: 'flex',
             flexDirection: 'column',
@@ -627,7 +628,7 @@ export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard
 
         <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', alignItems: 'start' }}>
           {/* Grid representation */}
-          <div style={{ flexShrink: 0 }}>
+          <div style={{ flexShrink: 1, width: '100%', maxWidth: '340px' }}>
             <span className="response-label" style={{ marginBottom: '8px' }}>
               SPLIT PIECES PREVIEW (CLICK TO ENLARGE)
             </span>
@@ -641,6 +642,7 @@ export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard
               backgroundImage: 'linear-gradient(45deg, #151515 25%, transparent 25%), linear-gradient(-45deg, #151515 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #151515 75%), linear-gradient(-45deg, transparent 75%, #151515 75%)',
               backgroundSize: '20px 20px',
               backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px',
+              width: '100%',
               maxWidth: '340px'
             }}>
               {resData.slices.map((slice: any, idx: number) => (
@@ -802,9 +804,12 @@ export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard
             backgroundColor: showGridBg ? 'var(--black)' : '#111',
             backgroundImage: showGridBg ? 'linear-gradient(45deg, #151515 25%, transparent 25%), linear-gradient(-45deg, #151515 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #151515 75%), linear-gradient(-45deg, transparent 75%, #151515 75%)' : 'none',
             backgroundSize: '20px 20px',
-            backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px'
+            backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px',
+            width: '100%',
+            maxWidth: '320px',
+            boxSizing: 'border-box'
           }}>
-            <img src={imageUrl} referrerPolicy="no-referrer" alt={previewAlt} style={{ maxWidth: '320px', maxHeight: '320px', display: 'block', objectFit: 'contain' }} />
+            <img src={imageUrl} referrerPolicy="no-referrer" alt={previewAlt} style={{ width: '100%', maxWidth: '320px', maxHeight: '320px', display: 'block', objectFit: 'contain' }} />
           </div>
         )}
 

@@ -50,19 +50,7 @@ export default function Monitor() {
   const [progressUpload, setProgressUpload] = useState<number | null>(null);
   const [speedTestError, setSpeedTestError] = useState<string | null>(null);
 
-  const fetchSpeedTestData = async () => {
-    const host = (window.location.hostname === 'localhost' && window.location.port !== '3000') ? 'http://localhost:5000' : window.location.origin;
-    const res = await fetch(`${host}/api/monitor/speedtest`, {
-      method: 'POST'
-    });
-    if (!res.ok) {
-      const txt = await res.text().catch(() => 'Error');
-      throw new Error(txt || 'Server error');
-    }
-    return res.json();
-  };
-
-  const handleRunSpeedTest = async () => {
+  const handleRunSpeedTest = () => {
     if (testPhase !== 'idle' && testPhase !== 'complete') return;
 
     setTestPhase('ping');
@@ -72,59 +60,52 @@ export default function Monitor() {
     setProgressUpload(null);
     setSpeedTestError(null);
 
-    // Trigger API call immediately — backend runs the real test
-    const apiPromise = fetchSpeedTestData();
+    const host = (window.location.hostname === 'localhost' && window.location.port !== '3000') 
+      ? 'http://localhost:5000' 
+      : window.location.origin;
 
-    // 1. Ping Phase UI (2.0 seconds) — just a neutral wiggle
-    const pingWiggle = setInterval(() => {
-      setDisplaySpeed(Math.floor(Math.random() * 3));
-    }, 100);
-    await new Promise(r => setTimeout(r, 2000));
-    clearInterval(pingWiggle);
-    setDisplaySpeed(0);
-    // Don't set progressPing yet — wait for real API value
+    const eventSource = new EventSource(`${host}/api/monitor/speedtest`);
 
-    // 2. Download Phase UI (15.0 seconds) — neutral scanning animation, no fake target
-    setTestPhase('download');
-    let tick = 0;
-    const downloadInterval = setInterval(() => {
-      tick++;
-      // Oscillate between 0–30 to show "activity" without implying a speed
-      const wave = Math.abs(Math.sin(tick * 0.08) * 28) + Math.random() * 4;
-      setDisplaySpeed(Math.round(wave));
-    }, 100);
-    await new Promise(r => setTimeout(r, 15000));
-    clearInterval(downloadInterval);
-    setDisplaySpeed(0);
+    eventSource.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        
+        if (data.error) {
+          throw new Error(data.error);
+        }
 
-    // 3. Upload Phase UI (15.0 seconds) — same neutral animation
-    setTestPhase('upload');
-    await new Promise(r => setTimeout(r, 400));
-    tick = 0;
-    const uploadInterval = setInterval(() => {
-      tick++;
-      const wave = Math.abs(Math.sin(tick * 0.08) * 28) + Math.random() * 4;
-      setDisplaySpeed(Math.round(wave));
-    }, 100);
-    await new Promise(r => setTimeout(r, 15000));
-    clearInterval(uploadInterval);
-    setDisplaySpeed(0);
-
-    // 4. Resolve — all final values come ONLY from the real API response
-    try {
-      const res = await apiPromise;
-      if (res && res.success) {
-        setProgressPing(res.pingMs);
-        setProgressDownload(res.downloadSpeedMbps);
-        setProgressUpload(res.uploadSpeedMbps);
-        setTestPhase('complete');
-      } else {
-        throw new Error(res.error || 'Failed to complete speed test.');
+        if (data.phase === 'ping') {
+          setProgressPing(data.pingMs);
+          setTestPhase('download');
+        } else if (data.phase === 'download') {
+          setDisplaySpeed(data.speedMbps);
+        } else if (data.phase === 'download_complete') {
+          setProgressDownload(data.downloadSpeedMbps);
+          setDisplaySpeed(0);
+        } else if (data.phase === 'upload_start') {
+          setTestPhase('upload');
+        } else if (data.phase === 'upload') {
+          setDisplaySpeed(data.speedMbps);
+        } else if (data.phase === 'complete') {
+          setProgressPing(data.pingMs);
+          setProgressDownload(data.downloadSpeedMbps);
+          setProgressUpload(data.uploadSpeedMbps);
+          setDisplaySpeed(0);
+          setTestPhase('complete');
+          eventSource.close();
+        }
+      } catch (err: any) {
+        setSpeedTestError(err.message || 'Failed to complete speed test.');
+        setTestPhase('idle');
+        eventSource.close();
       }
-    } catch (err: any) {
-      setSpeedTestError(err.message || 'Failed to run network speed test.');
+    };
+
+    eventSource.onerror = (err) => {
+      setSpeedTestError('Network connection lost during speed test.');
       setTestPhase('idle');
-    }
+      eventSource.close();
+    };
   };
 
   const fetchMonitorData = async () => {
@@ -230,7 +211,7 @@ export default function Monitor() {
     ? -135
     : testPhase === 'ping'
       ? -135 + Math.random() * 15
-      : -135 + (Math.min(currentDisplayVal, 300) / 300) * 270;
+      : -135 + (Math.min(currentDisplayVal, 1000) / 1000) * 270;
 
   const transitionDuration = (testPhase === 'idle' || testPhase === 'complete') ? '0.6s' : '0.1s';
 
@@ -322,7 +303,7 @@ export default function Monitor() {
         {/* Live Traffic Feed */}
         <div className="monitor-card wide-card">
           <div className="monitor-card-header">
-            <h3 className="card-title">Live Traffic Feed (Last 10 Requests)</h3>
+            <h3 className="card-title">Live Traffic Feed</h3>
             <span className="card-subtitle">Real-time database records</span>
           </div>
           <div className="table-responsive">
@@ -445,7 +426,7 @@ export default function Monitor() {
                   fill="none"
                   stroke={testPhase === 'upload' ? 'var(--gold)' : 'var(--cyan-pulse)'}
                   strokeWidth="10"
-                  strokeDasharray={`${(Math.min(currentDisplayVal, 300) / 300) * 376.99} 1000`}
+                  strokeDasharray={`${(Math.min(currentDisplayVal, 1000) / 1000) * 376.99} 1000`}
                   strokeDashoffset="0"
                   strokeLinecap="round"
                   transform="rotate(135 100 100)"
@@ -453,8 +434,8 @@ export default function Monitor() {
                 />
 
                 {/* Tickmarks */}
-                {[0, 50, 100, 150, 200, 250, 300].map((val) => {
-                  const angle = 135 + (val / 300) * 270;
+                {[0, 200, 400, 600, 800, 1000].map((val) => {
+                  const angle = 135 + (val / 1000) * 270;
                   const rad = (angle * Math.PI) / 180;
                   const x1 = 100 + 70 * Math.cos(rad);
                   const y1 = 100 + 70 * Math.sin(rad);

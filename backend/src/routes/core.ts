@@ -168,16 +168,37 @@ router.get('/image-proxy', async (req, res) => {
   }
 });
 
-router.post('/monitor/speedtest', async (req, res) => {
+router.get('/monitor/speedtest', async (req, res) => {
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache, no-transform');
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('X-Accel-Buffering', 'no');
+
+  let isClientConnected = true;
+  req.on('close', () => {
+    isClientConnected = false;
+  });
+
+  const sendSSE = (data: any) => {
+    if (isClientConnected) {
+      res.write(`data: ${JSON.stringify(data)}\n\n`);
+    }
+  };
+
   try {
+    // 0. Ping Phase
     const startPing = Date.now();
     try {
       const pingRes = await fetch('https://speed.cloudflare.com/__down?bytes=0', { method: 'GET' });
       await pingRes.text();
     } catch (e) {}
     const ping = Date.now() - startPing;
+    
+    sendSSE({ phase: 'ping', pingMs: ping });
 
-    // 1. Download Test (Max 10 seconds total to prevent socket exhaustion)
+    if (!isClientConnected) return res.end();
+
+    // 1. Download Test (Max 10 seconds total)
     const downloadTimeout = 10000;
     const startDownload = Date.now();
     let downloadedBytes = 0;
@@ -185,17 +206,16 @@ router.post('/monitor/speedtest', async (req, res) => {
     // Concurrent workers downloading 10MB chunks
     const downloadConcurrency = 3;
     const downloadWorkers = Array.from({ length: downloadConcurrency }, async () => {
-      while (Date.now() - startDownload < downloadTimeout) {
+      while (isClientConnected && (Date.now() - startDownload < downloadTimeout)) {
         try {
           const downRes = await fetch('https://speed.cloudflare.com/__down?bytes=10000000');
           if (!downRes.ok) {
-            // Wait a bit if server is rate-limiting or errors out
             await new Promise(resolve => setTimeout(resolve, 500));
             continue;
           }
           if (downRes.body) {
             const reader = downRes.body.getReader();
-            while (Date.now() - startDownload < downloadTimeout) {
+            while (isClientConnected && (Date.now() - startDownload < downloadTimeout)) {
               const { done, value } = await reader.read();
               if (done) break;
               if (value) {
@@ -205,17 +225,38 @@ router.post('/monitor/speedtest', async (req, res) => {
             try { await reader.cancel(); } catch (_) {}
           }
         } catch (e) {
-          // Prevent tight hot loop on network failures
           await new Promise(resolve => setTimeout(resolve, 500));
         }
       }
     });
 
+    let lastDownloadedBytes = 0;
+    let lastDownloadTime = Date.now();
+    const downloadInterval = setInterval(() => {
+      const now = Date.now();
+      const durationSec = (now - lastDownloadTime) / 1000;
+      const diffBytes = downloadedBytes - lastDownloadedBytes;
+      const currentSpeedMbps = durationSec > 0 ? ((diffBytes * 8) / (durationSec * 1000000)) : 0;
+      
+      sendSSE({ phase: 'download', speedMbps: parseFloat(currentSpeedMbps.toFixed(2)) });
+      
+      lastDownloadedBytes = downloadedBytes;
+      lastDownloadTime = now;
+    }, 250);
+
     await Promise.all(downloadWorkers);
+    clearInterval(downloadInterval);
+
     const durationDownloadSec = (Date.now() - startDownload) / 1000;
     const downloadSpeedMbps = durationDownloadSec > 0 
       ? parseFloat(((downloadedBytes * 8) / (durationDownloadSec * 1000000)).toFixed(2)) 
       : 0;
+
+    sendSSE({ phase: 'download_complete', downloadSpeedMbps });
+
+    if (!isClientConnected) return res.end();
+
+    sendSSE({ phase: 'upload_start' });
 
     // 2. Upload Test (Max 10 seconds total)
     const uploadTimeout = 10000;
@@ -228,7 +269,7 @@ router.post('/monitor/speedtest', async (req, res) => {
 
     const uploadConcurrency = 3;
     const uploadWorkers = Array.from({ length: uploadConcurrency }, async () => {
-      while (Date.now() - startUpload < uploadTimeout) {
+      while (isClientConnected && (Date.now() - startUpload < uploadTimeout)) {
         try {
           const upRes = await fetch('https://speed.cloudflare.com/__up', {
             method: 'POST',
@@ -244,30 +285,44 @@ router.post('/monitor/speedtest', async (req, res) => {
           }
           await upRes.text(); // Consume stream
         } catch (e) {
-          // Prevent tight hot loop on network failures
           await new Promise(resolve => setTimeout(resolve, 500));
         }
       }
     });
 
+    let lastUploadedBytes = 0;
+    let lastUploadTime = Date.now();
+    const uploadInterval = setInterval(() => {
+      const now = Date.now();
+      const durationSec = (now - lastUploadTime) / 1000;
+      const diffBytes = uploadedBytes - lastUploadedBytes;
+      const currentSpeedMbps = durationSec > 0 ? ((diffBytes * 8) / (durationSec * 1000000)) : 0;
+      
+      sendSSE({ phase: 'upload', speedMbps: parseFloat(currentSpeedMbps.toFixed(2)) });
+      
+      lastUploadedBytes = uploadedBytes;
+      lastUploadTime = now;
+    }, 250);
+
     await Promise.all(uploadWorkers);
+    clearInterval(uploadInterval);
+
     const durationUploadSec = (Date.now() - startUpload) / 1000;
     const uploadSpeedMbps = durationUploadSec > 0 
       ? parseFloat(((uploadedBytes * 8) / (durationUploadSec * 1000000)).toFixed(2)) 
       : 0;
 
-    res.json({
-      success: true,
+    sendSSE({
+      phase: 'complete',
       pingMs: ping,
       downloadSpeedMbps,
       uploadSpeedMbps,
       timestamp: new Date().toISOString()
     });
+    res.end();
   } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      error: error.message || 'Speed test failed'
-    });
+    sendSSE({ error: error.message || 'Failed to complete speed test' });
+    res.end();
   }
 });
 
