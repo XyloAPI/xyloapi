@@ -672,3 +672,56 @@ input[type=number] {
   flex-shrink: 0;
 }
 
+/* ── Mobile Overflow Fixes ── */
+@media (max-width: 640px) {
+  .docs-container {
+    padding-top: 100px;
+    padding-bottom: 60px;
+  }
+
+  .docs-search-wrapper {
+    padding: 10px 14px;
+    margin-bottom: 24px;
+  }
+
+  .docs-category-card {
+    margin-bottom: 28px;
+  }
+
+  /* Prevent code / pre blocks from causing horizontal scroll */
+  pre,
+  code,
+  .payload-preview,
+  .response-pre,
+  .sandbox-textarea {
+    white-space: pre-wrap;
+    word-break: break-all;
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+
+  /* Collapse 2-col response grid */
+  .response-grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .response-grid-auto {
+    grid-template-columns: 1fr;
+  }
+
+  /* Docs playground */
+  .docs-playground-header {
+    word-break: break-word;
+  }
+
+  /* Endpoint URL bar inside playground */
+  .docs-playground-left-col code {
+    word-break: break-all;
+    font-size: 10px;
+  }
+
+  /* Top endpoints list in monitor */
+  .top-endpoint-item {
+    flex-wrap: wrap;
+  }
+}

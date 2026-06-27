@@ -51,13 +51,19 @@
   padding: 0;
 }
 
+html {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 body {
   background-color: var(--black);
   color: var(--smoke);
   font-family: var(--font-display);
   font-size: 16px;
   line-height: 1.5;
-  overflow-x: clip;
+  overflow-x: hidden;
+  width: 100%;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -116,6 +122,7 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0 auto;
   padding: 0 80px;
   width: 100%;
+  box-sizing: border-box;
 }
 
 @media (max-width: 1024px) {
@@ -126,7 +133,13 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (max-width: 768px) {
   .container {
-    padding: 0 24px;
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 16px;
   }
 }
 

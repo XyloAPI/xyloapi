@@ -2,6 +2,7 @@
   background-color: var(--black);
   padding: 120px 0;
   border-bottom: 1px solid var(--border-color);
+  overflow: hidden;
 }
 
 .endpoints-intro {
@@ -80,10 +81,22 @@
 }
 
 @media (max-width: 768px) {
+  .endpoints-section {
+    padding: 60px 0;
+  }
+
+  .directory-header-row {
+    display: none;
+  }
+
   .directory-item-visible {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 10px;
     align-items: flex-start;
+  }
+
+  .route-description {
+    display: none;
   }
 }
 

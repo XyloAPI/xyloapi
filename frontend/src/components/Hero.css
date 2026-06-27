@@ -104,3 +104,28 @@
   color: var(--ash);
   margin: 0;
 }
+@media (max-width: 640px) {
+  .hero-section {
+    padding-top: 120px;
+    padding-bottom: 60px;
+    min-height: auto;
+  }
+
+  .hero-container {
+    padding: 0;
+  }
+
+  .hero-sub-title {
+    font-size: 15px;
+  }
+
+  .hero-cta-buttons {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .features-section-clean {
+    margin-top: 60px;
+  }
+}

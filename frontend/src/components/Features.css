@@ -72,3 +72,17 @@
   font-size: 12.5px;
   line-height: 1.5;
 }
+@media (max-width: 640px) {
+  .features-section {
+    padding: 60px 0;
+  }
+
+  .feature-card {
+    padding: 24px;
+  }
+
+  .feature-subpoints {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
