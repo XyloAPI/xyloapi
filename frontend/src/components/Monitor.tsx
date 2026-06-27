@@ -64,18 +64,6 @@ export default function Monitor() {
       ? 'http://localhost:5000' 
       : window.location.origin;
 
-    // Smoothly wiggle the needle to show activity while the backend works
-    let animFrame: number;
-    let baseSpeed = 150;
-    
-    const animate = () => {
-      // Oscillate between 120 and 180 to indicate activity
-      const offset = Math.sin(Date.now() / 200) * 30;
-      setDisplaySpeed(Math.round(baseSpeed + offset));
-      animFrame = requestAnimationFrame(animate);
-    };
-    animFrame = requestAnimationFrame(animate);
-
     // Fire POST request — returns instantly as soon as backend is done measuring
     fetch(`${host}/api/monitor/speedtest`, { method: 'POST' })
       .then(res => {
@@ -83,7 +71,6 @@ export default function Monitor() {
         return res.json();
       })
       .then(result => {
-        cancelAnimationFrame(animFrame);
         setProgressPing(result.pingMs);
         setProgressDownload(result.downloadSpeedMbps);
         setProgressUpload(result.uploadSpeedMbps);
@@ -91,7 +78,6 @@ export default function Monitor() {
         setTestPhase('complete');
       })
       .catch(err => {
-        cancelAnimationFrame(animFrame);
         setSpeedTestError(err.message || 'Speed test failed.');
         setTestPhase('idle');
         setDisplaySpeed(0);
@@ -197,13 +183,9 @@ export default function Monitor() {
     ? 0
     : displaySpeed;
 
-  const needleAngle = testPhase === 'idle'
+  const needleAngle = (testPhase === 'idle' || testPhase === 'complete')
     ? -135
-    : testPhase === 'ping'
-      ? -135 + Math.random() * 15
-      : testPhase === 'complete'
-        ? -135 + (Math.min(progressDownload || 0, 1000) / 1000) * 270
-        : -135 + (Math.min(currentDisplayVal, 1000) / 1000) * 270;
+    : -135 + (Math.min(currentDisplayVal, 1000) / 1000) * 270;
 
   const transitionDuration = (testPhase === 'idle' || testPhase === 'complete') ? '0.6s' : '0.1s';
 
