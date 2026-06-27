@@ -37,6 +37,12 @@
   color: var(--gold);
 }
 
+.header-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
 .hamburger-btn {
   display: none; /* Hidden on desktop */
   background: none;
