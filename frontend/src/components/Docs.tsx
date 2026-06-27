@@ -18,19 +18,12 @@ import InformationsLayout from './Docs/layouts/InformationsLayout';
 export default function Docs() {
   const [activeTopic, setActiveTopic] = useState<DocTopic | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [formValues, setFormValues] = useState<{ [key: string]: any }>({});
   const [copied, setCopied] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [responseJson, setResponseJson] = useState<any>(null);
   const [responseTab, setResponseTab] = useState<'json' | 'visual'>('visual');
-  const [expandedCategories, setExpandedCategories] = useState<{ [categoryName: string]: boolean }>({});
-
-  const toggleCategory = (categoryName: string) => {
-    setExpandedCategories(prev => ({
-      ...prev,
-      [categoryName]: !prev[categoryName]
-    }));
-  };
 
   const [uploadMode, setUploadMode] = useState<'file' | 'url'>('file');
   const [isDragging, setIsDragging] = useState<boolean>(false);
@@ -49,6 +42,12 @@ export default function Docs() {
     setFormValues(initial);
     setResponseJson(null);
     setResponseTab('visual');
+  }, [activeTopic]);
+
+  useEffect(() => {
+    if (activeTopic) {
+      setSelectedCategory(activeTopic.category);
+    }
   }, [activeTopic]);
 
   const copyToClipboard = (text: string) => {
@@ -589,6 +588,12 @@ export default function Docs() {
     );
   };
 
+  // Get sorted list of categories
+  const sortedCategories = Object.entries(categories)
+    .sort((a, b) => a[0].localeCompare(b[0]));
+
+  const currentCategory = selectedCategory || (sortedCategories[0] ? sortedCategories[0][0] : null);
+
   return (
     <div className="docs-container container">
 
@@ -604,69 +609,119 @@ export default function Docs() {
         />
       </div>
 
-      {/* Category Cards */}
-      {Object.entries(categories)
-        .sort((a, b) => a[0].localeCompare(b[0]))
-        .map(([categoryName, topics]) => {
-          const isExpanded = searchQuery.trim() !== '' || activeTopic?.category === categoryName || !!expandedCategories[categoryName];
-          return (
-            <div key={categoryName} className="docs-category-card">
-
-              {/* Category Header */}
-              <div
-                className="docs-category-header"
-                onClick={() => toggleCategory(categoryName)}
-                style={{ cursor: 'pointer', userSelect: 'none' }}
-              >
+      {searchQuery.trim() !== '' ? (
+        /* Search Mode: render all matching items grouped by category immediately */
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+          {sortedCategories.map(([categoryName, topics]) => (
+            <div key={categoryName} className="docs-category-card" style={{ marginBottom: '16px' }}>
+              <div className="docs-category-header" style={{ marginBottom: '12px' }}>
                 <span className="docs-category-title">{categoryName}</span>
                 <div className="docs-category-rule" />
-                <span className="docs-category-count" style={{ marginRight: '10px' }}>{topics.length} endpoints</span>
-                <span style={{ fontSize: '11px', color: 'var(--gold)', fontFamily: 'var(--font-mono)', minWidth: '24px', textAlign: 'right' }}>
-                  {isExpanded ? '[-]' : '[+]'}
+                <span className="docs-category-count">{topics.length} endpoints</span>
+              </div>
+              <div className="docs-endpoints-list">
+                {topics.map(topic => {
+                  const isActive = activeTopic?.id === topic.id;
+                  const method = (topic.method || 'GET').toLowerCase();
+                  return (
+                    <div key={topic.id} className={`docs-endpoint-item-wrapper${isActive ? ' active' : ''}`}>
+                      <div
+                        className="docs-endpoint-row"
+                        onClick={() => {
+                          if (isActive) {
+                            setActiveTopic(null);
+                            setResponseJson(null);
+                          } else {
+                            setActiveTopic(topic);
+                            setResponseJson(null);
+                            setResponseTab('visual');
+                          }
+                        }}
+                      >
+                        <div className="docs-endpoint-left">
+                          <span className={`method-badge ${method}`}>
+                            {topic.method || 'GET'}
+                          </span>
+                          <span className="docs-endpoint-row-title">{topic.title}</span>
+                        </div>
+                        <span className="docs-endpoint-row-path">{topic.path}</span>
+                      </div>
+                      {isActive && renderPlayground(topic)}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        /* Idle Mode: render grid cards selector + active category panel */
+        <>
+          {/* Categories Grid (1 row 2 boxes in mobile, multi-column in desktop) */}
+          <div className="docs-categories-grid">
+            {sortedCategories.map(([categoryName, topics]) => {
+              const isActive = currentCategory === categoryName;
+              return (
+                <div
+                  key={categoryName}
+                  className={`docs-category-box${isActive ? ' active' : ''}`}
+                  onClick={() => setSelectedCategory(categoryName)}
+                >
+                  <span className="docs-category-box-title">{categoryName}</span>
+                  <div className="docs-category-box-meta">
+                    <span className="docs-category-box-count">{topics.length} endpoints</span>
+                    <span className="docs-category-box-arrow">➔</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Active Category Panel */}
+          {currentCategory && (
+            <div className="active-category-panel">
+              <div className="active-category-panel-header">
+                <span className="active-category-panel-title">
+                  {currentCategory} List
                 </span>
               </div>
 
-              {/* Endpoint Rows */}
-              {isExpanded && (
-                <div className="docs-endpoints-list">
-                  {topics.map(topic => {
-                    const isActive = activeTopic?.id === topic.id;
-                    const method = (topic.method || 'GET').toLowerCase();
-                    return (
-                      <div key={topic.id} className={`docs-endpoint-item-wrapper${isActive ? ' active' : ''}`}>
-                        <div
-                          className="docs-endpoint-row"
-                          onClick={() => {
-                            if (isActive) {
-                              setActiveTopic(null);
-                              setResponseJson(null);
-                            } else {
-                              setActiveTopic(topic);
-                              setResponseJson(null);
-                              setResponseTab('visual');
-                            }
-                          }}
-                        >
-                          <div className="docs-endpoint-left">
-                            <span className={`method-badge ${method}`}>
-                              {topic.method || 'GET'}
-                            </span>
-                            <span className="docs-endpoint-row-title">{topic.title}</span>
-                          </div>
-                          <span className="docs-endpoint-row-path">{topic.path}</span>
+              <div className="docs-endpoints-list">
+                {(categories[currentCategory] || []).map(topic => {
+                  const isActive = activeTopic?.id === topic.id;
+                  const method = (topic.method || 'GET').toLowerCase();
+                  return (
+                    <div key={topic.id} className={`docs-endpoint-item-wrapper${isActive ? ' active' : ''}`}>
+                      <div
+                        className="docs-endpoint-row"
+                        onClick={() => {
+                          if (isActive) {
+                            setActiveTopic(null);
+                            setResponseJson(null);
+                          } else {
+                            setActiveTopic(topic);
+                            setResponseJson(null);
+                            setResponseTab('visual');
+                          }
+                        }}
+                      >
+                        <div className="docs-endpoint-left">
+                          <span className={`method-badge ${method}`}>
+                            {topic.method || 'GET'}
+                          </span>
+                          <span className="docs-endpoint-row-title">{topic.title}</span>
                         </div>
-
-                        {/* Inline expanded playground */}
-                        {isActive && renderPlayground(topic)}
+                        <span className="docs-endpoint-row-path">{topic.path}</span>
                       </div>
-                    );
-                  })}
-                </div>
-              )}
+                      {isActive && renderPlayground(topic)}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          );
-        })
-      }
+          )}
+        </>
+      )}
 
       {/* Empty state */}
       {Object.keys(categories).length === 0 && (
