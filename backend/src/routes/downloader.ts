@@ -32,7 +32,7 @@ router.all('/downloader/:slug', async (req, res) => {
         return res.status(400).json({
           success: false,
           creator: "XyloAPI",
-          error: "Missing required parameter: 'url'"
+          error: "Failed to process request"
         });
       }
 
@@ -87,8 +87,7 @@ router.all('/downloader/:slug', async (req, res) => {
         return res.status(500).json({
           success: false,
           creator: "XyloAPI",
-          error: "Failed to resolve MEGA URL",
-          details: err.message || String(err)
+          error: "Failed to process request"
         });
       }
     }
@@ -99,7 +98,7 @@ router.all('/downloader/:slug', async (req, res) => {
       return res.status(400).json({
         success: false,
         creator: "XyloAPI",
-        ...result
+        error: "Failed to process request"
       });
     }
 
@@ -110,10 +109,10 @@ router.all('/downloader/:slug', async (req, res) => {
     });
 
   } catch (error: any) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      error: "Failed to execute downloader pipeline",
-      details: error.message || String(error)
+      creator: "XyloAPI",
+      error: "Failed to process request"
     });
   }
 });
@@ -134,9 +133,10 @@ router.get('/downloads/:fileId/:filename', async (req, res) => {
       }
     });
   } else {
-    res.status(404).json({
+    return res.status(404).json({
       success: false,
-      error: "File not found or has already been downloaded."
+      creator: "XyloAPI",
+      error: "Failed to process request"
     });
   }
 });
@@ -168,14 +168,22 @@ router.get('/downloads/mega/:urlBase64/:filename', async (req, res) => {
     const stream = file.download({});
     stream.on('error', (err: any) => {
       if (!res.headersSent) {
-        res.status(500).send("Error streaming MEGA file");
+        res.status(500).json({
+          success: false,
+          creator: "XyloAPI",
+          error: "Failed to process request"
+        });
       }
     });
 
     stream.pipe(res);
   } catch (error: any) {
     if (!res.headersSent) {
-      res.status(500).send("Failed to start MEGA stream");
+      res.status(500).json({
+        success: false,
+        creator: "XyloAPI",
+        error: "Failed to process request"
+      });
     }
   }
 });

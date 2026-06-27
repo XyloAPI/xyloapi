@@ -9,7 +9,7 @@ export const tiktokRoute: DocTopic = {
     pathTemplate: '/api/downloader/:slug',
     description: 'Download TikTok videos without watermark, with watermark, or as high-quality MP3 audio files.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'Enter the public TikTok video URL' }
+      { name: 'url', type: 'text', required: true, desc: 'public TikTok video URL.' }
     ],
     payloadTemplate: {
       url: ''

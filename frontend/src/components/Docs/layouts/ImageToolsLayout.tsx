@@ -7,6 +7,609 @@ interface ImageToolsLayoutProps {
 }
 
 export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard }: ImageToolsLayoutProps) {
+  const isHitungJarak = activeTopic.id === 'hitung-jarak' || activeTopic.id === 'hitungjarak';
+  if (isHitungJarak && resData) {
+    const dariNama = resData.dari?.nama || '';
+    const dariLokasi = resData.dari?.lokasi || '';
+    const dariLat = resData.dari?.koordinat?.lat || 0;
+    const dariLon = resData.dari?.koordinat?.lon || 0;
+
+    const keNama = resData.ke?.nama || '';
+    const keLokasi = resData.ke?.lokasi || '';
+    const keLat = resData.ke?.koordinat?.lat || 0;
+    const keLon = resData.ke?.koordinat?.lon || 0;
+
+    const jarakText = resData.jarak || '';
+    const estimasi = resData.estimasi_waktu || {};
+
+    return (
+      <div className="response-layout">
+        <div className="response-header">
+          <span className="response-status-badge" style={{ backgroundColor: '#4caf50', color: 'var(--black)', fontWeight: 700 }}>
+            ✓ DISTANCE CALCULATED SUCCESSFULLY
+          </span>
+          <h2 className="response-title">
+            {dariNama} ➔ {keNama} Route Calculation
+          </h2>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div className="response-grid-2">
+            <div className="response-subcard" style={{ gridColumn: 'span 2', textAlign: 'center', padding: '24px 16px', background: 'rgba(212, 175, 55, 0.05)', border: '1px solid var(--gold)' }}>
+              <span className="response-label" style={{ fontSize: '12px', letterSpacing: '2px' }}>TOTAL DISTANCE</span>
+              <span style={{ fontSize: '36px', fontWeight: 800, color: 'var(--gold-text)', fontFamily: 'var(--font-mono)', display: 'block', margin: '8px 0' }}>
+                {jarakText}
+              </span>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+            {/* Origin Card */}
+            <div style={{
+              flex: 1,
+              minWidth: '280px',
+              border: '1px solid var(--border-color)',
+              backgroundColor: '#111',
+              padding: '16px',
+              borderRadius: '4px'
+            }}>
+              <span className="response-label" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '6px', display: 'block', marginBottom: '10px' }}>ORIGIN (DARI)</span>
+              <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--white)', marginBottom: '4px' }}>{dariNama}</div>
+              <div style={{ fontSize: '12px', color: 'var(--ash)', lineHeight: '1.5', marginBottom: '12px' }}>{dariLokasi}</div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--gold-text)' }}>
+                Coordinates: {dariLat}, {dariLon}
+              </div>
+            </div>
+
+            {/* Destination Card */}
+            <div style={{
+              flex: 1,
+              minWidth: '280px',
+              border: '1px solid var(--border-color)',
+              backgroundColor: '#111',
+              padding: '16px',
+              borderRadius: '4px'
+            }}>
+              <span className="response-label" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '6px', display: 'block', marginBottom: '10px' }}>DESTINATION (KE)</span>
+              <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--white)', marginBottom: '4px' }}>{keNama}</div>
+              <div style={{ fontSize: '12px', color: 'var(--ash)', lineHeight: '1.5', marginBottom: '12px' }}>{keLokasi}</div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--gold-text)' }}>
+                Coordinates: {keLat}, {keLon}
+              </div>
+            </div>
+          </div>
+
+          {/* Time Estimations */}
+          <div style={{
+            border: '1px solid var(--border-color)',
+            backgroundColor: '#111',
+            padding: '16px',
+            borderRadius: '4px'
+          }}>
+            <span className="response-label" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '6px', display: 'block', marginBottom: '14px' }}>TRAVEL TIME ESTIMATION</span>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px' }}>
+              <div style={{ padding: '10px', background: '#0a0a0a', border: '1px solid #1a1a1a', borderRadius: '4px' }}>
+                <div style={{ fontSize: '10px', color: 'var(--ash)', textTransform: 'uppercase', fontWeight: 700 }}>Motorcycle</div>
+                <div style={{ fontSize: '14px', color: 'var(--white)', fontWeight: 600, marginTop: '4px' }}>{estimasi.motor || '-'}</div>
+              </div>
+              <div style={{ padding: '10px', background: '#0a0a0a', border: '1px solid #1a1a1a', borderRadius: '4px' }}>
+                <div style={{ fontSize: '10px', color: 'var(--ash)', textTransform: 'uppercase', fontWeight: 700 }}>Car</div>
+                <div style={{ fontSize: '14px', color: 'var(--white)', fontWeight: 600, marginTop: '4px' }}>{estimasi.mobil || '-'}</div>
+              </div>
+              <div style={{ padding: '10px', background: '#0a0a0a', border: '1px solid #1a1a1a', borderRadius: '4px' }}>
+                <div style={{ fontSize: '10px', color: 'var(--ash)', textTransform: 'uppercase', fontWeight: 700 }}>Walking</div>
+                <div style={{ fontSize: '14px', color: 'var(--white)', fontWeight: 600, marginTop: '4px' }}>{estimasi.jalan_kaki || '-'}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const isIpLookup = activeTopic.id === 'iplookup' || activeTopic.id === 'ip';
+  if (isIpLookup && resData) {
+    const { ip, country, country_code, region, city, latitude, longitude, isp, asn, services } = resData;
+
+    return (
+      <div className="response-layout">
+        <div className="response-header">
+          <span className="response-status-badge" style={{ backgroundColor: '#4caf50', color: 'var(--black)', fontWeight: 700 }}>
+            ✓ IP INFORMATION RETRIEVED SUCCESSFULLY
+          </span>
+          <h2 className="response-title">
+            Lookup Result: {ip}
+          </h2>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          {/* Main Info Cards Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
+            <div style={{ border: '1px solid var(--border-color)', backgroundColor: '#111', padding: '16px', borderRadius: '4px' }}>
+              <span className="response-label" style={{ display: 'block', marginBottom: '6px' }}>IP ADDRESS</span>
+              <div style={{ fontSize: '18px', fontWeight: 800, color: 'var(--white)', fontFamily: 'var(--font-mono)' }}>{ip}</div>
+            </div>
+            <div style={{ border: '1px solid var(--border-color)', backgroundColor: '#111', padding: '16px', borderRadius: '4px' }}>
+              <span className="response-label" style={{ display: 'block', marginBottom: '6px' }}>LOCATION</span>
+              <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--white)' }}>
+                {city !== 'N/A' && city ? `${city}, ` : ''}{region !== 'N/A' && region ? `${region}, ` : ''}{country || 'N/A'}
+              </div>
+              <div style={{ fontSize: '11px', color: 'var(--ash)', marginTop: '4px' }}>ISO Code: {country_code || 'N/A'}</div>
+            </div>
+            <div style={{ border: '1px solid var(--border-color)', backgroundColor: '#111', padding: '16px', borderRadius: '4px' }}>
+              <span className="response-label" style={{ display: 'block', marginBottom: '6px' }}>COORDINATES</span>
+              <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--white)', fontFamily: 'var(--font-mono)' }}>
+                {latitude !== null && longitude !== null ? `${latitude}, ${longitude}` : 'N/A'}
+              </div>
+              {latitude !== null && longitude !== null && (
+                <a
+                  href={`https://maps.google.com/?q=${latitude},${longitude}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ fontSize: '11px', color: 'var(--gold-text)', textDecoration: 'none', display: 'inline-block', marginTop: '6px', fontWeight: 700 }}
+                >
+                  VIEW MAP
+                </a>
+              )}
+            </div>
+            <div style={{ border: '1px solid var(--border-color)', backgroundColor: '#111', padding: '16px', borderRadius: '4px' }}>
+              <span className="response-label" style={{ display: 'block', marginBottom: '6px' }}>NETWORK PROVIDER (ISP)</span>
+              <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--white)' }}>{isp || 'N/A'}</div>
+              <div style={{ fontSize: '11px', color: 'var(--ash)', marginTop: '4px', fontFamily: 'var(--font-mono)' }}>ASN: {asn || 'N/A'}</div>
+            </div>
+          </div>
+
+          {/* Database Provider details */}
+          <div style={{ border: '1px solid var(--border-color)', backgroundColor: '#111', padding: '16px', borderRadius: '4px' }}>
+            <span className="response-label" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '6px', display: 'block', marginBottom: '14px' }}>
+              DATA SOURCES ANALYSIS
+            </span>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '16px' }}>
+              {services && Object.entries(services).map(([key, value]: [string, any]) => {
+                if (!value) return null;
+                const dbName = key === 'ip2location' ? 'IP2Location' : key === 'ipinfo' ? 'IP Info' : key === 'dbip' ? 'DB IP' : key === 'criminalip' ? 'Criminal IP' : key;
+                return (
+                  <div key={key} style={{ padding: '12px', background: '#0a0a0a', border: '1px solid #1a1a1a', borderRadius: '4px' }}>
+                    <div style={{ fontSize: '12px', color: 'var(--gold-text)', fontWeight: 800, textTransform: 'uppercase', borderBottom: '1px solid #1a1a1a', paddingBottom: '6px', marginBottom: '10px' }}>
+                      {dbName}
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span style={{ color: 'var(--ash)' }}>Country:</span>
+                        <span style={{ color: 'var(--white)', fontWeight: 600 }}>{value.country_name || 'N/A'}</span>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span style={{ color: 'var(--ash)' }}>City:</span>
+                        <span style={{ color: 'var(--white)', fontWeight: 600 }}>{value.city_name || 'N/A'}</span>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span style={{ color: 'var(--ash)' }}>Latitude:</span>
+                        <span style={{ color: 'var(--white)', fontFamily: 'var(--font-mono)' }}>{value.latitude || 'N/A'}</span>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span style={{ color: 'var(--ash)' }}>Longitude:</span>
+                        <span style={{ color: 'var(--white)', fontFamily: 'var(--font-mono)' }}>{value.longitude || 'N/A'}</span>
+                      </div>
+                      {key === 'criminalip' ? (
+                        <>
+                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span style={{ color: 'var(--ash)' }}>VPN:</span>
+                            <span style={{ color: value.all?.score?.inbound === 'Safe' ? '#4caf50' : 'red', fontWeight: 600 }}>
+                              {value.all?.issues?.is_vpn ? 'Yes' : 'No'}
+                            </span>
+                          </div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span style={{ color: 'var(--ash)' }}>Hosting/Cloud:</span>
+                            <span style={{ color: 'var(--white)', fontWeight: 600 }}>
+                              {value.all?.issues?.is_hosting || value.all?.issues?.is_cloud ? 'Yes' : 'No'}
+                            </span>
+                          </div>
+                        </>
+                      ) : (
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span style={{ color: 'var(--ash)' }}>Organization:</span>
+                          <span style={{ color: 'var(--white)', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '140px' }} title={value.organization}>
+                            {value.organization || 'N/A'}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const isAksaraJawa = activeTopic.id === 'aksara-jawa' || activeTopic.id === 'aksarajawa';
+  if (isAksaraJawa && resData) {
+    const sourceText = resData.text || '';
+    const convertedText = resData.result || '';
+    const directionLabel = resData.direction === 'jawa2latin' ? 'Aksara Jawa ➔ Latin' : 'Latin ➔ Aksara Jawa';
+    const isJawaOutput = resData.direction !== 'jawa2latin';
+
+    return (
+      <div className="response-layout">
+        <div className="response-header">
+          <span className="response-status-badge" style={{ backgroundColor: 'var(--gold)', color: 'var(--black)' }}>
+            ✓ TRANSLITERATION COMPLETED
+          </span>
+          <h2 className="response-title">
+            {activeTopic.title} Result
+          </h2>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div className="response-grid-2">
+            <div className="response-subcard">
+              <span className="response-label">CONVERSION DIRECTION</span>
+              <span className="response-value-mono" style={{ fontSize: '14px', fontWeight: 700, color: 'var(--gold-text)' }}>
+                {directionLabel}
+              </span>
+            </div>
+            <div className="response-subcard">
+              <span className="response-label">STATUS</span>
+              <span className="response-value-mono" style={{ fontSize: '14px', fontWeight: 700, color: '#4caf50' }}>
+                SUCCESS
+              </span>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+            {/* Source Panel */}
+            <div style={{
+              flex: 1,
+              minWidth: '280px',
+              border: '1px solid var(--border-color)',
+              backgroundColor: '#111',
+              padding: '16px',
+              borderRadius: '4px'
+            }}>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                borderBottom: '1px solid var(--border-color)',
+                paddingBottom: '8px',
+                marginBottom: '12px'
+              }}>
+                <span className="response-label" style={{ margin: 0 }}>ORIGINAL TEXT</span>
+                <button 
+                  onClick={() => copyToClipboard(sourceText)} 
+                  className="btn btn-ghost" 
+                  style={{ padding: '4px 12px', fontSize: '10px', height: 'auto', minHeight: 'unset' }}
+                >
+                  COPY
+                </button>
+              </div>
+              <div style={{
+                fontFamily: isJawaOutput ? 'var(--font-display)' : 'var(--font-mono)',
+                fontSize: isJawaOutput ? '14px' : '18px',
+                color: 'var(--ash)',
+                lineHeight: '1.6',
+                minHeight: '80px',
+                maxHeight: '200px',
+                overflowY: 'auto',
+                whiteSpace: 'pre-wrap'
+              }}>
+                {sourceText}
+              </div>
+            </div>
+
+            {/* Transliterated Panel */}
+            <div style={{
+              flex: 1,
+              minWidth: '280px',
+              border: '1px solid var(--border-color)',
+              backgroundColor: '#111',
+              padding: '16px',
+              borderRadius: '4px'
+            }}>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                borderBottom: '1px solid var(--border-color)',
+                paddingBottom: '8px',
+                marginBottom: '12px'
+              }}>
+                <span className="response-label" style={{ margin: 0 }}>TRANSLITERATED RESULT</span>
+                <button 
+                  onClick={() => copyToClipboard(convertedText)} 
+                  className="btn btn-ghost" 
+                  style={{ padding: '4px 12px', fontSize: '10px', height: 'auto', minHeight: 'unset' }}
+                >
+                  COPY
+                </button>
+              </div>
+              <div style={{
+                fontFamily: isJawaOutput ? 'var(--font-mono)' : 'var(--font-display)',
+                fontSize: isJawaOutput ? '22px' : '14px',
+                color: 'var(--white)',
+                lineHeight: '1.8',
+                minHeight: '80px',
+                maxHeight: '200px',
+                overflowY: 'auto',
+                whiteSpace: 'pre-wrap',
+                fontWeight: 500
+              }}>
+                {convertedText}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const isTranslate = activeTopic.id === 'translate' || activeTopic.id === 'deepl';
+  if (isTranslate && resData) {
+    const sourceText = resData.source || '';
+    const translatedText = resData.translated || '';
+    return (
+      <div className="response-layout">
+        <div className="response-header">
+          <span className="response-status-badge">
+            ✓ TRANSLATION COMPLETED
+          </span>
+          <h2 className="response-title">
+            {activeTopic.title} Result
+          </h2>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div className="response-grid-2">
+            <div className="response-subcard">
+              <span className="response-label">SOURCE LANGUAGE</span>
+              <span className="response-value-mono" style={{ fontSize: '14px', fontWeight: 700, textTransform: 'uppercase', color: 'var(--gold-text)' }}>
+                {resData.from}
+              </span>
+            </div>
+            <div className="response-subcard">
+              <span className="response-label">TARGET LANGUAGE</span>
+              <span className="response-value-mono" style={{ fontSize: '14px', fontWeight: 700, textTransform: 'uppercase' }}>
+                {resData.to}
+              </span>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+            {/* Source Panel */}
+            <div style={{
+              flex: 1,
+              minWidth: '280px',
+              border: '1px solid var(--border-color)',
+              backgroundColor: '#111',
+              padding: '16px',
+              borderRadius: '4px'
+            }}>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                borderBottom: '1px solid var(--border-color)',
+                paddingBottom: '8px',
+                marginBottom: '12px'
+              }}>
+                <span className="response-label" style={{ margin: 0 }}>ORIGINAL TEXT</span>
+                <button 
+                  onClick={() => copyToClipboard(sourceText)} 
+                  className="btn btn-ghost" 
+                  style={{ padding: '4px 12px', fontSize: '10px', height: 'auto', minHeight: 'unset' }}
+                >
+                  COPY
+                </button>
+              </div>
+              <div style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: '13px',
+                color: 'var(--ash)',
+                lineHeight: '1.6',
+                minHeight: '80px',
+                maxHeight: '200px',
+                overflowY: 'auto',
+                whiteSpace: 'pre-wrap'
+              }}>
+                {sourceText}
+              </div>
+            </div>
+
+            {/* Translated Panel */}
+            <div style={{
+              flex: 1,
+              minWidth: '280px',
+              border: '1px solid var(--border-color)',
+              backgroundColor: '#111',
+              padding: '16px',
+              borderRadius: '4px'
+            }}>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                borderBottom: '1px solid var(--border-color)',
+                paddingBottom: '8px',
+                marginBottom: '12px'
+              }}>
+                <span className="response-label" style={{ margin: 0 }}>TRANSLATED TEXT</span>
+                <button 
+                  onClick={() => copyToClipboard(translatedText)} 
+                  className="btn btn-ghost" 
+                  style={{ padding: '4px 12px', fontSize: '10px', height: 'auto', minHeight: 'unset' }}
+                >
+                  COPY
+                </button>
+              </div>
+              <div style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: '14px',
+                color: 'var(--white)',
+                lineHeight: '1.6',
+                minHeight: '80px',
+                maxHeight: '200px',
+                overflowY: 'auto',
+                whiteSpace: 'pre-wrap',
+                fontWeight: 500
+              }}>
+                {translatedText}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const isOcr = activeTopic.id === 'ocr';
+  if (isOcr && resData) {
+    const textContent = resData.text || '';
+    const linesCount = resData.lines ? resData.lines.length : 0;
+    return (
+      <div className="response-layout">
+        <div className="response-header">
+          <span className="response-status-badge">
+            ✓ TEXT EXTRACTED SUCCESSFULLY
+          </span>
+          <h2 className="response-title">
+            {activeTopic.title} Result
+          </h2>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div className="response-grid-2">
+            <div className="response-subcard">
+              <span className="response-label">LINES DETECTED</span>
+              <span className="response-value-mono" style={{ fontSize: '16px', fontWeight: 700, color: 'var(--gold-text)' }}>
+                {linesCount}
+              </span>
+            </div>
+            <div className="response-subcard">
+              <span className="response-label">CHARACTER COUNT</span>
+              <span className="response-value-mono" style={{ fontSize: '16px', fontWeight: 700 }}>
+                {textContent.length}
+              </span>
+            </div>
+          </div>
+
+          <div style={{
+            border: '1px solid var(--border-color)',
+            backgroundColor: '#111',
+            padding: '16px',
+            borderRadius: '4px',
+            position: 'relative'
+          }}>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              borderBottom: '1px solid var(--border-color)',
+              paddingBottom: '8px',
+              marginBottom: '12px'
+            }}>
+              <span className="response-label" style={{ margin: 0 }}>EXTRACTED TEXT</span>
+              <button 
+                onClick={() => copyToClipboard(textContent)} 
+                className="btn btn-ghost" 
+                style={{ padding: '4px 12px', fontSize: '10px', height: 'auto', minHeight: 'unset' }}
+              >
+                COPY TEXT
+              </button>
+            </div>
+            <pre style={{
+              margin: 0,
+              padding: '8px',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '13px',
+              color: 'var(--white)',
+              whiteSpace: 'pre-wrap',
+              wordBreak: 'break-all',
+              maxHeight: '300px',
+              overflowY: 'auto',
+              backgroundColor: '#0a0a0a',
+              border: '1px solid #1a1a1a',
+              borderRadius: '2px',
+              lineHeight: '1.6'
+            }}>
+              {textContent || 'No text found.'}
+            </pre>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const isWeb2Zip = activeTopic.id === 'web2zip';
+  if (isWeb2Zip) {
+    return (
+      <div className="response-layout">
+        <div className="response-header">
+          <span className="response-status-badge">
+            ✓ WEBSITE CLONED SUCCESSFULLY
+          </span>
+          <h2 className="response-title">
+            {activeTopic.title} Result
+          </h2>
+        </div>
+
+        <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', alignItems: 'start' }}>
+          <div style={{
+            border: '1px solid var(--border-color)',
+            padding: '24px',
+            backgroundColor: '#111',
+            width: '320px',
+            height: '240px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+            boxSizing: 'border-box'
+          }}>
+            <div style={{ fontSize: '48px', marginBottom: '12px' }}>📦</div>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--white)', fontWeight: 700, wordBreak: 'break-all', padding: '0 8px' }}>
+              {resData.filename}
+            </div>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: '10px', color: 'var(--ash)', marginTop: '6px' }}>
+              ZIP ARCHIVE GENERATED
+            </div>
+          </div>
+
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '14px' }}>
+            <div className="response-grid-2">
+              <div className="response-subcard" style={{ gridColumn: 'span 2' }}>
+                <span className="response-label">TARGET URL</span>
+                <span className="response-value-mono" style={{ fontSize: '12px', fontWeight: 700, color: 'var(--white)', wordBreak: 'break-all' }}>{resData.url}</span>
+              </div>
+              <div className="response-subcard">
+                <span className="response-label">ZIP SIZE</span>
+                <span className="response-value-mono" style={{ fontSize: '13px', fontWeight: 700, color: 'var(--gold-text)' }}>{resData.size}</span>
+              </div>
+              <div className="response-subcard">
+                <span className="response-label">COPIED FILES</span>
+                <span className="response-value-mono" style={{ fontSize: '13px', fontWeight: 700 }}>{resData.copied_files} files</span>
+              </div>
+            </div>
+
+            <div className="response-list" style={{ marginTop: '10px' }}>
+              <span className="response-label">CLONED ZIP LINK</span>
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                <a href={resData.download} target="_blank" rel="noreferrer" className="btn btn-gold" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none', padding: '8px 16px', fontSize: '11px', fontWeight: 700, flex: 1 }}>
+                  DOWNLOAD ZIP ARCHIVE
+                </a>
+                <button onClick={() => copyToClipboard(resData.download)} className="btn btn-ghost" style={{ padding: '8px 16px', fontSize: '11px', fontWeight: 700 }}>
+                  COPY LINK
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const isSplit = activeTopic.id === 'split';
   if (isSplit && resData.slices) {
     const gridCols = resData.cols || 2;
@@ -131,6 +734,9 @@ export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard
   const isEnhance = activeTopic.id === 'enhance';
   const isQR = activeTopic.category === 'QR Tools';
   const isAIImage = activeTopic.category === 'AI Image';
+  const isAIEdit = activeTopic.category === 'AI Image Edit';
+  const isTools = activeTopic.category === 'Tools';
+  const isBase64ToImage = activeTopic.id === 'base64-to-image';
 
   let badgeText = '✓ BACKGROUND REMOVED';
   if (isUpscale) badgeText = '✓ IMAGE UPSCALED';
@@ -149,6 +755,9 @@ export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard
   if (isEnhance) badgeText = '✓ IMAGE ENHANCED';
   if (isQR) badgeText = '✓ QR CODE GENERATED';
   if (isAIImage) badgeText = '✓ AI IMAGE GENERATED';
+  if (isAIEdit) badgeText = '✓ IMAGE EDITED SUCCESSFULLY';
+  if (isTools) badgeText = '✓ WEBSITE SCREENSHOT CAPTURED';
+  if (isBase64ToImage) badgeText = '✓ BASE64 IMAGE DECODED';
 
   let downloadText = 'DOWNLOAD TRANSPARENT IMAGE';
   if (isUpscale) downloadText = 'DOWNLOAD UPSCALED IMAGE';
@@ -167,9 +776,12 @@ export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard
   if (isEnhance) downloadText = 'DOWNLOAD ENHANCED IMAGE';
   if (isQR) downloadText = 'DOWNLOAD QR CODE';
   if (isAIImage) downloadText = 'DOWNLOAD GENERATED IMAGE';
+  if (isAIEdit) downloadText = 'DOWNLOAD EDITED IMAGE';
+  if (isTools) downloadText = 'DOWNLOAD SCREENSHOT';
+  if (isBase64ToImage) downloadText = 'DOWNLOAD DECODED IMAGE';
 
-  const showGridBg = !isUpscale && !isSepia && !isInvert && !isFlip && !isPixelate && !isRound && !isNoise && !isBlur && !isSharpen && !isSolarize && !isGlow && !isPosterize && !isBlurFace && !isEnhance && !isQR && !isAIImage;
-  const previewAlt = isUpscale ? 'Upscaled Preview' : isSepia ? 'Sepia Filter Preview' : isInvert ? 'Inverted Colors Preview' : isFlip ? 'Flipped Image Preview' : isPixelate ? 'Pixelated Preview' : isRound ? 'Rounded Corners Preview' : isNoise ? 'Noise Applied Preview' : isBlur ? 'Blurred Image Preview' : isSharpen ? 'Sharpened Image Preview' : isSolarize ? 'Solarized Preview' : isGlow ? 'Glow Preview' : isPosterize ? 'Posterized Preview' : isBlurFace ? 'Face Blurred Preview' : isEnhance ? 'Enhanced Image Preview' : isQR ? 'QR Code Preview' : isAIImage ? 'AI Generated Image' : 'Transparent Background Preview';
+  const showGridBg = !isUpscale && !isSepia && !isInvert && !isFlip && !isPixelate && !isRound && !isNoise && !isBlur && !isSharpen && !isSolarize && !isGlow && !isPosterize && !isBlurFace && !isEnhance && !isQR && !isAIImage && !isAIEdit && !isTools && !isBase64ToImage;
+  const previewAlt = isUpscale ? 'Upscaled Preview' : isSepia ? 'Sepia Filter Preview' : isInvert ? 'Inverted Colors Preview' : isFlip ? 'Flipped Image Preview' : isPixelate ? 'Pixelated Preview' : isRound ? 'Rounded Corners Preview' : isNoise ? 'Noise Applied Preview' : isBlur ? 'Blurred Image Preview' : isSharpen ? 'Sharpened Image Preview' : isSolarize ? 'Solarized Preview' : isGlow ? 'Glow Preview' : isPosterize ? 'Posterized Preview' : isBlurFace ? 'Face Blurred Preview' : isEnhance ? 'Enhanced Image Preview' : isQR ? 'QR Code Preview' : isAIImage ? 'AI Generated Image' : isAIEdit ? 'Edited Image Preview' : isTools ? 'Website Screenshot Preview' : isBase64ToImage ? 'Decoded Base64 Image Preview' : 'Transparent Background Preview';
 
   return (
     <div className="response-layout">

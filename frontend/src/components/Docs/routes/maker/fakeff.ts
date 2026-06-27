@@ -7,7 +7,7 @@ export const fakeffRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/fakeff',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate a mock Free Fire lobby screenshot with a custom username and lobby background.',
+  description: 'Generate a mock Free Fire in-game player lobby card with a custom username.',
   parameters: [
     { name: 'username', type: 'text', required: true, desc: 'Username to display in the lobby. Max 20 characters.' }
   ],

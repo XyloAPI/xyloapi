@@ -7,7 +7,7 @@ export const carbonRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/carbon',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate beautiful carbon code images from code snippets with custom syntax highlighting, themes, background colors, and typography.',
+  description: 'Generate beautiful carbon code images from code snippets.',
   parameters: [
     { name: 'code', type: 'textarea', required: false, desc: 'The source code snippet to render. Defaults to Python print statement.' },
     { 
@@ -40,7 +40,7 @@ export const carbonRoute: DocTopic = {
         'sql', 'swift', 'toml', 'typescript', 'vb.net', 'xml', 'yaml'
       ]
     },
-    { name: 'backgroundColor', type: 'text', required: false, desc: 'Background wrapper color as hex or rgba string. Defaults to "rgba(171, 184, 195, 1)".' },
+    { name: 'backgroundColor', type: 'color', required: false, desc: 'Background wrapper color as hex or rgba string. Defaults to "rgba(171, 184, 195, 1)".' },
     { 
       name: 'lineNumbers', 
       type: 'select', 

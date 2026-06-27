@@ -9,7 +9,7 @@ export const megaRoute: DocTopic = {
     pathTemplate: '/api/downloader/:slug',
     description: 'Download and decrypt public files hosted on MEGA.nz directly to stream and save.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'Enter the MEGA.nz file share URL' }
+      { name: 'url', type: 'text', required: true, desc: 'MEGA.nz file share URL.' }
     ],
     payloadTemplate: {
       url: ''

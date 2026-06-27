@@ -20,7 +20,7 @@ router.all('/:slug', async (req, res) => {
       return res.status(400).json({
         success: false,
         creator: "XyloAPI",
-        ...result
+        error: "Failed to process request"
       });
     }
 
@@ -31,10 +31,10 @@ router.all('/:slug', async (req, res) => {
     });
 
   } catch (error: any) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      error: "Failed to execute shortlink pipeline",
-      details: error.message || String(error)
+      creator: "XyloAPI",
+      error: "Failed to process request"
     });
   }
 });

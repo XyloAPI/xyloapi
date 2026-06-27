@@ -186,15 +186,33 @@
 
   .docs-endpoint-row {
     padding: 12px 14px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .docs-endpoint-left {
+    width: 100%;
     gap: 10px;
   }
 
-  .docs-endpoint-row-path {
-    font-size: 11px;
+  .docs-endpoint-row-title {
+    display: block;
+    font-size: 13px;
+    white-space: normal;
+    word-break: break-word;
+    flex: 1;
   }
 
-  .docs-endpoint-row-title {
-    display: none;
+  .docs-endpoint-row-path {
+    font-size: 10px;
+    color: var(--steel);
+    padding-left: 44px;
+    white-space: normal;
+    word-break: break-all;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 

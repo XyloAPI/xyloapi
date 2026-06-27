@@ -22,6 +22,8 @@ import aiImageRouter from './routes/ai-image';
 import bmkgRouter from './routes/bmkg';
 import infoRouter from './routes/info';
 import makerRouter from './routes/maker';
+import aiImageEditRouter from './routes/ai-image-edit';
+import toolsRouter from './routes/tools';
 
 function killPortOwner(port: number) {
   if (process.platform === 'win32') {
@@ -75,6 +77,7 @@ function killPortOwner(port: number) {
 
 
 const app = express();
+app.set('trust proxy', true); // trust X-Forwarded-For from Cloudflare/nginx
 const PORT = process.env.PORT || 5000;
 
 app.use(cors({
@@ -117,6 +120,8 @@ app.use('/api/ai-image', aiImageRouter);
 app.use('/api/bmkg', bmkgRouter);
 app.use('/api/info', infoRouter);
 app.use('/api/maker', makerRouter);
+app.use('/api/ai-image-edit', aiImageEditRouter);
+app.use('/api/tools', toolsRouter);
 
 killPortOwner(Number(PORT));
 app.listen(PORT, () => {

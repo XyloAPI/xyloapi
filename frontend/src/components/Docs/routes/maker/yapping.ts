@@ -7,7 +7,7 @@ export const yappingRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/yapping',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate a mock Yapping Certificate with a custom name.',
+  description: 'Generate a humorous Yapping Certificate image featuring a custom name.',
   parameters: [
     { name: 'name', type: 'text', required: true, desc: 'Recipient name to write on the certificate.' }
   ],

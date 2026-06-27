@@ -7,13 +7,13 @@ export const trumpTweetsRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/trumptweets',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate realistic, high-fidelity mock Donald Trump tweets with custom text, stats (retweets, quotes, likes), device sources, timestamps, and light/dark theme modes.',
+  description: 'Generate Donald Trump tweets with custom text.',
   parameters: [
     { name: 'text', type: 'textarea', required: false, desc: 'The tweet message to render. Defaults to "MAKE AMERICA GREAT AGAIN!".' },
-    { 
-      name: 'theme', 
-      type: 'select', 
-      required: false, 
+    {
+      name: 'theme',
+      type: 'select',
+      required: false,
       desc: 'Visual interface color theme. Defaults to "light".',
       options: ['light', 'dark']
     },

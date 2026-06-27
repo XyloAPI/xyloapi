@@ -9,7 +9,7 @@ export const threadsRoute: DocTopic = {
     pathTemplate: '/api/downloader/:slug',
     description: 'Download videos, images, and carousels from Threads posts.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'Enter the public Threads post URL' }
+      { name: 'url', type: 'text', required: true, desc: 'public Threads post URL.' }
     ],
     payloadTemplate: {
       url: ''

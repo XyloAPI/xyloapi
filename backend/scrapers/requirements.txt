@@ -5,3 +5,5 @@ cryptography>=41.0.0
 pycryptodome>=3.20.0
 curl_cffi>=0.7.0
 Pillow>=10.0.0
+somnium
+

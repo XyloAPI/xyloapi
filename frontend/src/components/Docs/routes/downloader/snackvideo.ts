@@ -9,7 +9,7 @@ export const snackvideoRoute: DocTopic = {
     pathTemplate: '/api/downloader/:slug',
     description: 'Download SnackVideo videos without watermark, with cover thumbnail and audio stream.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'Enter the SnackVideo URL' }
+      { name: 'url', type: 'text', required: true, desc: 'SnackVideo URL.' }
     ],
     payloadTemplate: {
       url: ''

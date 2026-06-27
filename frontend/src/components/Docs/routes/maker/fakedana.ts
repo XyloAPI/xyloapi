@@ -7,7 +7,7 @@ export const fakedanaRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/fakedana',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate a realistic simulated Dana balance page mockup with custom nominal amount.',
+  description: 'Generate a realistic simulated Dana balance page mockup.',
   parameters: [
     { name: 'nominal', type: 'text', required: true, desc: 'The mock balance amount (e.g. 150000 or 2500000).' }
   ],

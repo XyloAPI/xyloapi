@@ -9,7 +9,7 @@ export const cocofunRoute: DocTopic = {
     pathTemplate: '/api/downloader/:slug',
     description: 'Download CocoFun videos in high quality.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'Enter the CocoFun share video URL' }
+      { name: 'url', type: 'text', required: true, desc: 'CocoFun share video URL.' }
     ],
     payloadTemplate: {
       url: ''

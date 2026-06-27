@@ -7,7 +7,7 @@ export const nemotronRoute: DocTopic = {
     method: 'GET',
     path: '/api/ai-chat/nemotron',
     pathTemplate: '/api/ai-chat/:slug',
-    description: 'Interact with Nemotron 3 Ultra 550B by NVIDIA. A massive LLM designed for high reasoning capability.',
+    description: 'Interact with Nemotron 3 Ultra 550B. A massive LLM designed for complex reasoning and analytical tasks.',
     parameters: [
       { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
     ],

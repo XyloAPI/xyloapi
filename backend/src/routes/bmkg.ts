@@ -11,7 +11,7 @@ router.all('/:slug', async (req, res) => {
   };
 
   try {
-    const reqHost = req.headers.host || "localhost:5000";
+    const reqHost = req.headers.host || 'localhost:5000';
     const protocol = req.secure || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
 
     const result = await executePipeline(slug, payload, reqHost, protocol);
@@ -20,7 +20,7 @@ router.all('/:slug', async (req, res) => {
       return res.status(400).json({
         success: false,
         creator: "XyloAPI",
-        ...result
+        error: "Failed to process request"
       });
     }
 
@@ -31,10 +31,10 @@ router.all('/:slug', async (req, res) => {
     });
 
   } catch (error: any) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      error: "Failed to execute BMKG pipeline",
-      details: error.message || String(error)
+      creator: "XyloAPI",
+      error: "Failed to process request"
     });
   }
 });

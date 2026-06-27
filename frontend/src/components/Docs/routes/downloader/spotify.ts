@@ -9,7 +9,7 @@ export const spotifyRoute: DocTopic = {
     pathTemplate: '/api/downloader/:slug',
     description: 'Download Spotify tracks in high-quality 320kbps MP3 audio.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'Enter the public Spotify track URL' }
+      { name: 'url', type: 'text', required: true, desc: 'public Spotify track URL.' }
     ],
     payloadTemplate: {
       url: ''

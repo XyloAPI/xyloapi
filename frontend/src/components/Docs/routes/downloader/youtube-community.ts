@@ -9,7 +9,7 @@ export const youtube_communityRoute: DocTopic = {
     pathTemplate: '/api/downloader/:slug',
     description: 'Download images from YouTube community posts in high quality.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'Enter the YouTube Community Post URL' }
+      { name: 'url', type: 'text', required: true, desc: 'YouTube Community Post URL.' }
     ],
     payloadTemplate: {
       url: ''

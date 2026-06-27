@@ -9,7 +9,7 @@ export const pornhdRoute: DocTopic = {
     pathTemplate: '/api/downloader/:slug',
     description: 'Download PornHD and Faphouse videos in high quality MP4 format.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'Enter the PornHD or Faphouse URL (e.g. https://faphouse.com/videos/shinji-x-asuka-eva-dGEu0b)' }
+      { name: 'url', type: 'text', required: true, desc: 'PornHD or Faphouse URL (e.g. https://faphouse.com/videos/shinji-x-asuka-eva-dGEu0b).' }
     ],
     payloadTemplate: {
       url: ''

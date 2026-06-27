@@ -9,7 +9,7 @@ export const soundcloudRoute: DocTopic = {
     pathTemplate: '/api/downloader/:slug',
     description: 'Download SoundCloud tracks in high-quality MP3 audio.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'Enter the public SoundCloud track URL' }
+      { name: 'url', type: 'text', required: true, desc: 'public SoundCloud track URL.' }
     ],
     payloadTemplate: {
       url: ''

@@ -7,9 +7,9 @@ export const youtubeRoute: DocTopic = {
     method: 'POST',
     path: '/api/downloader/youtube',
     pathTemplate: '/api/downloader/:slug',
-    description: 'Download YouTube videos in high resuolution and MP3 audios.',
+    description: 'Download YouTube videos in high resolution with MP3 audio extraction.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'Enter the public YouTube video URL' }
+      { name: 'url', type: 'text', required: true, desc: 'Public YouTube video URL.' }
     ],
     payloadTemplate: {
       url: ''

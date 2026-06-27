@@ -69,7 +69,8 @@ export default function Docs() {
 
   const getActiveMethod = () => {
     if (!activeTopic) return 'GET';
-    if (activeTopic.category === 'Media Uploaders' || activeTopic.category === 'File Uploaders' || activeTopic.category === 'Image Tools' || activeTopic.id === 'qr-decoder') {
+    const hasFileParam = activeTopic.parameters?.some(p => p.type === 'file');
+    if (hasFileParam) {
       return uploadMode === 'file' ? 'POST' : 'GET';
     }
     return activeTopic.method || 'GET';
@@ -99,13 +100,14 @@ export default function Docs() {
     const method = getActiveMethod();
     if (method === 'GET') {
       const queryParts: string[] = [];
-      if (topic.category === 'Media Uploaders' || topic.category === 'File Uploaders' || topic.category === 'Image Tools' || topic.id === 'qr-decoder') {
+      const hasFileParam = topic.parameters?.some(p => p.type === 'file');
+      if (hasFileParam) {
         const val = formValues['url'] !== undefined ? formValues['url'] : '';
         const displayVal = val ? encodeURIComponent(String(val)) : ':url';
         queryParts.push(`url=${displayVal}`);
 
         // For Image Tools: also append other query parameters (intensity, radius, etc.)
-        if (topic.category === 'Image Tools' && topic.parameters) {
+        if (topic.parameters) {
           topic.parameters.forEach(param => {
             if (param.name !== 'image' && param.name !== 'url') {
               const val = formValues[param.name] !== undefined ? formValues[param.name] : '';
@@ -169,7 +171,6 @@ export default function Docs() {
         setResponseJson(json);
       } else {
         const errText = await res.text().catch(() => 'No response body');
-        console.error("Gateway HTTP Error Response:", res.status, errText);
         let parsedError = 'Request execution failed.';
         try {
           const parsed = JSON.parse(errText);
@@ -183,7 +184,6 @@ export default function Docs() {
         });
       }
     } catch (err) {
-      console.error("Gateway Fetch Network Error:", err);
       setResponseJson({
         success: false,
         message: err instanceof Error ? err.message : 'Request execution failed.'
@@ -225,7 +225,8 @@ export default function Docs() {
     if (method === 'GET') {
       return `curl "${evalUrl}"`;
     }
-    if (activeTopic.category === 'Media Uploaders' || activeTopic.category === 'File Uploaders' || activeTopic.category === 'Image Tools') {
+    const hasFileParam = activeTopic.parameters?.some(p => p.type === 'file');
+    if (hasFileParam) {
       const payload: any = {};
       if (activeTopic.payloadTemplate) {
         Object.entries(activeTopic.payloadTemplate).forEach(([k, v]) => {
@@ -248,7 +249,6 @@ export default function Docs() {
     if (!activeTopic || !responseJson) return null;
 
     if (!responseJson.success) {
-      console.error("Gateway response error data detail:", responseJson);
       return (
         <div style={{ color: 'var(--red-pulse)', padding: '16px', fontFamily: 'var(--font-mono)', fontSize: '13px' }}>
           <strong>Error executing gateway transaction:</strong>
@@ -271,7 +271,7 @@ export default function Docs() {
     }
 
     // 5. Image Tools / AI Image Layout
-    if ((activeTopic.category === 'Image Tools' || activeTopic.category === 'QR Tools' || activeTopic.category === 'AI Image' || activeTopic.category === 'Maker') && resData) {
+    if ((activeTopic.category === 'Image Tools' || activeTopic.category === 'QR Tools' || activeTopic.category === 'AI Image' || activeTopic.category === 'AI Image Edit' || activeTopic.category === 'Maker' || activeTopic.category === 'Tools' || activeTopic.id === 'base64-to-image') && resData) {
       return (
         <ImageToolsLayout
           activeTopic={activeTopic}
@@ -332,8 +332,7 @@ export default function Docs() {
       return <BMKGLayout activeTopic={activeTopic} resData={resData} />;
     }
 
-    // 11. Informations Layout
-    if (activeTopic.category === 'Informations' && resData) {
+    if ((activeTopic.category === 'Informations' || activeTopic.category === 'DNS Tools' || activeTopic.category === 'Email Tools' || activeTopic.category === 'IP Tools' || activeTopic.category === 'Dev Tools' || activeTopic.category === 'Cyber Security Tools') && resData) {
       return <InformationsLayout activeTopic={activeTopic} resData={resData} />;
     }
 
@@ -345,7 +344,8 @@ export default function Docs() {
   };
   // Helper: renders the full interactive playground for a topic
   const renderPlayground = (topic: DocTopic) => {
-    const isUploaderUrl = (topic.category === 'Media Uploaders' || topic.category === 'File Uploaders' || topic.category === 'Image Tools') && uploadMode === 'url';
+    const hasFileParam = topic.parameters?.some(p => p.type === 'file');
+    const isUploaderUrl = hasFileParam && uploadMode === 'url';
 
     return (
       <div className="docs-endpoint-detail-expanded">
@@ -412,8 +412,8 @@ export default function Docs() {
                             {param.type === 'file' ? (
                               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                 <div style={{ display: 'flex', gap: '1px', backgroundColor: 'var(--border-color)', width: 'fit-content', marginBottom: '4px' }}>
-                                  <button type="button" onClick={() => { setUploadMode('file'); setFormValues({ image: '' }); }} style={{ padding: '4px 8px', fontSize: '9px', fontFamily: 'var(--font-mono)', fontWeight: 700, backgroundColor: uploadMode === 'file' ? 'var(--dark-iron)' : 'var(--black)', color: uploadMode === 'file' ? 'var(--white)' : 'var(--ash)', border: 'none', cursor: 'pointer', borderRadius: '0px' }}>FILE</button>
-                                  <button type="button" onClick={() => { setUploadMode('url'); setFormValues({ url: '' }); }} style={{ padding: '4px 8px', fontSize: '9px', fontFamily: 'var(--font-mono)', fontWeight: 700, backgroundColor: uploadMode === 'url' ? 'var(--dark-iron)' : 'var(--black)', color: uploadMode === 'url' ? 'var(--white)' : 'var(--ash)', border: 'none', cursor: 'pointer', borderRadius: '0px' }}>URL</button>
+                                  <button type="button" onClick={() => { setUploadMode('file'); setFormValues(prev => ({ ...prev, [param.name]: '', url: undefined })); }} style={{ padding: '4px 8px', fontSize: '9px', fontFamily: 'var(--font-mono)', fontWeight: 700, backgroundColor: uploadMode === 'file' ? 'var(--dark-iron)' : 'var(--black)', color: uploadMode === 'file' ? 'var(--white)' : 'var(--ash)', border: 'none', cursor: 'pointer', borderRadius: '0px' }}>FILE</button>
+                                  <button type="button" onClick={() => { setUploadMode('url'); setFormValues(prev => ({ ...prev, url: '', [param.name]: undefined })); }} style={{ padding: '4px 8px', fontSize: '9px', fontFamily: 'var(--font-mono)', fontWeight: 700, backgroundColor: uploadMode === 'url' ? 'var(--dark-iron)' : 'var(--black)', color: uploadMode === 'url' ? 'var(--white)' : 'var(--ash)', border: 'none', cursor: 'pointer', borderRadius: '0px' }}>URL</button>
                                 </div>
                                 {uploadMode === 'file' ? (
                                   <>
@@ -442,10 +442,100 @@ export default function Docs() {
                               </div>
                             ) : param.type === 'number' ? (
                               <input type="number" placeholder={`Enter ${param.name}...`} value={val} onChange={(e) => setFormValues(prev => ({ ...prev, [param.name]: Number(e.target.value) }))} className="docs-input" style={{ width: '100%', padding: '10px', backgroundColor: 'var(--black)', color: 'var(--white)', border: focusedField === param.name ? '1px solid var(--gold)' : '1px solid #2B2B2B', borderRadius: '0px', outline: 'none', fontFamily: 'var(--font-mono)', fontSize: '11px', transition: 'border-color 0.2s', boxSizing: 'border-box' }} onFocus={() => setFocusedField(param.name)} onBlur={() => setFocusedField(null)} />
+                            ) : param.type === 'color' ? (
+                              <div style={{ display: 'flex', gap: '8px', alignItems: 'center', width: '100%' }}>
+                                <div style={{ 
+                                  position: 'relative', 
+                                  width: '40px', 
+                                  height: '38px', 
+                                  border: '1px solid #2B2B2B', 
+                                  overflow: 'hidden',
+                                  flexShrink: 0
+                                }}>
+                                  <input 
+                                    type="color" 
+                                    value={(() => {
+                                      const c = String(val || '').trim();
+                                      if (c.startsWith('#')) {
+                                        if (c.length === 4) return '#' + c[1] + c[1] + c[2] + c[2] + c[3] + c[3];
+                                        if (c.length === 7) return c;
+                                      }
+                                      const match = c.match(/rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/i);
+                                      if (match) {
+                                        const r = parseInt(match[1]).toString(16).padStart(2, '0');
+                                        const g = parseInt(match[2]).toString(16).padStart(2, '0');
+                                        const b = parseInt(match[3]).toString(16).padStart(2, '0');
+                                        return `#${r}${g}${b}`;
+                                      }
+                                      return '#000000';
+                                    })()} 
+                                    onChange={(e) => setFormValues(prev => ({ ...prev, [param.name]: e.target.value }))} 
+                                    style={{ 
+                                      position: 'absolute',
+                                      top: '-10px',
+                                      left: '-10px',
+                                      width: '60px',
+                                      height: '60px',
+                                      border: 'none',
+                                      cursor: 'pointer',
+                                      background: 'none'
+                                    }} 
+                                  />
+                                </div>
+                                <input 
+                                  type="text" 
+                                  placeholder="Hex/RGB color code..." 
+                                  value={val} 
+                                  onChange={(e) => setFormValues(prev => ({ ...prev, [param.name]: e.target.value }))} 
+                                  className="docs-input" 
+                                  style={{ 
+                                    flexGrow: 1, 
+                                    padding: '10px', 
+                                    backgroundColor: 'var(--black)', 
+                                    color: 'var(--white)', 
+                                    border: focusedField === param.name ? '1px solid var(--gold)' : '1px solid #2B2B2B', 
+                                    borderRadius: '0px', 
+                                    outline: 'none', 
+                                    fontFamily: 'var(--font-mono)', 
+                                    fontSize: '11px', 
+                                    transition: 'border-color 0.2s', 
+                                    boxSizing: 'border-box' 
+                                  }} 
+                                  onFocus={() => setFocusedField(param.name)} 
+                                  onBlur={() => setFocusedField(null)} 
+                                />
+                              </div>
                             ) : param.type === 'textarea' || label === 'text' || label === 'code' ? (
-                              <textarea value={val} placeholder={`Enter ${param.name}...`} onChange={(e) => setFormValues(prev => ({ ...prev, [param.name]: e.target.value }))} className="docs-input" rows={6} style={{ width: '100%', padding: '10px', backgroundColor: 'var(--black)', color: 'var(--white)', border: focusedField === param.name ? '1px solid var(--gold)' : '1px solid #2B2B2B', borderRadius: '0px', outline: 'none', fontFamily: 'var(--font-mono)', fontSize: '11px', resize: 'vertical', transition: 'border-color 0.2s', boxSizing: 'border-box' }} onFocus={() => setFocusedField(param.name)} onBlur={() => setFocusedField(null)} />
+                              <textarea
+                                key={`${activeTopic?.id || ''}-${param.name}`}
+                                defaultValue={val || ''}
+                                placeholder={`Enter ${param.name}...`}
+                                onChange={(e) => {
+                                  setFormValues(prev => ({ ...prev, [param.name]: e.target.value }));
+                                }}
+                                className="docs-input"
+                                rows={8}
+                                style={{
+                                  width: '100%',
+                                  padding: '10px',
+                                  backgroundColor: 'var(--black)',
+                                  color: 'var(--white)',
+                                  border: focusedField === param.name ? '1px solid var(--gold)' : '1px solid #2B2B2B',
+                                  borderRadius: '0px',
+                                  outline: 'none',
+                                  fontFamily: 'var(--font-mono)',
+                                  fontSize: '11px',
+                                  resize: 'vertical',
+                                  transition: 'border-color 0.2s',
+                                  boxSizing: 'border-box'
+                                }}
+                                onFocus={() => setFocusedField(param.name)}
+                                onBlur={() => setFocusedField(null)}
+                              />
                             ) : param.type === 'select' ? (
                               <CustomDropdown value={String(val)} options={(param as any).options ?? []} onChange={(v) => setFormValues(prev => ({ ...prev, [param.name]: v }))} />
+                            ) : param.type === 'boolean' ? (
+                              <CustomDropdown value={String(val ?? 'false')} options={['true', 'false']} onChange={(v) => setFormValues(prev => ({ ...prev, [param.name]: v === 'true' }))} />
                             ) : (
                               <input type="text" placeholder={`Enter ${param.name}...`} value={val} onChange={(e) => setFormValues(prev => ({ ...prev, [param.name]: e.target.value }))} className="docs-input" style={{ width: '100%', padding: '10px', backgroundColor: 'var(--black)', color: 'var(--white)', border: focusedField === param.name ? '1px solid var(--gold)' : '1px solid #2B2B2B', borderRadius: '0px', outline: 'none', fontFamily: 'var(--font-mono)', fontSize: '11px', transition: 'border-color 0.2s', boxSizing: 'border-box' }} onFocus={() => setFocusedField(param.name)} onBlur={() => setFocusedField(null)} />
                             )}

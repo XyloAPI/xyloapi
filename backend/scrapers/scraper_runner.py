@@ -19,7 +19,9 @@ categories = [
     'qr_tools',
     'shortlink_tools',
     'uploader',
-    'maker'
+    'maker',
+    'ai_image_edit',
+    'tools'
 ]
 for cat in categories:
     sys.path.append(os.path.join(scrapers_dir, cat))

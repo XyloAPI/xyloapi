@@ -9,7 +9,7 @@ export const teraboxRoute: DocTopic = {
     pathTemplate: '/api/downloader/:slug',
     description: 'Download videos and files directly from Terabox links bypassing app lock limitations.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'Enter the Terabox file URL (e.g. https://1024terabox.com/s/1etUwLqCoOeuWejxFNJF5xA)' }
+      { name: 'url', type: 'text', required: true, desc: 'Terabox file URL (e.g. https://1024terabox.com/s/1etUwLqCoOeuWejxFNJF5xA).' }
     ],
     payloadTemplate: {
       url: ''

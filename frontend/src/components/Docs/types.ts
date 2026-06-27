@@ -3,7 +3,7 @@ export interface Parameter {
   type: string;
   required: boolean;
   desc: string;
-  options?: string[];
+  options?: (string | { value: string; label: string })[];
 }
 
 export interface DocTopic {

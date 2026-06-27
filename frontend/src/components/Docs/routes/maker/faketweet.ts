@@ -7,30 +7,30 @@ export const faketweetRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/faketweet',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate fully customizable, high-fidelity mock Twitter/X tweet images. Customize display name, username handle, profile avatar, verified badges, private/locked account states, text content, statistics, and dark/light themes.',
+  description: 'Generate a realistic Twitter/X tweet mockup with custom author and message content.',
   parameters: [
     { name: 'name', type: 'text', required: false, desc: 'Display name of the user. Defaults to "Twitter".' },
     { name: 'username', type: 'text', required: false, desc: 'Username handle of the user. Defaults to "twitter".' },
     { name: 'avatar', type: 'text', required: false, desc: 'URL of the profile avatar image. Supports custom online images.' },
     { name: 'text', type: 'textarea', required: false, desc: 'The tweet message to render. Defaults to "This is a fake tweet".' },
-    { 
-      name: 'verified', 
-      type: 'select', 
-      required: false, 
+    {
+      name: 'verified',
+      type: 'select',
+      required: false,
       desc: 'Show blue verification checkmark. Defaults to "true".',
       options: ['true', 'false']
     },
-    { 
-      name: 'locked', 
-      type: 'select', 
-      required: false, 
+    {
+      name: 'locked',
+      type: 'select',
+      required: false,
       desc: 'Show padlock icon (private/locked account). Defaults to "false".',
       options: ['false', 'true']
     },
-    { 
-      name: 'theme', 
-      type: 'select', 
-      required: false, 
+    {
+      name: 'theme',
+      type: 'select',
+      required: false,
       desc: 'Visual interface color theme. Defaults to "light".',
       options: ['light', 'dark']
     },

@@ -7,7 +7,7 @@ export const emojimixRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/emojimix',
   pathTemplate: '/api/maker/:slug',
-  description: 'Mix two emojis together into a single Google Gboard Emoji Kitchen style image.',
+  description: 'Mix two emojis into a single combined image using Google\'s Emoji Kitchen.',
   parameters: [
     { name: 'text', type: 'text', required: true, desc: 'Two emojis to combine (e.g. 😂😭).' }
   ],

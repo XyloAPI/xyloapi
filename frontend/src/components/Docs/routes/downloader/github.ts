@@ -9,7 +9,7 @@ export const githubRoute: DocTopic = {
     pathTemplate: '/api/downloader/:slug',
     description: 'Download repositories, releases, release assets, specific branches, single files, or folders from GitHub.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'Enter the GitHub Repository, Release, File, or Folder URL' }
+      { name: 'url', type: 'text', required: true, desc: 'GitHub Repository, Release, File, or Folder URL.' }
     ],
     payloadTemplate: {
       url: ''

@@ -9,7 +9,7 @@ export const sfileRoute: DocTopic = {
     pathTemplate: '/api/downloader/:slug',
     description: 'Download files directly from sfile.co (and sfile.mobi) bypassing ad countdowns.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'Enter the sfile.co file URL (e.g. https://sfile.co/agNixA1YkHq)' }
+      { name: 'url', type: 'text', required: true, desc: 'sfile.co file URL (e.g. https://sfile.co/agNixA1YkHq).' }
     ],
     payloadTemplate: {
       url: ''

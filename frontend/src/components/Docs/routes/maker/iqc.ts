@@ -7,7 +7,7 @@ export const iqcRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/iqc',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate a mock iPhone chat screenshot containing quoted messages.',
+  description: 'Generate a realistic iPhone iMessage chat screenshot mockup.',
   parameters: [
     { name: 'text', type: 'text', required: true, desc: 'The text message inside the quote chat bubble.' }
   ],

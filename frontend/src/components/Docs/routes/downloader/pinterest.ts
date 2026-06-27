@@ -9,7 +9,7 @@ export const pinterestRoute: DocTopic = {
     pathTemplate: '/api/downloader/:slug',
     description: 'Download high-quality images and video streams directly from Pinterest boards and pins.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'Enter the Pinterest pin share URL (e.g. https://www.pinterest.com/pin/123456/ or short URL https://pin.it/xxxxx)' }
+      { name: 'url', type: 'text', required: true, desc: 'Pinterest pin share URL (e.g. https://www.pinterest.com/pin/123456/ or short URL https://pin.it/xxxxx).' }
     ],
     payloadTemplate: {
       url: ''

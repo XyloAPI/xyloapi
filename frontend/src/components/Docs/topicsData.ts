@@ -165,6 +165,30 @@ import { gempa_terkiniRoute } from './routes/bmkg/gempa-terkini';
 import { gempa_terbaruRoute } from './routes/bmkg/gempa-terbaru';
 import { gempa_dirasakanRoute } from './routes/bmkg/gempa-dirasakan';
 import { weatherRoute } from './routes/informations/weather';
+import { iplookupRoute } from './routes/informations/iplookup';
+import { myipRoute } from './routes/informations/myip';
+import { webserverRoute } from './routes/informations/webserver';
+import { hostingProviderRoute } from './routes/informations/hosting-provider';
+import { pingRoute } from './routes/informations/ping';
+import { urlParserRoute } from './routes/informations/url-parser';
+import { mxlookupRoute } from './routes/informations/mx-lookup';
+import { nslookupRoute } from './routes/informations/ns-lookup';
+import { dnsvalidationRoute } from './routes/informations/dns-validation';
+import { dnsrecordsRoute } from './routes/informations/dns-records';
+import { dmarcvalidationRoute } from './routes/informations/dmarc-validation';
+import { ipblacklistRoute } from './routes/informations/ip-blacklist';
+import { verifyemailRoute } from './routes/informations/verify-email';
+import { ipv4ToIpv6Route } from './routes/informations/ipv4-to-ipv6';
+import { ipToDecimalRoute } from './routes/informations/ip-to-decimal';
+import { ipv6CompatibilityRoute } from './routes/informations/ipv6-compatibility';
+import { ipv6GeneratorRoute } from './routes/informations/ipv6-generator';
+import { ipv6CidrRoute } from './routes/informations/ipv6-cidr';
+import { ipv6RangeRoute } from './routes/informations/ipv6-range';
+import { subnetRoute } from './routes/informations/subnet';
+import { ipWhoisRoute } from './routes/informations/ip-whois';
+import { macLookupRoute } from './routes/informations/mac-lookup';
+import { passwordGeneratorRoute } from './routes/informations/password-generator';
+import { md5GeneratorRoute } from './routes/informations/md5-generator';
 import { kodeposRoute } from './routes/informations/kodepos';
 import { jadwal_tvRoute } from './routes/informations/jadwal-tv';
 import { jadwal_bolaRoute } from './routes/informations/jadwal-bola';
@@ -185,6 +209,71 @@ import { carbonRoute } from './routes/maker/carbon';
 import { trumpTweetsRoute } from './routes/maker/trumptweets';
 import { igfeedRoute } from './routes/maker/igfeed';
 import { faketweetRoute } from './routes/maker/faketweet';
+import { phlogoRoute } from './routes/maker/phlogo';
+import { ytlogoRoute } from './routes/maker/ytlogo';
+import { pakustadRoute } from './routes/maker/pakustad';
+import { spotifycardRoute } from './routes/maker/spotifycard';
+import { fakecommentRoute } from './routes/maker/fakecomment';
+import { fakedmRoute } from './routes/maker/fakedm';
+import { wantedRoute } from './routes/maker/wanted';
+import { wastedRoute } from './routes/maker/wasted';
+import { iphoneGalleryRoute } from './routes/maker/iphonegallery';
+import { iphoneContextMenuRoute } from './routes/maker/iphonecontextmenu';
+import { fakeCanonRoute } from './routes/maker/fakecanon';
+import { toBotakRoute } from './routes/ai-image-edit/to-botak';
+import { toZombieRoute } from './routes/ai-image-edit/to-zombie';
+import { toBlondeRoute } from './routes/ai-image-edit/to-blonde';
+import { toBabiRoute } from './routes/ai-image-edit/to-babi';
+import { toAnimeRoute } from './routes/ai-image-edit/to-anime';
+import { toBrewokRoute } from './routes/ai-image-edit/to-brewok';
+import { toChibiRoute } from './routes/ai-image-edit/to-chibi';
+import { toDprRoute } from './routes/ai-image-edit/to-dpr';
+import { toKacamataRoute } from './routes/ai-image-edit/to-kacamata';
+import { toHijabRoute } from './routes/ai-image-edit/to-hijab';
+import { toLegoRoute } from './routes/ai-image-edit/to-lego';
+import { toMekkahRoute } from './routes/ai-image-edit/to-mekkah';
+import { toPeciRoute } from './routes/ai-image-edit/to-peci';
+import { toPutihRoute } from './routes/ai-image-edit/to-putih';
+import { toHitamRoute } from './routes/ai-image-edit/to-hitam';
+import { toTuaRoute } from './routes/ai-image-edit/to-tua';
+import { toBayiRoute } from './routes/ai-image-edit/to-bayi';
+import { toSingaporeRoute } from './routes/ai-image-edit/to-singapore';
+import { toMalaysiaRoute } from './routes/ai-image-edit/to-malaysia';
+import { toThailandRoute } from './routes/ai-image-edit/to-thailand';
+import { toJawaRoute } from './routes/ai-image-edit/to-jawa';
+import { toPilotRoute } from './routes/ai-image-edit/to-pilot';
+import { toKantoranRoute } from './routes/ai-image-edit/to-kantoran';
+import { toWisudaRoute } from './routes/ai-image-edit/to-wisuda';
+import { toHantuRoute } from './routes/ai-image-edit/to-hantu';
+import { toVampirRoute } from './routes/ai-image-edit/to-vampir';
+import { toCyberpunkRoute } from './routes/ai-image-edit/to-cyberpunk';
+import { toKoreaRoute } from './routes/ai-image-edit/to-korea';
+import { toJepangRoute } from './routes/ai-image-edit/to-jepang';
+import { toArabRoute } from './routes/ai-image-edit/to-arab';
+import { toIndiaRoute } from './routes/ai-image-edit/to-india';
+import { toDubaiRoute } from './routes/ai-image-edit/to-dubai';
+import { toGendutRoute } from './routes/ai-image-edit/to-gendut';
+import { toKurusRoute } from './routes/ai-image-edit/to-kurus';
+import { toKekarRoute } from './routes/ai-image-edit/to-kekar';
+import { toTniRoute } from './routes/ai-image-edit/to-tni';
+import { toPolisiRoute } from './routes/ai-image-edit/to-polisi';
+import { toDokterRoute } from './routes/ai-image-edit/to-dokter';
+import { toPunkRoute } from './routes/ai-image-edit/to-punk';
+import { toKriboRoute } from './routes/ai-image-edit/to-kribo';
+import { toGondrongRoute } from './routes/ai-image-edit/to-gondrong';
+import { toSdmTinggiRoute } from './routes/ai-image-edit/to-sdm-tinggi';
+import { toSatanRoute } from './routes/ai-image-edit/to-satan';
+import { toVintageRoute } from './routes/ai-image-edit/to-vintage';
+import { toBarefaceRoute } from './routes/ai-image-edit/to-bareface';
+import { sswebRoute } from './routes/tools/ssweb';
+import { web2zipRoute } from './routes/tools/web2zip';
+import { ocrRoute } from './routes/tools/ocr';
+import { translateRoute } from './routes/tools/translate';
+import { deeplRoute } from './routes/tools/deepl';
+import { aksarajawaRoute } from './routes/tools/aksarajawa';
+import { hitungjarakRoute } from './routes/tools/hitungjarak';
+import { base64ToImageRoute } from './routes/tools/base64-to-image';
+
 
 
 
@@ -354,6 +443,30 @@ export const docTopics: DocTopic[] = [
   gempa_terbaruRoute,
   gempa_dirasakanRoute,
   weatherRoute,
+  iplookupRoute,
+  myipRoute,
+  webserverRoute,
+  hostingProviderRoute,
+  pingRoute,
+  urlParserRoute,
+  mxlookupRoute,
+  nslookupRoute,
+  dnsvalidationRoute,
+  dnsrecordsRoute,
+  dmarcvalidationRoute,
+  ipblacklistRoute,
+  verifyemailRoute,
+  ipv4ToIpv6Route,
+  ipToDecimalRoute,
+  ipv6CompatibilityRoute,
+  ipv6GeneratorRoute,
+  ipv6CidrRoute,
+  ipv6RangeRoute,
+  subnetRoute,
+  ipWhoisRoute,
+  macLookupRoute,
+  passwordGeneratorRoute,
+  md5GeneratorRoute,
   kodeposRoute,
   jadwal_tvRoute,
   jadwal_bolaRoute,
@@ -375,11 +488,75 @@ export const docTopics: DocTopic[] = [
   trumpTweetsRoute,
   igfeedRoute,
   faketweetRoute,
+  phlogoRoute,
+  ytlogoRoute,
+  pakustadRoute,
+  spotifycardRoute,
+  fakecommentRoute,
+  fakedmRoute,
+  wantedRoute,
+  wastedRoute,
+  iphoneGalleryRoute,
+  iphoneContextMenuRoute,
+  fakeCanonRoute,
+  toBotakRoute,
+  toZombieRoute,
+  toBlondeRoute,
+  toBabiRoute,
+  toAnimeRoute,
+  toBrewokRoute,
+  toChibiRoute,
+  toDprRoute,
+  toKacamataRoute,
+  toHijabRoute,
+  toLegoRoute,
+  toMekkahRoute,
+  toPeciRoute,
+  toPutihRoute,
+  toHitamRoute,
+  toTuaRoute,
+  toBayiRoute,
+  toSingaporeRoute,
+  toMalaysiaRoute,
+  toThailandRoute,
+  toJawaRoute,
+  toPilotRoute,
+  toKantoranRoute,
+  toWisudaRoute,
+  toHantuRoute,
+  toVampirRoute,
+  toCyberpunkRoute,
+  toKoreaRoute,
+  toJepangRoute,
+  toArabRoute,
+  toIndiaRoute,
+  toDubaiRoute,
+  toGendutRoute,
+  toKurusRoute,
+  toKekarRoute,
+  toTniRoute,
+  toPolisiRoute,
+  toDokterRoute,
+  toPunkRoute,
+  toKriboRoute,
+  toGondrongRoute,
+  toSdmTinggiRoute,
+  toSatanRoute,
+  toVintageRoute,
+  toBarefaceRoute,
+  sswebRoute,
+  web2zipRoute,
+  ocrRoute,
+  translateRoute,
+  deeplRoute,
+  aksarajawaRoute,
+  hitungjarakRoute,
+  base64ToImageRoute,
 ];
 
 // Adjust methods dynamically based on category: GET for News and Downloader
 docTopics.forEach(topic => {
-  if (topic.category === 'News' || topic.category === 'Local News' || topic.category === 'Downloader' || (topic.category === 'QR Tools' && topic.id !== 'qr-decoder') || topic.category === 'Shortlink Tools' || topic.category === 'AI Chat' || topic.category === 'BMKG Indonesia' || topic.category === 'Informations' || topic.category === 'Maker') {
+  if (topic.category === 'News' || topic.category === 'Local News' || topic.category === 'Downloader' || (topic.category === 'QR Tools' && topic.id !== 'qr-decoder') || topic.category === 'Shortlink Tools' || topic.category === 'AI Chat' || topic.category === 'BMKG Indonesia' || topic.category === 'Informations' || topic.category === 'DNS Tools' || topic.category === 'Email Tools' || topic.category === 'IP Tools' || (topic.category === 'Dev Tools' && topic.id !== 'base64-to-image') || topic.category === 'Cyber Security Tools' || topic.category === 'Maker' || (topic.category === 'Tools' && topic.id !== 'base64-to-image')) {
     topic.method = 'GET';
   }
 });

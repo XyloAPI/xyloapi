@@ -7,9 +7,9 @@ export const bratRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/brat',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate customizable black-on-lime Brat-style sticker images using typography.',
+  description: 'Generate a Brat-style album cover image with custom text on a lime green background.',
   parameters: [
-    { name: 'text', type: 'text', required: true, desc: 'The text message to display on the Brat sticker.' }
+    { name: 'text', type: 'text', required: true, desc: 'The text message to display on the Brat image.' }
   ],
   payloadTemplate: {
     text: ''

@@ -9,7 +9,7 @@ export const scribdRoute: DocTopic = {
     pathTemplate: '/api/downloader/:slug',
     description: 'Download high-quality original document page images directly from Scribd.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'Enter the Scribd document URL or embed URL (e.g. https://www.scribd.com/document/...)' }
+      { name: 'url', type: 'text', required: true, desc: 'Scribd document URL or embed URL (e.g. https://www.scribd.com/document/...).' }
     ],
     payloadTemplate: {
       url: ''

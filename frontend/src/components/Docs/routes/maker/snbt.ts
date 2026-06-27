@@ -7,7 +7,7 @@ export const snbtRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/snbt',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate a mock UTBK-SNBT selection announcement card (Lulus or Tidak Lulus) with custom study programs and biodata.',
+  description: 'Generate a mock UTBK-SNBT selection announcement card.',
   parameters: [
     { name: 'status', type: 'text', required: false, desc: 'Selection status: "1" for Lulus (Accepted), "0" for Tidak Lulus (Rejected).' },
     { name: 'tahun', type: 'text', required: false, desc: 'Custom year (e.g. "2026", "2025"). Defaults to "2026".' },

@@ -9,7 +9,7 @@ export const npmRoute: DocTopic = {
     pathTemplate: '/api/downloader/:slug',
     description: 'Download tarball packages of Node modules directly from NPM Registry.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'Enter the NPM package name or URL (e.g. react or https://www.npmjs.com/package/react)' }
+      { name: 'url', type: 'text', required: true, desc: 'NPM package name or URL (e.g. react or https://www.npmjs.com/package/react).' }
     ],
     payloadTemplate: {
       url: ''
