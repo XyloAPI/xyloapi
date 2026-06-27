@@ -45,7 +45,11 @@
 
 @media (max-width: 768px) {
   .header-nav-links {
-    display: none;
+    display: flex;
+    gap: 16px; /* Tighten gap on mobile screens */
+  }
+  .nav-link {
+    font-size: 11px; /* Slightly smaller text for mobile */
   }
 }
 
