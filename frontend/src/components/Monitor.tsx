@@ -396,7 +396,7 @@ export default function Monitor() {
             {(testPhase !== 'idle' && testPhase !== 'complete') ? (
               <>
                 <RefreshCw className="animate-spin" size={16} style={{ color: 'var(--gold)' }} />
-                RUNNING SPEED TEST...
+                TESTING...
               </>
             ) : (
               <>
@@ -413,7 +413,7 @@ export default function Monitor() {
               <div>
                 <span style={{ fontSize: '9px', color: 'var(--ash)', fontFamily: 'var(--font-mono)', letterSpacing: '1px', display: 'block', textTransform: 'uppercase' }}>Ping Latency</span>
                 <span style={{ fontSize: '24px', fontWeight: 900, fontFamily: 'var(--font-mono)', color: 'var(--white)' }}>
-                  {progressPing !== null ? `${progressPing} ms` : (testPhase !== 'idle' && testPhase !== 'complete') ? 'Measuring...' : '—'}
+                  {progressPing !== null ? `${progressPing} ms` : (testPhase !== 'idle' && testPhase !== 'complete') ? '—' : '—'}
                 </span>
               </div>
               {(testPhase !== 'idle' && testPhase !== 'complete' && progressPing === null) && <RefreshCw className="animate-spin" size={14} style={{ color: 'var(--cyan-pulse)' }} />}
@@ -425,7 +425,7 @@ export default function Monitor() {
               <div>
                 <span style={{ fontSize: '9px', color: 'var(--ash)', fontFamily: 'var(--font-mono)', letterSpacing: '1px', display: 'block', textTransform: 'uppercase' }}>Download Speed</span>
                 <span style={{ fontSize: '24px', fontWeight: 900, fontFamily: 'var(--font-mono)', color: 'var(--cyan-pulse)' }}>
-                  {progressDownload !== null ? `${progressDownload} Mbps` : (testPhase !== 'idle' && testPhase !== 'complete') ? 'Measuring...' : '—'}
+                  {progressDownload !== null ? `${progressDownload} Mbps` : (testPhase !== 'idle' && testPhase !== 'complete') ? '—' : '—'}
                 </span>
               </div>
               {(testPhase !== 'idle' && testPhase !== 'complete' && progressDownload === null) && <RefreshCw className="animate-spin" size={14} style={{ color: 'var(--cyan-pulse)' }} />}
@@ -437,7 +437,7 @@ export default function Monitor() {
               <div>
                 <span style={{ fontSize: '9px', color: 'var(--ash)', fontFamily: 'var(--font-mono)', letterSpacing: '1px', display: 'block', textTransform: 'uppercase' }}>Upload Speed</span>
                 <span style={{ fontSize: '24px', fontWeight: 900, fontFamily: 'var(--font-mono)', color: 'var(--gold-text)' }}>
-                  {progressUpload !== null ? `${progressUpload} Mbps` : (testPhase !== 'idle' && testPhase !== 'complete') ? 'Measuring...' : '—'}
+                  {progressUpload !== null ? `${progressUpload} Mbps` : (testPhase !== 'idle' && testPhase !== 'complete') ? '—' : '—'}
                 </span>
               </div>
               {(testPhase !== 'idle' && testPhase !== 'complete' && progressUpload === null) && <RefreshCw className="animate-spin" size={14} style={{ color: 'var(--gold)' }} />}
