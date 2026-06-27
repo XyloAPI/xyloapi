@@ -835,15 +835,13 @@ input[type=number] {
     box-sizing: border-box;
   }
 
-  /* Collapse 2-col response grid and enforce box-sizing safety */
-  .response-grid-2 {
-    grid-template-columns: 1fr !important;
-  }
-
+  /* ── Collapse grids ── */
+  .response-grid-2,
   .response-grid-auto {
     grid-template-columns: 1fr !important;
   }
 
+  /* Force subcards to single column — override inline gridColumn: span 2 */
   .response-subcard {
     grid-column: span 1 !important;
     width: 100% !important;
@@ -851,37 +849,76 @@ input[type=number] {
     min-width: 0 !important;
   }
 
-  /* Override any inline min-width styles inside response layout to guarantee no offside overflow */
-  .response-layout div,
-  .response-layout span,
-  .response-layout pre,
-  .response-layout p,
-  .response-layout a,
-  .response-layout button,
-  .response-layout input,
-  .response-layout textarea {
+  /* ── Prevent any element inside response layout from overflowing horizontally ── */
+  /* Only reset min-width and max-width — do NOT change flex-direction here */
+  .response-layout > *,
+  .response-layout .response-card,
+  .response-layout .response-subcard,
+  .response-layout .response-list,
+  .response-layout .response-item,
+  .response-layout .response-scroll-container,
+  .response-layout .response-header {
     min-width: 0 !important;
     max-width: 100% !important;
     box-sizing: border-box !important;
   }
 
-  /* Ensure long value text wraps correctly inside containers */
+  /* Contain fixed-size image wrappers */
+  .response-layout img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* ── Long text wrapping — only on text containers, NOT flex rows ── */
   .response-value,
-  .response-value-mono,
-  .response-subcard,
-  .response-card,
-  .response-item {
+  .response-value-mono {
     word-break: break-word !important;
     overflow-wrap: break-word !important;
-    white-space: pre-wrap !important;
+    white-space: normal !important;
   }
 
-  /* Docs playground header */
+  .response-label {
+    word-break: break-word !important;
+  }
+
+  /* ── response-item: stack badge + content vertically ── */
+  .response-item {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+    padding: 10px 12px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Inline metadata rows INSIDE response-item must stay horizontal */
+  .response-item > div > div {
+    flex-wrap: wrap !important;
+  }
+
+  /* ── Download/action button rows inside response-list: stack vertically ── */
+  /* Target only direct flex children of response-list that contain <a> or <button> */
+  .response-list > div > a,
+  .response-list > div > button {
+    width: 100% !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+    justify-content: center !important;
+  }
+
+  /* Stack download action rows */
+  .response-list > div:has(> a.btn),
+  .response-list > div:has(> button.btn) {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+
+  /* ── Playground elements ── */
   .docs-playground-header {
-    word-break: break-word;
+    word-break: break-word !important;
   }
 
-  /* Endpoint URL bar inside playground */
   .docs-playground-url-bar {
     flex-direction: column !important;
     align-items: stretch !important;
@@ -897,41 +934,7 @@ input[type=number] {
     font-size: 9px !important;
   }
 
-  /* Response items stacking */
-  .response-item {
-    flex-direction: column;
-    align-items: stretch !important;
-    gap: 10px !important;
-    padding: 10px 12px !important;
-  }
-
-  /* Fix for preview containers */
-  .response-layout img {
-    max-width: 100% !important;
-    height: auto !important;
-  }
-
-  /* Tighten form padding */
-  .docs-section > div {
-    padding: 12px !important;
-  }
-
-  /* Adjust buttons and lists in mobile */
-  .response-list div {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 8px !important;
-    width: 100% !important;
-  }
-
-  .response-list a,
-  .response-list button {
-    width: 100% !important;
-    text-align: center !important;
-    box-sizing: border-box;
-  }
-
-  /* Prevent category headers from overflowing */
+  /* ── Category UI ── */
   .docs-category-header {
     flex-wrap: wrap !important;
     gap: 8px !important;
@@ -951,5 +954,6 @@ input[type=number] {
     font-size: 8px !important;
   }
 }
+
 
 

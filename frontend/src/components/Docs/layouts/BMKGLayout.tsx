@@ -102,19 +102,15 @@ export default function BMKGLayout({ activeTopic, resData }: BMKGLayoutProps) {
                 >
                   {g.magnitude}
                 </div>
-                <div style={{ flex: 1 }}>
-                  <h4 style={{ fontSize: '13px', fontWeight: 700, color: 'var(--white)', margin: '0 0 4px 0', textTransform: 'none', letterSpacing: 'normal' }}>
+                <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
+                  <h4 style={{ fontSize: '13px', fontWeight: 700, color: 'var(--white)', margin: '0 0 4px 0', textTransform: 'none', letterSpacing: 'normal', wordBreak: 'break-word' }}>
                     {g.wilayah}
                   </h4>
-                  <div style={{ display: 'flex', gap: '12px', fontSize: '11px', color: 'var(--ash)', fontFamily: 'var(--font-mono)' }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px 12px', fontSize: '11px', color: 'var(--ash)', fontFamily: 'var(--font-mono)' }}>
                     <span>Depth: <strong>{g.kedalaman}</strong></span>
-                    <span>•</span>
                     <span>Time: <strong>{g.tanggal} {g.jam}</strong></span>
                     {g.dirasakan && (
-                      <>
-                        <span>•</span>
-                        <span style={{ color: 'var(--gold-text)' }}>Felt: <strong>{g.dirasakan}</strong></span>
-                      </>
+                      <span style={{ color: 'var(--gold-text)' }}>Felt: <strong>{g.dirasakan}</strong></span>
                     )}
                   </div>
                 </div>
