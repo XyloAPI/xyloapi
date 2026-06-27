@@ -9,8 +9,9 @@ import Footer from './components/Footer';
 function applyMobileViewportScale() {
   const vw = window.innerWidth;
   let scale = 1.0;
-  if (vw <= 480) scale = 0.85;
-  else if (vw <= 768) scale = 0.92;
+  if (vw <= 768) {
+    scale = 0.50; // Set precisely to 50% scaling for mobile & tablet
+  }
 
   const meta = document.querySelector('meta[name="viewport"]');
   if (meta) {
