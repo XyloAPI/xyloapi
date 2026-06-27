@@ -181,51 +181,63 @@ router.post('/monitor/speedtest', async (req, res) => {
     } catch (e) {}
     const ping = Date.now() - startPing;
 
-    // Download Test (Sequential, CPU friendly)
+    // Download Test (Parallel workers, avoids sequential latency bottleneck)
     const downloadTimeout = 6000;
     const startDownload = Date.now();
     let downloadedBytes = 0;
-    while (Date.now() - startDownload < downloadTimeout) {
-      try {
-        const downRes = await fetch('https://speed.cloudflare.com/__down?bytes=3000000', {
-          headers: { 'User-Agent': userAgent }
-        });
-        if (!downRes.ok) {
+    const downloadConcurrency = 3;
+    const downloadWorkers = Array.from({ length: downloadConcurrency }, async () => {
+      while (Date.now() - startDownload < downloadTimeout) {
+        try {
+          const downRes = await fetch('https://speed.cloudflare.com/__down?bytes=10000000', {
+            headers: { 'User-Agent': userAgent }
+          });
+          if (!downRes.ok) {
+            await new Promise(resolve => setTimeout(resolve, 200));
+            continue;
+          }
+          const buf = await downRes.arrayBuffer();
+          downloadedBytes += buf.byteLength;
+        } catch (e) {
           await new Promise(resolve => setTimeout(resolve, 200));
-          continue;
         }
-        const buf = await downRes.arrayBuffer();
-        downloadedBytes += buf.byteLength;
-      } catch (e) {
-        await new Promise(resolve => setTimeout(resolve, 200));
       }
-    }
+    });
+    await Promise.all(downloadWorkers);
     const durationDownloadSec = (Date.now() - startDownload) / 1000;
     const downloadSpeedMbps = durationDownloadSec > 0 
       ? parseFloat(((downloadedBytes * 8) / (durationDownloadSec * 1000000)).toFixed(2)) 
       : 0;
 
-    // Upload Test (Sequential, CPU friendly)
+    // Upload Test (Parallel workers, avoids sequential latency bottleneck)
     const uploadTimeout = 6000;
     const startUpload = Date.now();
     let uploadedBytes = 0;
-    const uploadPayload = new Uint8Array(1024 * 1024); // 1MB chunk
-    while (Date.now() - startUpload < uploadTimeout) {
-      try {
-        const upRes = await fetch('https://speed.cloudflare.com/__up', {
-          method: 'POST',
-          body: uploadPayload,
-          headers: { 
-            'Content-Type': 'application/octet-stream',
-            'User-Agent': userAgent
+    const uploadPayload = new Uint8Array(2 * 1024 * 1024); // 2MB chunk
+    const uploadConcurrency = 3;
+    const uploadWorkers = Array.from({ length: uploadConcurrency }, async () => {
+      while (Date.now() - startUpload < uploadTimeout) {
+        try {
+          const upRes = await fetch('https://speed.cloudflare.com/__up', {
+            method: 'POST',
+            body: uploadPayload,
+            headers: { 
+              'Content-Type': 'application/octet-stream',
+              'User-Agent': userAgent
+            }
+          });
+          if (upRes.ok) {
+            uploadedBytes += uploadPayload.length;
+          } else {
+            await new Promise(resolve => setTimeout(resolve, 200));
           }
-        });
-        await upRes.text();
-        uploadedBytes += uploadPayload.length;
-      } catch (e) {
-        await new Promise(resolve => setTimeout(resolve, 200));
+          await upRes.text();
+        } catch (e) {
+          await new Promise(resolve => setTimeout(resolve, 200));
+        }
       }
-    }
+    });
+    await Promise.all(uploadWorkers);
     const durationUploadSec = (Date.now() - startUpload) / 1000;
     const uploadSpeedMbps = durationUploadSec > 0 
       ? parseFloat(((uploadedBytes * 8) / (durationUploadSec * 1000000)).toFixed(2)) 
