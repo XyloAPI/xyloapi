@@ -373,6 +373,16 @@
   color: var(--white);
 }
 
+.docs-playground-url-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.docs-playground-url-btn {
+  text-align: center;
+}
+
 .docs-section {
   margin-top: 40px;
 }
@@ -675,17 +685,21 @@ input[type=number] {
 /* ── Mobile Overflow Fixes ── */
 @media (max-width: 640px) {
   .docs-container {
-    padding-top: 100px;
-    padding-bottom: 60px;
+    padding-top: 90px;
+    padding-bottom: 50px;
+  }
+
+  .docs-content {
+    padding: 16px !important;
   }
 
   .docs-search-wrapper {
-    padding: 10px 14px;
-    margin-bottom: 24px;
+    padding: 8px 12px;
+    margin-bottom: 16px;
   }
 
   .docs-category-card {
-    margin-bottom: 28px;
+    margin-bottom: 20px;
   }
 
   /* Prevent code / pre blocks from causing horizontal scroll */
@@ -694,34 +708,76 @@ input[type=number] {
   .payload-preview,
   .response-pre,
   .sandbox-textarea {
-    white-space: pre-wrap;
-    word-break: break-all;
-    overflow-x: hidden;
-    max-width: 100%;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    overflow-x: hidden !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
   }
 
   /* Collapse 2-col response grid */
   .response-grid-2 {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
 
   .response-grid-auto {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
 
-  /* Docs playground */
+  /* Docs playground header */
   .docs-playground-header {
     word-break: break-word;
   }
 
   /* Endpoint URL bar inside playground */
-  .docs-playground-left-col code {
-    word-break: break-all;
-    font-size: 10px;
+  .docs-playground-url-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
   }
 
-  /* Top endpoints list in monitor */
-  .top-endpoint-item {
-    flex-wrap: wrap;
+  .docs-playground-url-btn {
+    width: 100% !important;
+  }
+
+  .docs-playground-left-col code {
+    word-break: break-all !important;
+    font-size: 9px !important;
+  }
+
+  /* Response items stacking */
+  .response-item {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 10px !important;
+    padding: 10px 12px !important;
+  }
+
+  /* Fix for preview containers */
+  .response-layout img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Tighten form padding */
+  .docs-section > div {
+    padding: 12px !important;
+  }
+
+  /* Adjust buttons and lists in mobile */
+  .response-list div {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  .response-list a,
+  .response-list button {
+    width: 100% !important;
+    text-align: center !important;
+    box-sizing: border-box;
   }
 }
+
+

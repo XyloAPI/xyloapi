@@ -364,17 +364,14 @@ export default function Docs() {
           <div className="docs-playground-left-col">
             {/* Endpoint URL bar */}
             {topic.path && (
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
+              <div className="docs-playground-url-bar" style={{
                 border: '1px solid var(--border-color)',
                 padding: '10px 14px',
                 backgroundColor: 'var(--black)',
                 marginBottom: '20px',
                 gap: '12px'
               }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0, flex: 1 }}>
                   <span className={`method-badge ${getActiveMethod().toLowerCase()}`}>
                     {getActiveMethod()}
                   </span>
@@ -384,6 +381,7 @@ export default function Docs() {
                 </div>
                 <button
                   onClick={() => { navigator.clipboard.writeText(getCurlCode()); setCopiedText('curl'); setTimeout(() => setCopiedText(''), 2000); }}
+                  className="docs-playground-url-btn"
                   style={{ padding: '6px 10px', backgroundColor: 'var(--dark-iron)', color: 'var(--white)', border: '1px solid var(--border-color)', fontSize: '9px', fontFamily: 'var(--font-mono)', cursor: 'pointer', borderRadius: '0px', transition: 'border-color 0.2s', flexShrink: 0 }}
                   onMouseOver={(e) => e.currentTarget.style.borderColor = 'var(--gold)'}
                   onMouseOut={(e) => e.currentTarget.style.borderColor = 'var(--border-color)'}

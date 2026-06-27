@@ -93,10 +93,27 @@
     grid-template-columns: 1fr;
     gap: 10px;
     align-items: flex-start;
+    padding: 16px !important;
+  }
+
+  .route-path {
+    word-break: break-all !important;
+    white-space: normal !important;
+    font-size: 12px !important;
   }
 
   .route-description {
     display: none;
+  }
+
+  .directory-item-detail {
+    padding: 16px !important;
+  }
+
+  .payload-preview {
+    font-size: 11px !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
   }
 }
 

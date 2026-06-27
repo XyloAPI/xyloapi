@@ -177,76 +177,84 @@ router.post('/monitor/speedtest', async (req, res) => {
     } catch (e) {}
     const ping = Date.now() - startPing;
 
-    // 1. Download Test (15.0 seconds concurrent pool to saturate up to multi-Gbps lines)
-    const downloadController = new AbortController();
-    const downloadTimeout = setTimeout(() => downloadController.abort(), 15000);
+    // 1. Download Test (Max 10 seconds total to prevent socket exhaustion)
+    const downloadTimeout = 10000;
     const startDownload = Date.now();
     let downloadedBytes = 0;
     
-    // 4 concurrent download connections of 25MB each, repeated until timeout
-    const downloadConcurrency = 4;
+    // Concurrent workers downloading 10MB chunks
+    const downloadConcurrency = 3;
     const downloadWorkers = Array.from({ length: downloadConcurrency }, async () => {
-      while (!downloadController.signal.aborted) {
+      while (Date.now() - startDownload < downloadTimeout) {
         try {
-          const downRes = await fetch('https://speed.cloudflare.com/__down?bytes=25000000', {
-            signal: downloadController.signal
-          });
-          if (!downRes.ok) continue;
+          const downRes = await fetch('https://speed.cloudflare.com/__down?bytes=10000000');
+          if (!downRes.ok) {
+            // Wait a bit if server is rate-limiting or errors out
+            await new Promise(resolve => setTimeout(resolve, 500));
+            continue;
+          }
           if (downRes.body) {
-            for await (const chunk of downRes.body as any) {
-              downloadedBytes += chunk.length || chunk.byteLength || 0;
+            const reader = downRes.body.getReader();
+            while (Date.now() - startDownload < downloadTimeout) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              if (value) {
+                downloadedBytes += value.length || value.byteLength || 0;
+              }
             }
+            try { await reader.cancel(); } catch (_) {}
           }
-        } catch (e: any) {
-          if (e.name !== 'AbortError') {
-            // Keep going unless it's a real failure
-          }
+        } catch (e) {
+          // Prevent tight hot loop on network failures
+          await new Promise(resolve => setTimeout(resolve, 500));
         }
       }
     });
 
     await Promise.all(downloadWorkers);
-    clearTimeout(downloadTimeout);
     const durationDownloadSec = (Date.now() - startDownload) / 1000;
-    const downloadSpeedMbps = parseFloat(((downloadedBytes * 8) / (durationDownloadSec * 1000000)).toFixed(2));
+    const downloadSpeedMbps = durationDownloadSec > 0 
+      ? parseFloat(((downloadedBytes * 8) / (durationDownloadSec * 1000000)).toFixed(2)) 
+      : 0;
 
-    // 2. Upload Test (15.0 seconds concurrent pool to saturate up to multi-Gbps lines)
-    const uploadController = new AbortController();
-    const uploadTimeout = setTimeout(() => uploadController.abort(), 15000);
+    // 2. Upload Test (Max 10 seconds total)
+    const uploadTimeout = 10000;
     const startUpload = Date.now();
     let uploadedBytes = 0;
+    
+    // Use a pre-allocated static buffer of 2MB to upload cleanly without unstable custom ReadableStreams
+    const uploadChunkSize = 2 * 1024 * 1024;
+    const uploadPayload = new Uint8Array(uploadChunkSize);
 
-    // 4 concurrent upload connections generator, repeated until timeout
-    const uploadConcurrency = 4;
+    const uploadConcurrency = 3;
     const uploadWorkers = Array.from({ length: uploadConcurrency }, async () => {
-      while (!uploadController.signal.aborted) {
+      while (Date.now() - startUpload < uploadTimeout) {
         try {
-          const uploadStream = new ReadableStream({
-            pull(ctrl) {
-              const chunk = new Uint8Array(131072); // 128KB chunks
-              ctrl.enqueue(chunk);
-              uploadedBytes += chunk.length;
-            }
-          });
           const upRes = await fetch('https://speed.cloudflare.com/__up', {
             method: 'POST',
-            body: uploadStream,
-            duplex: 'half',
-            signal: uploadController.signal
-          } as any);
-          await upRes.text();
-        } catch (e: any) {
-          if (e.name !== 'AbortError') {
-            // Keep going unless it's a real failure
+            body: uploadPayload,
+            headers: {
+              'Content-Type': 'application/octet-stream'
+            }
+          });
+          if (upRes.ok) {
+            uploadedBytes += uploadChunkSize;
+          } else {
+            await new Promise(resolve => setTimeout(resolve, 500));
           }
+          await upRes.text(); // Consume stream
+        } catch (e) {
+          // Prevent tight hot loop on network failures
+          await new Promise(resolve => setTimeout(resolve, 500));
         }
       }
     });
 
     await Promise.all(uploadWorkers);
-    clearTimeout(uploadTimeout);
     const durationUploadSec = (Date.now() - startUpload) / 1000;
-    const uploadSpeedMbps = parseFloat(((uploadedBytes * 8) / (durationUploadSec * 1000000)).toFixed(2));
+    const uploadSpeedMbps = durationUploadSec > 0 
+      ? parseFloat(((uploadedBytes * 8) / (durationUploadSec * 1000000)).toFixed(2)) 
+      : 0;
 
     res.json({
       success: true,

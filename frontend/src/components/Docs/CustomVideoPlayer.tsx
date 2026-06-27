@@ -75,7 +75,8 @@ export default function CustomVideoPlayer({ src, poster }: CustomVideoPlayerProp
     <div
       style={{
         position: 'relative',
-        width: '240px',
+        width: '100%',
+        maxWidth: '240px',
         backgroundColor: '#000',
         border: '1px solid var(--border-color)',
         overflow: 'hidden',

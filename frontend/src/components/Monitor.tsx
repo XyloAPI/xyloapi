@@ -72,51 +72,45 @@ export default function Monitor() {
     setProgressUpload(null);
     setSpeedTestError(null);
 
-    // Trigger API call immediately
+    // Trigger API call immediately — backend runs the real test
     const apiPromise = fetchSpeedTestData();
 
-    // 1. Latency (Ping) Phase (2.0 seconds)
+    // 1. Ping Phase UI (2.0 seconds) — just a neutral wiggle
     const pingWiggle = setInterval(() => {
       setDisplaySpeed(Math.floor(Math.random() * 3));
     }, 100);
     await new Promise(r => setTimeout(r, 2000));
     clearInterval(pingWiggle);
-    const simPing = Math.floor(12 + Math.random() * 8);
-    setProgressPing(simPing);
+    setDisplaySpeed(0);
+    // Don't set progressPing yet — wait for real API value
 
-    // 2. Download Phase (15.0 seconds)
+    // 2. Download Phase UI (15.0 seconds) — neutral scanning animation, no fake target
     setTestPhase('download');
-    let currentDownloadSpeed = 0;
+    let tick = 0;
     const downloadInterval = setInterval(() => {
-      setDisplaySpeed(prev => {
-        const target = 180 + Math.random() * 60;
-        const nextSpeed = Math.round(prev + (target - prev) * 0.05); // slower, smooth 15s climb
-        currentDownloadSpeed = nextSpeed;
-        return nextSpeed;
-      });
+      tick++;
+      // Oscillate between 0–30 to show "activity" without implying a speed
+      const wave = Math.abs(Math.sin(tick * 0.08) * 28) + Math.random() * 4;
+      setDisplaySpeed(Math.round(wave));
     }, 100);
     await new Promise(r => setTimeout(r, 15000));
     clearInterval(downloadInterval);
-    setProgressDownload(currentDownloadSpeed || 195);
-
-    // 3. Upload Phase (15.0 seconds)
-    setTestPhase('upload');
     setDisplaySpeed(0);
-    await new Promise(r => setTimeout(r, 400)); // Allow needle to sweep back to 0
-    let currentUploadSpeed = 0;
+
+    // 3. Upload Phase UI (15.0 seconds) — same neutral animation
+    setTestPhase('upload');
+    await new Promise(r => setTimeout(r, 400));
+    tick = 0;
     const uploadInterval = setInterval(() => {
-      setDisplaySpeed(prev => {
-        const target = 70 + Math.random() * 30;
-        const nextSpeed = Math.round(prev + (target - prev) * 0.05); // slower, smooth 15s climb
-        currentUploadSpeed = nextSpeed;
-        return nextSpeed;
-      });
+      tick++;
+      const wave = Math.abs(Math.sin(tick * 0.08) * 28) + Math.random() * 4;
+      setDisplaySpeed(Math.round(wave));
     }, 100);
     await new Promise(r => setTimeout(r, 15000));
     clearInterval(uploadInterval);
-    setProgressUpload(currentUploadSpeed || 85);
+    setDisplaySpeed(0);
 
-    // 4. Resolve API values
+    // 4. Resolve — all final values come ONLY from the real API response
     try {
       const res = await apiPromise;
       if (res && res.success) {
@@ -410,7 +404,7 @@ export default function Monitor() {
       </div>
 
       {/* Section: Server Speed Test */}
-      <div className="monitor-card" style={{ marginBottom: '48px', padding: '32px' }}>
+      <div className="monitor-card" style={{ marginBottom: '48px' }}>
         <div className="monitor-card-header" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '20px', marginBottom: '24px' }}>
           <h3 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Wifi size={18} style={{ color: 'var(--cyan-pulse)' }} />
@@ -425,7 +419,7 @@ export default function Monitor() {
           </div>
         )}
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '32px', alignItems: 'center' }}>
+        <div className="monitor-speedtest-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '32px', alignItems: 'center' }}>
           {/* Gauge Column */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
             <div style={{ position: 'relative', width: '220px', height: '220px' }}>
