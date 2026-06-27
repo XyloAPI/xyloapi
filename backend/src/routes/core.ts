@@ -196,8 +196,17 @@ router.post('/monitor/speedtest', async (req, res) => {
             await new Promise(resolve => setTimeout(resolve, 200));
             continue;
           }
-          const buf = await downRes.arrayBuffer();
-          downloadedBytes += buf.byteLength;
+          if (downRes.body) {
+            const reader = downRes.body.getReader();
+            while (Date.now() - startDownload < downloadTimeout) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              if (value) {
+                downloadedBytes += value.length || value.byteLength || 0;
+              }
+            }
+            try { await reader.cancel(); } catch (_) {}
+          }
         } catch (e) {
           await new Promise(resolve => setTimeout(resolve, 200));
         }
