@@ -400,7 +400,7 @@ export default function Monitor() {
           </div>
         )}
 
-        <div className="monitor-speedtest-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '32px', alignItems: 'center' }}>
+        <div className="monitor-speedtest-grid">
           {/* Gauge Column */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
             <div style={{ position: 'relative', width: '220px', height: '220px' }}>

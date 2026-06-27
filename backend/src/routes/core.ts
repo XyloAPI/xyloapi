@@ -168,6 +168,99 @@ router.get('/image-proxy', async (req, res) => {
   }
 });
 
+router.post('/monitor/speedtest', async (req, res) => {
+  try {
+    const startPing = Date.now();
+    try {
+      const pingRes = await fetch('https://speed.cloudflare.com/__down?bytes=0', { method: 'GET' });
+      await pingRes.text();
+    } catch (e) {}
+    const ping = Date.now() - startPing;
+
+    // Download Test (Max 10 seconds total)
+    const downloadTimeout = 10000;
+    const startDownload = Date.now();
+    let downloadedBytes = 0;
+    const downloadConcurrency = 3;
+    const downloadWorkers = Array.from({ length: downloadConcurrency }, async () => {
+      while (Date.now() - startDownload < downloadTimeout) {
+        try {
+          const downRes = await fetch('https://speed.cloudflare.com/__down?bytes=10000000');
+          if (!downRes.ok) {
+            await new Promise(resolve => setTimeout(resolve, 500));
+            continue;
+          }
+          if (downRes.body) {
+            const reader = downRes.body.getReader();
+            while (Date.now() - startDownload < downloadTimeout) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              if (value) {
+                downloadedBytes += value.length || value.byteLength || 0;
+              }
+            }
+            try { await reader.cancel(); } catch (_) {}
+          }
+        } catch (e) {
+          await new Promise(resolve => setTimeout(resolve, 500));
+        }
+      }
+    });
+    await Promise.all(downloadWorkers);
+    const durationDownloadSec = (Date.now() - startDownload) / 1000;
+    const downloadSpeedMbps = durationDownloadSec > 0 
+      ? parseFloat(((downloadedBytes * 8) / (durationDownloadSec * 1000000)).toFixed(2)) 
+      : 0;
+
+    // Upload Test (Max 10 seconds total)
+    const uploadTimeout = 10000;
+    const startUpload = Date.now();
+    let uploadedBytes = 0;
+    const uploadChunkSize = 2 * 1024 * 1024;
+    const uploadPayload = new Uint8Array(uploadChunkSize);
+    const uploadConcurrency = 3;
+    const uploadWorkers = Array.from({ length: uploadConcurrency }, async () => {
+      while (Date.now() - startUpload < uploadTimeout) {
+        try {
+          const upRes = await fetch('https://speed.cloudflare.com/__up', {
+            method: 'POST',
+            body: uploadPayload,
+            headers: {
+              'Content-Type': 'application/octet-stream'
+            }
+          });
+          if (upRes.ok) {
+            uploadedBytes += uploadChunkSize;
+          } else {
+            await new Promise(resolve => setTimeout(resolve, 500));
+          }
+          await upRes.text();
+        } catch (e) {
+          await new Promise(resolve => setTimeout(resolve, 500));
+        }
+      }
+    });
+    await Promise.all(uploadWorkers);
+    const durationUploadSec = (Date.now() - startUpload) / 1000;
+    const uploadSpeedMbps = durationUploadSec > 0 
+      ? parseFloat(((uploadedBytes * 8) / (durationUploadSec * 1000000)).toFixed(2)) 
+      : 0;
+
+    res.json({
+      success: true,
+      pingMs: ping,
+      downloadSpeedMbps,
+      uploadSpeedMbps,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      error: error.message || 'Speed test failed'
+    });
+  }
+});
+
 router.get('/monitor/speedtest', async (req, res) => {
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Cache-Control', 'no-cache, no-transform');

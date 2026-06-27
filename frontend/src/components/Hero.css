@@ -112,17 +112,34 @@
   }
 
   .hero-container {
-    padding: 0;
+    width: 100%;
+  }
+
+  .hero-text-block {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .hero-main-title {
+    font-size: clamp(26px, 8vw, 36px);
+    margin-bottom: 16px;
   }
 
   .hero-sub-title {
-    font-size: 15px;
+    font-size: 14.5px;
+    margin-bottom: 24px;
   }
 
   .hero-cta-buttons {
     flex-direction: column;
     align-items: stretch;
     width: 100%;
+    gap: 12px;
+  }
+
+  .hero-cta-buttons .btn {
+    padding: 14px 24px;
+    font-size: 12px;
   }
 
   .features-section-clean {
