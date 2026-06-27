@@ -53,7 +53,7 @@ export default function Monitor() {
   const handleRunSpeedTest = () => {
     if (testPhase !== 'idle' && testPhase !== 'complete') return;
 
-    setTestPhase('ping');
+    setTestPhase('download'); // Go straight to test phase
     setDisplaySpeed(0);
     setProgressPing(null);
     setProgressDownload(null);
@@ -64,68 +64,19 @@ export default function Monitor() {
       ? 'http://localhost:5000' 
       : window.location.origin;
 
-    // Total test duration: ~13 seconds (6s download + 6s upload + 1s ping/overhead)
-    const TEST_DURATION_MS = 13000;
-    const startTime = Date.now();
-
-    // Animate needle smoothly based on elapsed time while waiting for real result
+    // Smoothly wiggle the needle to show activity while the backend works
     let animFrame: number;
-    let currentPhase: 'ping' | 'download' | 'upload' = 'ping';
-    let animatedSpeed = 0;
-    let targetSpeed = 0;
-    let peakDownloadSpeed = 0;
-    let peakUploadSpeed = 0;
-
+    let baseSpeed = 150;
+    
     const animate = () => {
-      const elapsed = Date.now() - startTime;
-      const progress = Math.min(elapsed / TEST_DURATION_MS, 1);
-
-      if (elapsed < 800) {
-        // Ping phase: 0-0.8s
-        currentPhase = 'ping';
-        setTestPhase('ping');
-        animatedSpeed = 0;
-      } else if (elapsed < 7000) {
-        // Download phase: 0.8s-7s
-        if (currentPhase !== 'download') {
-          currentPhase = 'download';
-          setTestPhase('download');
-          // Preserve a simulated ping value immediately when transition happens, so it doesn't reset to '-'
-          setProgressPing(Math.floor(15 + Math.random() * 20));
-          targetSpeed = 40 + Math.random() * 60; // start target ~40-100
-        }
-        // Slowly ramp target up and down to simulate real measurement
-        if (Math.random() < 0.05) targetSpeed = 30 + Math.random() * 80;
-        animatedSpeed += (targetSpeed - animatedSpeed) * 0.12;
-        if (animatedSpeed > peakDownloadSpeed) {
-          peakDownloadSpeed = animatedSpeed;
-        }
-      } else {
-        // Upload phase: 7s-13s
-        if (currentPhase !== 'upload') {
-          currentPhase = 'upload';
-          setTestPhase('upload');
-          // Preserve simulated download speed so it doesn't reset to '-'
-          setProgressDownload(parseFloat(peakDownloadSpeed.toFixed(1)));
-          targetSpeed = 20 + Math.random() * 50;
-          animatedSpeed = 0;
-        }
-        if (Math.random() < 0.05) targetSpeed = 15 + Math.random() * 60;
-        animatedSpeed += (targetSpeed - animatedSpeed) * 0.12;
-        if (animatedSpeed > peakUploadSpeed) {
-          peakUploadSpeed = animatedSpeed;
-        }
-      }
-
-      setDisplaySpeed(parseFloat(animatedSpeed.toFixed(1)));
-
-      if (progress < 1) {
-        animFrame = requestAnimationFrame(animate);
-      }
+      // Oscillate between 120 and 180 to indicate activity
+      const offset = Math.sin(Date.now() / 200) * 30;
+      setDisplaySpeed(Math.round(baseSpeed + offset));
+      animFrame = requestAnimationFrame(animate);
     };
     animFrame = requestAnimationFrame(animate);
 
-    // Fire POST request — works through any CDN/proxy including Cloudflare
+    // Fire POST request — returns instantly as soon as backend is done measuring
     fetch(`${host}/api/monitor/speedtest`, { method: 'POST' })
       .then(res => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -136,13 +87,14 @@ export default function Monitor() {
         setProgressPing(result.pingMs);
         setProgressDownload(result.downloadSpeedMbps);
         setProgressUpload(result.uploadSpeedMbps);
-        setDisplaySpeed(0);
+        setDisplaySpeed(result.downloadSpeedMbps); // Point needle to final download speed
         setTestPhase('complete');
       })
       .catch(err => {
         cancelAnimationFrame(animFrame);
         setSpeedTestError(err.message || 'Speed test failed.');
         setTestPhase('idle');
+        setDisplaySpeed(0);
       });
   };
 
@@ -576,13 +528,13 @@ export default function Monitor() {
                 <span style={{
                   fontSize: '11px',
                   fontFamily: 'var(--font-mono)',
-                  color: testPhase === 'complete' ? '#27C93F' : 'var(--ash)',
+                  color: testPhase === 'complete' ? '#27C93F' : 'var(--gold)',
                   textTransform: 'uppercase',
                   letterSpacing: '2px',
                   display: 'block',
-                  fontWeight: testPhase === 'complete' ? 'bold' : 'normal'
+                  fontWeight: 'bold'
                 }}>
-                  {testPhase === 'complete' ? 'COMPLETE' : testPhase}
+                  {testPhase === 'complete' ? 'COMPLETE' : 'TESTING'}
                 </span>
                 <span style={{
                   fontSize: '48px',
@@ -615,10 +567,10 @@ export default function Monitor() {
               <div>
                 <span style={{ fontSize: '9px', color: 'var(--ash)', fontFamily: 'var(--font-mono)', letterSpacing: '1px', display: 'block', textTransform: 'uppercase' }}>Ping Latency</span>
                 <span style={{ fontSize: '20px', fontWeight: 900, fontFamily: 'var(--font-mono)', color: 'var(--white)' }}>
-                  {progressPing !== null ? `${progressPing} ms` : testPhase === 'ping' ? 'Measuring...' : '—'}
+                  {progressPing !== null ? `${progressPing} ms` : (testPhase !== 'idle' && testPhase !== 'complete') ? 'Measuring...' : '—'}
                 </span>
               </div>
-              {testPhase === 'ping' && <RefreshCw className="animate-spin" size={14} style={{ color: 'var(--cyan-pulse)' }} />}
+              {(testPhase !== 'idle' && testPhase !== 'complete' && progressPing === null) && <RefreshCw className="animate-spin" size={14} style={{ color: 'var(--cyan-pulse)' }} />}
               {progressPing !== null && <CheckCircle2 size={16} style={{ color: '#27C93F' }} />}
             </div>
 
@@ -627,10 +579,10 @@ export default function Monitor() {
               <div>
                 <span style={{ fontSize: '9px', color: 'var(--ash)', fontFamily: 'var(--font-mono)', letterSpacing: '1px', display: 'block', textTransform: 'uppercase' }}>Download Speed</span>
                 <span style={{ fontSize: '20px', fontWeight: 900, fontFamily: 'var(--font-mono)', color: 'var(--cyan-pulse)' }}>
-                  {progressDownload !== null ? `${progressDownload} Mbps` : testPhase === 'download' ? `${displaySpeed} Mbps` : '—'}
+                  {progressDownload !== null ? `${progressDownload} Mbps` : (testPhase !== 'idle' && testPhase !== 'complete') ? 'Measuring...' : '—'}
                 </span>
               </div>
-              {testPhase === 'download' && <RefreshCw className="animate-spin" size={14} style={{ color: 'var(--cyan-pulse)' }} />}
+              {(testPhase !== 'idle' && testPhase !== 'complete' && progressDownload === null) && <RefreshCw className="animate-spin" size={14} style={{ color: 'var(--cyan-pulse)' }} />}
               {progressDownload !== null && <CheckCircle2 size={16} style={{ color: '#27C93F' }} />}
             </div>
 
@@ -639,10 +591,10 @@ export default function Monitor() {
               <div>
                 <span style={{ fontSize: '9px', color: 'var(--ash)', fontFamily: 'var(--font-mono)', letterSpacing: '1px', display: 'block', textTransform: 'uppercase' }}>Upload Speed</span>
                 <span style={{ fontSize: '20px', fontWeight: 900, fontFamily: 'var(--font-mono)', color: 'var(--gold-text)' }}>
-                  {progressUpload !== null ? `${progressUpload} Mbps` : testPhase === 'upload' ? `${displaySpeed} Mbps` : '—'}
+                  {progressUpload !== null ? `${progressUpload} Mbps` : (testPhase !== 'idle' && testPhase !== 'complete') ? 'Measuring...' : '—'}
                 </span>
               </div>
-              {testPhase === 'upload' && <RefreshCw className="animate-spin" size={14} style={{ color: 'var(--gold)' }} />}
+              {(testPhase !== 'idle' && testPhase !== 'complete' && progressUpload === null) && <RefreshCw className="animate-spin" size={14} style={{ color: 'var(--gold)' }} />}
               {progressUpload !== null && <CheckCircle2 size={16} style={{ color: '#27C93F' }} />}
             </div>
           </div>
