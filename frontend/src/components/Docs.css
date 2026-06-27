@@ -914,6 +914,68 @@ input[type=number] {
     gap: 8px !important;
   }
 
+  /* ── Grid tables inside response layouts overrides on mobile ── */
+  /* Nameserver status grid table: 1fr 100px 90px 80px */
+  .response-layout div[style*="grid-template-columns: 1fr 100px 90px 80px"],
+  .response-layout div[style*="gridTemplateColumns: '1fr 100px 90px 80px'"],
+  .response-layout div[style*="gridTemplateColumns:'1fr 100px 90px 80px'"] {
+    grid-template-columns: 1.2fr 75px 65px 55px !important;
+  }
+  .response-layout div[style*="grid-template-columns: 1fr 100px 90px 80px"] *,
+  .response-layout div[style*="gridTemplateColumns: '1fr 100px 90px 80px'"] *,
+  .response-layout div[style*="gridTemplateColumns:'1fr 100px 90px 80px'"] * {
+    font-size: 10px !important;
+  }
+
+  /* MX records lookup grid table: 80px 1fr 90px */
+  .response-layout div[style*="grid-template-columns: 80px 1fr 90px"],
+  .response-layout div[style*="gridTemplateColumns: '80px 1fr 90px'"],
+  .response-layout div[style*="gridTemplateColumns:'80px 1fr 90px'"] {
+    grid-template-columns: 55px 1fr 65px !important;
+  }
+  .response-layout div[style*="grid-template-columns: 80px 1fr 90px"] *,
+  .response-layout div[style*="gridTemplateColumns: '80px 1fr 90px'"] *,
+  .response-layout div[style*="gridTemplateColumns:'80px 1fr 90px'"] * {
+    font-size: 10px !important;
+  }
+
+  /* DNSBL list grid table: 1fr 120px */
+  .response-layout div[style*="grid-template-columns: 1fr 120px"],
+  .response-layout div[style*="gridTemplateColumns: '1fr 120px'"],
+  .response-layout div[style*="gridTemplateColumns:'1fr 120px'"] {
+    grid-template-columns: 1fr 70px !important;
+  }
+  .response-layout div[style*="grid-template-columns: 1fr 120px"] *,
+  .response-layout div[style*="gridTemplateColumns: '1fr 120px'"] *,
+  .response-layout div[style*="gridTemplateColumns:'1fr 120px'"] * {
+    font-size: 10px !important;
+  }
+
+  /* DNS records table: 1fr 100px */
+  .response-layout div[style*="grid-template-columns: 1fr 100px"],
+  .response-layout div[style*="gridTemplateColumns: '1fr 100px'"],
+  .response-layout div[style*="gridTemplateColumns:'1fr 100px'"] {
+    grid-template-columns: 1fr 65px !important;
+  }
+  .response-layout div[style*="grid-template-columns: 1fr 100px"] *,
+  .response-layout div[style*="gridTemplateColumns: '1fr 100px'"] *,
+  .response-layout div[style*="gridTemplateColumns:'1fr 100px'"] * {
+    font-size: 10px !important;
+  }
+
+  /* IPv6 address lookup grid tables: 1fr 1.5fr */
+  .response-layout div[style*="grid-template-columns: 1fr 1.5fr"],
+  .response-layout div[style*="gridTemplateColumns: '1fr 1.5fr'"],
+  .response-layout div[style*="gridTemplateColumns:'1fr 1.5fr'"] {
+    grid-template-columns: 1fr 1.1fr !important;
+  }
+  .response-layout div[style*="grid-template-columns: 1fr 1.5fr"] *,
+  .response-layout div[style*="gridTemplateColumns: '1fr 1.5fr'"] *,
+  .response-layout div[style*="gridTemplateColumns:'1fr 1.5fr'"] * {
+    font-size: 10px !important;
+    word-break: break-all !important;
+  }
+
   /* ── Playground elements ── */
   .docs-playground-header {
     word-break: break-word !important;
