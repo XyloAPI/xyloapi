@@ -168,18 +168,16 @@
     gap: 12px !important;
   }
 
-  /* Sembunyikan kolom Timestamp (1) & Latency (5) di mobile untuk mencegah layout offside */
+  /* Sembunyikan hanya kolom Timestamp (1) di mobile untuk menghemat space */
   .monitor-table th:nth-child(1),
-  .monitor-table td:nth-child(1),
-  .monitor-table th:nth-child(5),
-  .monitor-table td:nth-child(5) {
+  .monitor-table td:nth-child(1) {
     display: none !important;
   }
 
   /* Optimalkan tabel agar pas sempurna di mobile dan tidak terpotong */
   .monitor-table th, 
   .monitor-table td {
-    padding: 10px 8px !important;
+    padding: 10px 6px !important;
     font-size: 11px !important;
   }
   
