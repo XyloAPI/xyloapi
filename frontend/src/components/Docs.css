@@ -976,6 +976,11 @@ input[type=number] {
     word-break: break-all !important;
   }
 
+  /* Make video player take full width on mobile devices instead of fixed width */
+  .custom-video-player-container {
+    max-width: 100% !important;
+  }
+
   /* ── Playground elements ── */
   .docs-playground-header {
     word-break: break-word !important;

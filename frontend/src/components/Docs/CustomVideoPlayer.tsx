@@ -73,10 +73,11 @@ export default function CustomVideoPlayer({ src, poster }: CustomVideoPlayerProp
 
   return (
     <div
+      className="custom-video-player-container"
       style={{
         position: 'relative',
         width: '100%',
-        maxWidth: '240px',
+        maxWidth: '280px',
         backgroundColor: '#000',
         border: '1px solid var(--border-color)',
         overflow: 'hidden',
@@ -134,7 +135,8 @@ export default function CustomVideoPlayer({ src, poster }: CustomVideoPlayerProp
         style={{
           position: 'relative',
           width: '100%',
-          height: '240px',
+          aspectRatio: '16/9',
+          height: 'auto',
           cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
