@@ -380,174 +380,51 @@ export default function Monitor() {
           <div style={{ padding: '16px', border: '1px solid #FF3B30', background: 'rgba(255, 59, 48, 0.05)', color: '#FF3B30', fontFamily: 'var(--font-mono)', fontSize: '11px', marginBottom: '24px' }}>
             ERROR: {speedTestError}
           </div>
-        )}
-
-        <div className="monitor-speedtest-grid">
-          {/* Gauge Column */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
-            <div style={{ position: 'relative', width: '220px', height: '220px' }}>
-              <svg width="220" height="220" viewBox="0 0 200 200" style={{ overflow: 'visible' }}>
-                {/* Track Circle */}
-                <circle
-                  cx="100"
-                  cy="100"
-                  r="80"
-                  fill="none"
-                  stroke="var(--border-color)"
-                  strokeWidth="10"
-                  strokeDasharray="376.99 1000"
-                  strokeLinecap="round"
-                  transform="rotate(135 100 100)"
-                />
-                {/* Active Glow Circle */}
-                <circle
-                  cx="100"
-                  cy="100"
-                  r="80"
-                  fill="none"
-                  stroke={currentDisplayVal > 0 ? (testPhase === 'upload' ? 'var(--gold)' : 'var(--cyan-pulse)') : 'transparent'}
-                  strokeWidth="10"
-                  strokeDasharray={`${(Math.min(currentDisplayVal, 1000) / 1000) * 376.99} 1000`}
-                  strokeDashoffset="0"
-                  strokeLinecap="round"
-                  transform="rotate(135 100 100)"
-                  style={{ transition: `stroke-dasharray ${transitionDuration} cubic-bezier(0.25, 0.8, 0.25, 1), stroke 0.3s` }}
-                />
-
-                {/* Tickmarks */}
-                {[0, 200, 400, 600, 800, 1000].map((val) => {
-                  const angle = 135 + (val / 1000) * 270;
-                  const rad = (angle * Math.PI) / 180;
-                  const x1 = 100 + 70 * Math.cos(rad);
-                  const y1 = 100 + 70 * Math.sin(rad);
-                  const x2 = 100 + 80 * Math.cos(rad);
-                  const y2 = 100 + 80 * Math.sin(rad);
-                  const tx = 100 + 60 * Math.cos(rad);
-                  const ty = 100 + 60 * Math.sin(rad) + 3;
-                  return (
-                    <g key={val}>
-                      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="var(--iron)" strokeWidth="2" />
-                      <text x={tx} y={ty} fill="var(--ash)" fontSize="8" fontFamily="var(--font-mono)" textAnchor="middle">{val}</text>
-                    </g>
-                  );
-                })}
-
-                {/* Needle */}
-                <line
-                  x1="100"
-                  y1="100"
-                  x2="100"
-                  y2="30"
-                  stroke="#FF3B30"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  style={{
-                    transform: `rotate(${needleAngle}deg)`,
-                    transformOrigin: '100px 100px',
-                    transition: `transform ${transitionDuration} cubic-bezier(0.25, 0.8, 0.25, 1)`
-                  }}
-                />
-                <circle cx="100" cy="100" r="8" fill="#FF3B30" />
-                <circle cx="100" cy="100" r="3" fill="#FFF" />
-              </svg>
-
-              {/* Center GO Button */}
-              {(testPhase === 'idle' || testPhase === 'complete') && (
-                <div style={{
-                  position: 'absolute',
-                  top: '0',
-                  left: '0',
-                  width: '100%',
-                  height: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
-                  <button
-                    onClick={handleRunSpeedTest}
-                    style={{
-                      width: '90px',
-                      height: '90px',
-                      borderRadius: '50%',
-                      backgroundColor: 'var(--black)',
-                      border: '2px solid var(--border-color)',
-                      color: 'var(--ash)',
-                      fontFamily: 'var(--font-display)',
-                      fontSize: '16px',
-                      fontWeight: 900,
-                      letterSpacing: '1.5px',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      boxShadow: 'none',
-                      transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
-                      outline: 'none'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = 'var(--cyan-pulse)';
-                      e.currentTarget.style.color = 'var(--cyan-pulse)';
-                      e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 240, 255, 0.15)';
-                      e.currentTarget.style.transform = 'scale(1.05)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = 'var(--border-color)';
-                      e.currentTarget.style.color = 'var(--ash)';
-                      e.currentTarget.style.boxShadow = 'none';
-                      e.currentTarget.style.transform = 'scale(1)';
-                    }}
-                  >
-                    {testPhase === 'complete' ? 'RUN' : 'GO'}
-                  </button>
-                </div>
-              )}
-            </div>
-
-            {/* Readout completely below the dial SVG (No Overlaps!) */}
-            {testPhase !== 'idle' && (
-              <div style={{ textAlign: 'center', marginTop: '-15px', minHeight: '80px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                <span style={{
-                  fontSize: '11px',
-                  fontFamily: 'var(--font-mono)',
-                  color: testPhase === 'complete' ? '#27C93F' : 'var(--gold)',
-                  textTransform: 'uppercase',
-                  letterSpacing: '2px',
-                  display: 'block',
-                  fontWeight: 'bold'
-                }}>
-                  {testPhase === 'complete' ? 'COMPLETE' : 'TESTING'}
-                </span>
-                <span style={{
-                  fontSize: '48px',
-                  fontWeight: 900,
-                  color: testPhase === 'complete' ? '#27C93F' : 'var(--white)',
-                  fontFamily: 'var(--font-mono)',
-                  lineHeight: '1',
-                  display: 'block',
-                  margin: '6px 0'
-                }}>
-                  {testPhase === 'complete' ? Math.round(progressDownload || 0) : Math.round(currentDisplayVal)}
-                </span>
-                <span style={{
-                  fontSize: '11px',
-                  fontFamily: 'var(--font-mono)',
-                  color: 'var(--steel)',
-                  letterSpacing: '1.5px',
-                  display: 'block'
-                }}>
-                  Mbps
-                </span>
-              </div>
+        )}        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          {/* Action Trigger Button */}
+          <button
+            onClick={handleRunSpeedTest}
+            disabled={testPhase !== 'idle' && testPhase !== 'complete'}
+            style={{
+              width: '100%',
+              padding: '16px 24px',
+              backgroundColor: (testPhase !== 'idle' && testPhase !== 'complete') ? 'var(--dark-iron)' : 'var(--black)',
+              border: '1px solid var(--border-color)',
+              color: (testPhase !== 'idle' && testPhase !== 'complete') ? 'var(--gold)' : 'var(--white)',
+              fontFamily: 'var(--font-display)',
+              fontSize: '13px',
+              fontWeight: 700,
+              letterSpacing: '2px',
+              cursor: (testPhase !== 'idle' && testPhase !== 'complete') ? 'not-allowed' : 'pointer',
+              textTransform: 'uppercase',
+              transition: 'all 0.15s ease',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '12px',
+              outline: 'none'
+            }}
+          >
+            {(testPhase !== 'idle' && testPhase !== 'complete') ? (
+              <>
+                <RefreshCw className="animate-spin" size={16} style={{ color: 'var(--gold)' }} />
+                RUNNING SPEED TEST...
+              </>
+            ) : (
+              <>
+                <Wifi size={16} style={{ color: 'var(--cyan-pulse)' }} />
+                START SYSTEM SPEED TEST
+              </>
             )}
-          </div>
+          </button>
 
-          {/* Details & Progress Column */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {/* Details & Progress Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
             {/* Ping */}
-            <div style={{ border: '1px solid var(--border-color)', backgroundColor: 'var(--black)', padding: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ border: '1px solid var(--border-color)', backgroundColor: 'var(--black)', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
                 <span style={{ fontSize: '9px', color: 'var(--ash)', fontFamily: 'var(--font-mono)', letterSpacing: '1px', display: 'block', textTransform: 'uppercase' }}>Ping Latency</span>
-                <span style={{ fontSize: '20px', fontWeight: 900, fontFamily: 'var(--font-mono)', color: 'var(--white)' }}>
+                <span style={{ fontSize: '24px', fontWeight: 900, fontFamily: 'var(--font-mono)', color: 'var(--white)' }}>
                   {progressPing !== null ? `${progressPing} ms` : (testPhase !== 'idle' && testPhase !== 'complete') ? 'Measuring...' : '—'}
                 </span>
               </div>
@@ -556,10 +433,10 @@ export default function Monitor() {
             </div>
 
             {/* Download */}
-            <div style={{ border: '1px solid var(--border-color)', backgroundColor: 'var(--black)', padding: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ border: '1px solid var(--border-color)', backgroundColor: 'var(--black)', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
                 <span style={{ fontSize: '9px', color: 'var(--ash)', fontFamily: 'var(--font-mono)', letterSpacing: '1px', display: 'block', textTransform: 'uppercase' }}>Download Speed</span>
-                <span style={{ fontSize: '20px', fontWeight: 900, fontFamily: 'var(--font-mono)', color: 'var(--cyan-pulse)' }}>
+                <span style={{ fontSize: '24px', fontWeight: 900, fontFamily: 'var(--font-mono)', color: 'var(--cyan-pulse)' }}>
                   {progressDownload !== null ? `${progressDownload} Mbps` : (testPhase !== 'idle' && testPhase !== 'complete') ? 'Measuring...' : '—'}
                 </span>
               </div>
@@ -568,10 +445,10 @@ export default function Monitor() {
             </div>
 
             {/* Upload */}
-            <div style={{ border: '1px solid var(--border-color)', backgroundColor: 'var(--black)', padding: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ border: '1px solid var(--border-color)', backgroundColor: 'var(--black)', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
                 <span style={{ fontSize: '9px', color: 'var(--ash)', fontFamily: 'var(--font-mono)', letterSpacing: '1px', display: 'block', textTransform: 'uppercase' }}>Upload Speed</span>
-                <span style={{ fontSize: '20px', fontWeight: 900, fontFamily: 'var(--font-mono)', color: 'var(--gold-text)' }}>
+                <span style={{ fontSize: '24px', fontWeight: 900, fontFamily: 'var(--font-mono)', color: 'var(--gold-text)' }}>
                   {progressUpload !== null ? `${progressUpload} Mbps` : (testPhase !== 'idle' && testPhase !== 'complete') ? 'Measuring...' : '—'}
                 </span>
               </div>
@@ -579,7 +456,7 @@ export default function Monitor() {
               {progressUpload !== null && <CheckCircle2 size={16} style={{ color: '#27C93F' }} />}
             </div>
           </div>
-        </div>
+        </div>  </div>
       </div>
 
       {/* Section: Dynamic Supporting Charts */}
