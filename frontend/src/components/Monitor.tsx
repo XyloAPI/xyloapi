@@ -44,7 +44,6 @@ export default function Monitor() {
   const [refreshing, setRefreshing] = useState(false);
 
   const [testPhase, setTestPhase] = useState<'idle' | 'ping' | 'download' | 'upload' | 'complete'>('idle');
-  const [displaySpeed, setDisplaySpeed] = useState(0);
   const [progressPing, setProgressPing] = useState<number | null>(null);
   const [progressDownload, setProgressDownload] = useState<number | null>(null);
   const [progressUpload, setProgressUpload] = useState<number | null>(null);
@@ -54,14 +53,13 @@ export default function Monitor() {
     if (testPhase !== 'idle' && testPhase !== 'complete') return;
 
     setTestPhase('download'); // Go straight to test phase
-    setDisplaySpeed(0);
     setProgressPing(null);
     setProgressDownload(null);
     setProgressUpload(null);
     setSpeedTestError(null);
 
-    const host = (window.location.hostname === 'localhost' && window.location.port !== '3000') 
-      ? 'http://localhost:5000' 
+    const host = (window.location.hostname === 'localhost' && window.location.port !== '3000')
+      ? 'http://localhost:5000'
       : window.location.origin;
 
     // Fire POST request — returns instantly as soon as backend is done measuring
@@ -74,13 +72,11 @@ export default function Monitor() {
         setProgressPing(result.pingMs);
         setProgressDownload(result.downloadSpeedMbps);
         setProgressUpload(result.uploadSpeedMbps);
-        setDisplaySpeed(result.downloadSpeedMbps); // Point needle to final download speed
         setTestPhase('complete');
       })
       .catch(err => {
         setSpeedTestError(err.message || 'Speed test failed.');
         setTestPhase('idle');
-        setDisplaySpeed(0);
       });
   };
 
@@ -179,15 +175,7 @@ export default function Monitor() {
   const maxCount = hourlyData.length > 0 ? Math.max(...hourlyData.map(d => d.count), 5) : 5;
   const maxLatency = hourlyData.length > 0 ? Math.max(...hourlyData.map(d => d.latency), 100) : 100;
 
-  const currentDisplayVal = (testPhase === 'idle' || testPhase === 'complete')
-    ? 0
-    : displaySpeed;
 
-  const needleAngle = (testPhase === 'idle' || testPhase === 'complete')
-    ? -135
-    : -135 + (Math.min(currentDisplayVal, 1000) / 1000) * 270;
-
-  const transitionDuration = (testPhase === 'idle' || testPhase === 'complete') ? '0.6s' : '0.1s';
 
   return (
     <div className="monitor-container container">
@@ -307,9 +295,9 @@ export default function Monitor() {
                       <td style={{ fontWeight: 700, fontSize: '11px', color: req.path.startsWith('/api/data') ? 'var(--gold)' : 'var(--white)' }}>
                         {req.path.includes('/trigger') ? 'POST' : 'GET'}
                       </td>
-                      <td style={{ 
-                        fontFamily: 'var(--font-mono)', 
-                        fontSize: '12px', 
+                      <td style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '12px',
                         color: 'var(--white)',
                         maxWidth: '120px',
                         overflow: 'hidden',
@@ -413,7 +401,7 @@ export default function Monitor() {
             ) : (
               <>
                 <Wifi size={16} style={{ color: 'var(--cyan-pulse)' }} />
-                START SYSTEM SPEED TEST
+                START
               </>
             )}
           </button>
@@ -456,7 +444,7 @@ export default function Monitor() {
               {progressUpload !== null && <CheckCircle2 size={16} style={{ color: '#27C93F' }} />}
             </div>
           </div>
-        </div>  </div>
+        </div>
       </div>
 
       {/* Section: Dynamic Supporting Charts */}
