@@ -133,13 +133,19 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (max-width: 768px) {
   .container {
-    padding: 0 20px;
+    padding: 0 16px;
+  }
+  body {
+    zoom: 0.92; /* Staggered scale down for tablets / large mobile screens */
   }
 }
 
 @media (max-width: 480px) {
   .container {
-    padding: 0 16px;
+    padding: 0 12px;
+  }
+  body {
+    zoom: 0.85; /* Dynamic scale down for standard/small mobile screens */
   }
 }
 

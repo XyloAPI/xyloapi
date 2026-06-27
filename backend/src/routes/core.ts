@@ -267,6 +267,14 @@ router.get('/monitor/speedtest', async (req, res) => {
   res.setHeader('Connection', 'keep-alive');
   res.setHeader('X-Accel-Buffering', 'no');
 
+  // Flush headers immediately
+  if (typeof (res as any).flushHeaders === 'function') {
+    (res as any).flushHeaders();
+  }
+
+  // Send 2KB of comment padding to bypass Nginx/Cloudflare proxy buffering
+  res.write(`:${' '.repeat(2048)}\n\n`);
+
   let isClientConnected = true;
   req.on('close', () => {
     isClientConnected = false;

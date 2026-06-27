@@ -131,25 +131,25 @@
 
 @media (max-width: 640px) {
   .monitor-container {
-    padding-top: 110px;
-    padding-bottom: 60px;
+    padding-top: 90px;
+    padding-bottom: 40px;
   }
 
   .monitor-stat-card {
-    padding: 16px;
-    min-height: 110px;
+    padding: 12px;
+    min-height: 100px;
   }
 
   .stat-card-value {
-    font-size: 24px;
+    font-size: 22px;
   }
 
   .monitor-card {
-    padding: 16px;
+    padding: 12px;
   }
 
   .monitor-charts-section {
-    padding: 20px;
+    padding: 12px;
   }
 
   .ep-path {
@@ -160,12 +160,12 @@
 
   .monitor-speedtest-grid {
     grid-template-columns: 1fr !important;
-    gap: 20px !important;
+    gap: 16px !important;
   }
 
   .monitor-stats-grid {
     grid-template-columns: 1fr !important;
-    gap: 16px !important;
+    gap: 12px !important;
   }
 }
 
@@ -202,7 +202,10 @@
 
 .table-responsive {
   width: 100%;
+  max-width: 100%;
   overflow-x: auto;
+  display: block;
+  -webkit-overflow-scrolling: touch;
 }
 
 .monitor-table {

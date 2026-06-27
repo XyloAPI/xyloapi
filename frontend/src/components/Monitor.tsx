@@ -333,7 +333,15 @@ export default function Monitor() {
                       <td style={{ fontWeight: 700, fontSize: '11px', color: req.path.startsWith('/api/data') ? 'var(--gold)' : 'var(--white)' }}>
                         {req.path.includes('/trigger') ? 'POST' : 'GET'}
                       </td>
-                      <td style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'var(--white)' }}>
+                      <td style={{ 
+                        fontFamily: 'var(--font-mono)', 
+                        fontSize: '12px', 
+                        color: 'var(--white)',
+                        maxWidth: '120px',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap'
+                      }} title={req.path}>
                         {req.path}
                       </td>
                       <td>
