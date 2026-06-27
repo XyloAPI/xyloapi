@@ -47,15 +47,6 @@ export default function ShortlinkLayout({ resData, copyToClipboard }: ShortlinkL
             </a>
           )}
         </div>
-
-        {resData.original && (
-          <div className="response-subcard">
-            <span className="response-label" style={{ marginBottom: '4px' }}>ORIGINAL LONG URL</span>
-            <span className="response-value-mono" style={{ wordBreak: 'break-all', color: 'var(--ash)', fontSize: '11px' }}>
-              {resData.original}
-            </span>
-          </div>
-        )}
       </div>
     </div>
   );
