@@ -64,48 +64,74 @@ export default function Monitor() {
       ? 'http://localhost:5000' 
       : window.location.origin;
 
-    const eventSource = new EventSource(`${host}/api/monitor/speedtest`);
+    // Total test duration: ~13 seconds (6s download + 6s upload + 1s ping/overhead)
+    const TEST_DURATION_MS = 13000;
+    const startTime = Date.now();
 
-    eventSource.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
-        
-        if (data.error) {
-          throw new Error(data.error);
-        }
+    // Animate needle smoothly based on elapsed time while waiting for real result
+    let animFrame: number;
+    let currentPhase: 'ping' | 'download' | 'upload' = 'ping';
+    let animatedSpeed = 0;
+    let targetSpeed = 0;
 
-        if (data.phase === 'ping') {
-          setProgressPing(data.pingMs);
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / TEST_DURATION_MS, 1);
+
+      if (elapsed < 800) {
+        // Ping phase: 0-0.8s
+        currentPhase = 'ping';
+        setTestPhase('ping');
+        animatedSpeed = 0;
+      } else if (elapsed < 7000) {
+        // Download phase: 0.8s-7s
+        if (currentPhase !== 'download') {
+          currentPhase = 'download';
           setTestPhase('download');
-        } else if (data.phase === 'download') {
-          setDisplaySpeed(data.speedMbps);
-        } else if (data.phase === 'download_complete') {
-          setProgressDownload(data.downloadSpeedMbps);
-          setDisplaySpeed(0);
-        } else if (data.phase === 'upload_start') {
-          setTestPhase('upload');
-        } else if (data.phase === 'upload') {
-          setDisplaySpeed(data.speedMbps);
-        } else if (data.phase === 'complete') {
-          setProgressPing(data.pingMs);
-          setProgressDownload(data.downloadSpeedMbps);
-          setProgressUpload(data.uploadSpeedMbps);
-          setDisplaySpeed(0);
-          setTestPhase('complete');
-          eventSource.close();
+          targetSpeed = 40 + Math.random() * 60; // start target ~40-100
         }
-      } catch (err: any) {
-        setSpeedTestError(err.message || 'Failed to complete speed test.');
-        setTestPhase('idle');
-        eventSource.close();
+        // Slowly ramp target up and down to simulate real measurement
+        if (Math.random() < 0.05) targetSpeed = 30 + Math.random() * 80;
+        animatedSpeed += (targetSpeed - animatedSpeed) * 0.12;
+      } else {
+        // Upload phase: 7s-13s
+        if (currentPhase !== 'upload') {
+          currentPhase = 'upload';
+          setTestPhase('upload');
+          targetSpeed = 20 + Math.random() * 50;
+          animatedSpeed = 0;
+        }
+        if (Math.random() < 0.05) targetSpeed = 15 + Math.random() * 60;
+        animatedSpeed += (targetSpeed - animatedSpeed) * 0.12;
+      }
+
+      setDisplaySpeed(parseFloat(animatedSpeed.toFixed(1)));
+
+      if (progress < 1) {
+        animFrame = requestAnimationFrame(animate);
       }
     };
+    animFrame = requestAnimationFrame(animate);
 
-    eventSource.onerror = (err) => {
-      setSpeedTestError('Network connection lost during speed test.');
-      setTestPhase('idle');
-      eventSource.close();
-    };
+    // Fire POST request — works through any CDN/proxy including Cloudflare
+    fetch(`${host}/api/monitor/speedtest`, { method: 'POST' })
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then(result => {
+        cancelAnimationFrame(animFrame);
+        setProgressPing(result.pingMs);
+        setProgressDownload(result.downloadSpeedMbps);
+        setProgressUpload(result.uploadSpeedMbps);
+        setDisplaySpeed(0);
+        setTestPhase('complete');
+      })
+      .catch(err => {
+        cancelAnimationFrame(animFrame);
+        setSpeedTestError(err.message || 'Speed test failed.');
+        setTestPhase('idle');
+      });
   };
 
   const fetchMonitorData = async () => {
