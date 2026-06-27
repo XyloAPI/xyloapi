@@ -843,7 +843,7 @@ input[type=number] {
   }
 
   .docs-playground-url-btn {
-    width: 100% !important;
+    align-self: flex-end !important;
   }
 
   .docs-playground-left-col code {
