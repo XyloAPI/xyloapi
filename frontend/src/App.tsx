@@ -5,20 +5,6 @@ import Monitor from './components/Monitor';
 import Docs from './components/Docs';
 import Footer from './components/Footer';
 
-// Dynamically adjust viewport scale on small mobile screens
-function applyMobileViewportScale() {
-  const vw = window.innerWidth;
-  let scale = 1.0;
-  if (vw <= 768) {
-    scale = 0.50; // Set precisely to 50% scaling for mobile & tablet
-  }
-
-  const meta = document.querySelector('meta[name="viewport"]');
-  if (meta) {
-    meta.setAttribute('content', `width=device-width, initial-scale=${scale}, maximum-scale=${scale}, minimum-scale=${scale}`);
-  }
-}
-
 function App() {
   const [currentView, setCurrentView] = useState<'landing' | 'monitor' | 'docs'>(() => {
     const hash = window.location.hash;
@@ -30,12 +16,6 @@ function App() {
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     return (localStorage.getItem('xyloapi-theme') as 'dark' | 'light') || 'dark';
   });
-
-  useEffect(() => {
-    applyMobileViewportScale();
-    window.addEventListener('resize', applyMobileViewportScale);
-    return () => window.removeEventListener('resize', applyMobileViewportScale);
-  }, []);
 
   useEffect(() => {
     const handleHashChange = () => {
