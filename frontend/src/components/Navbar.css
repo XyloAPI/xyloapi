@@ -37,19 +37,51 @@
   color: var(--gold);
 }
 
-.header-nav-links {
-  display: flex;
+.hamburger-btn {
+  display: none; /* Hidden on desktop */
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--white);
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
   align-items: center;
-  gap: 40px;
+  justify-content: center;
+}
+
+.hamburger-btn:hover {
+  background-color: var(--ghost-hover-bg);
+  border-color: var(--white);
 }
 
 @media (max-width: 768px) {
-  .header-nav-links {
-    display: flex;
-    gap: 16px; /* Tighten gap on mobile screens */
+  .hamburger-btn {
+    display: flex; /* Show on mobile */
   }
+
+  .header-nav-links {
+    display: none; /* Hide default inline menu */
+    flex-direction: column;
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    background-color: var(--dark-iron);
+    border-bottom: 1px solid var(--border-color);
+    padding: 24px;
+    gap: 20px;
+    z-index: 99;
+  }
+
+  .header-nav-links.mobile-open {
+    display: flex; /* Show vertical drawer when active */
+  }
+
   .nav-link {
-    font-size: 11px; /* Slightly smaller text for mobile */
+    font-size: 14px;
+    width: 100%;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02);
   }
 }
 
@@ -122,5 +154,5 @@
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 12px;
 }
