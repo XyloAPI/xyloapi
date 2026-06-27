@@ -56,6 +56,8 @@ html {
   width: 100%;
 }
 
+/* Mobile scale — applied via JS in App.tsx based on viewport width */
+
 body {
   background-color: var(--black);
   color: var(--smoke);
@@ -135,17 +137,11 @@ h1, h2, h3, h4, h5, h6 {
   .container {
     padding: 0 16px;
   }
-  body {
-    zoom: 0.92; /* Staggered scale down for tablets / large mobile screens */
-  }
 }
 
 @media (max-width: 480px) {
   .container {
     padding: 0 12px;
-  }
-  body {
-    zoom: 0.85; /* Dynamic scale down for standard/small mobile screens */
   }
 }
 
