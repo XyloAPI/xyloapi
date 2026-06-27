@@ -177,70 +177,46 @@ router.post('/monitor/speedtest', async (req, res) => {
     } catch (e) {}
     const ping = Date.now() - startPing;
 
-    // Download Test (Max 10 seconds total)
-    const downloadTimeout = 10000;
+    // Download Test (Sequential, CPU friendly)
+    const downloadTimeout = 6000;
     const startDownload = Date.now();
     let downloadedBytes = 0;
-    const downloadConcurrency = 3;
-    const downloadWorkers = Array.from({ length: downloadConcurrency }, async () => {
-      while (Date.now() - startDownload < downloadTimeout) {
-        try {
-          const downRes = await fetch('https://speed.cloudflare.com/__down?bytes=10000000');
-          if (!downRes.ok) {
-            await new Promise(resolve => setTimeout(resolve, 500));
-            continue;
-          }
-          if (downRes.body) {
-            const reader = downRes.body.getReader();
-            while (Date.now() - startDownload < downloadTimeout) {
-              const { done, value } = await reader.read();
-              if (done) break;
-              if (value) {
-                downloadedBytes += value.length || value.byteLength || 0;
-              }
-            }
-            try { await reader.cancel(); } catch (_) {}
-          }
-        } catch (e) {
-          await new Promise(resolve => setTimeout(resolve, 500));
+    while (Date.now() - startDownload < downloadTimeout) {
+      try {
+        const downRes = await fetch('https://speed.cloudflare.com/__down?bytes=3000000');
+        if (!downRes.ok) {
+          await new Promise(resolve => setTimeout(resolve, 200));
+          continue;
         }
+        const buf = await downRes.arrayBuffer();
+        downloadedBytes += buf.byteLength;
+      } catch (e) {
+        await new Promise(resolve => setTimeout(resolve, 200));
       }
-    });
-    await Promise.all(downloadWorkers);
+    }
     const durationDownloadSec = (Date.now() - startDownload) / 1000;
     const downloadSpeedMbps = durationDownloadSec > 0 
       ? parseFloat(((downloadedBytes * 8) / (durationDownloadSec * 1000000)).toFixed(2)) 
       : 0;
 
-    // Upload Test (Max 10 seconds total)
-    const uploadTimeout = 10000;
+    // Upload Test (Sequential, CPU friendly)
+    const uploadTimeout = 6000;
     const startUpload = Date.now();
     let uploadedBytes = 0;
-    const uploadChunkSize = 2 * 1024 * 1024;
-    const uploadPayload = new Uint8Array(uploadChunkSize);
-    const uploadConcurrency = 3;
-    const uploadWorkers = Array.from({ length: uploadConcurrency }, async () => {
-      while (Date.now() - startUpload < uploadTimeout) {
-        try {
-          const upRes = await fetch('https://speed.cloudflare.com/__up', {
-            method: 'POST',
-            body: uploadPayload,
-            headers: {
-              'Content-Type': 'application/octet-stream'
-            }
-          });
-          if (upRes.ok) {
-            uploadedBytes += uploadChunkSize;
-          } else {
-            await new Promise(resolve => setTimeout(resolve, 500));
-          }
-          await upRes.text();
-        } catch (e) {
-          await new Promise(resolve => setTimeout(resolve, 500));
-        }
+    const uploadPayload = new Uint8Array(1024 * 1024); // 1MB chunk
+    while (Date.now() - startUpload < uploadTimeout) {
+      try {
+        const upRes = await fetch('https://speed.cloudflare.com/__up', {
+          method: 'POST',
+          body: uploadPayload,
+          headers: { 'Content-Type': 'application/octet-stream' }
+        });
+        await upRes.text();
+        uploadedBytes += uploadPayload.length;
+      } catch (e) {
+        await new Promise(resolve => setTimeout(resolve, 200));
       }
-    });
-    await Promise.all(uploadWorkers);
+    }
     const durationUploadSec = (Date.now() - startUpload) / 1000;
     const uploadSpeedMbps = durationUploadSec > 0 
       ? parseFloat(((uploadedBytes * 8) / (durationUploadSec * 1000000)).toFixed(2)) 
@@ -267,12 +243,11 @@ router.get('/monitor/speedtest', async (req, res) => {
   res.setHeader('Connection', 'keep-alive');
   res.setHeader('X-Accel-Buffering', 'no');
 
-  // Flush headers immediately
   if (typeof (res as any).flushHeaders === 'function') {
     (res as any).flushHeaders();
   }
 
-  // Send 2KB of comment padding to bypass Nginx/Cloudflare proxy buffering
+  // Send initial 2KB of space padding to bypass proxy buffering
   res.write(`:${' '.repeat(2048)}\n\n`);
 
   let isClientConnected = true;
@@ -296,118 +271,68 @@ router.get('/monitor/speedtest', async (req, res) => {
     const ping = Date.now() - startPing;
     
     sendSSE({ phase: 'ping', pingMs: ping });
-
     if (!isClientConnected) return res.end();
 
-    // 1. Download Test (Max 10 seconds total)
-    const downloadTimeout = 10000;
+    // 1. Download Test (Sequential, CPU friendly)
+    const downloadTimeout = 6000;
     const startDownload = Date.now();
     let downloadedBytes = 0;
-    
-    // Concurrent workers downloading 10MB chunks
-    const downloadConcurrency = 3;
-    const downloadWorkers = Array.from({ length: downloadConcurrency }, async () => {
-      while (isClientConnected && (Date.now() - startDownload < downloadTimeout)) {
-        try {
-          const downRes = await fetch('https://speed.cloudflare.com/__down?bytes=10000000');
-          if (!downRes.ok) {
-            await new Promise(resolve => setTimeout(resolve, 500));
-            continue;
-          }
-          if (downRes.body) {
-            const reader = downRes.body.getReader();
-            while (isClientConnected && (Date.now() - startDownload < downloadTimeout)) {
-              const { done, value } = await reader.read();
-              if (done) break;
-              if (value) {
-                downloadedBytes += value.length || value.byteLength || 0;
-              }
-            }
-            try { await reader.cancel(); } catch (_) {}
-          }
-        } catch (e) {
-          await new Promise(resolve => setTimeout(resolve, 500));
+    while (isClientConnected && (Date.now() - startDownload < downloadTimeout)) {
+      try {
+        const startChunk = Date.now();
+        const downRes = await fetch('https://speed.cloudflare.com/__down?bytes=3000000'); // 3MB chunks
+        if (!downRes.ok) {
+          await new Promise(resolve => setTimeout(resolve, 200));
+          continue;
         }
+        const buf = await downRes.arrayBuffer();
+        const chunkDuration = (Date.now() - startChunk) / 1000;
+        downloadedBytes += buf.byteLength;
+        
+        if (chunkDuration > 0) {
+          const currentSpeedMbps = parseFloat(((buf.byteLength * 8) / (chunkDuration * 1000000)).toFixed(2));
+          sendSSE({ phase: 'download', speedMbps: currentSpeedMbps });
+        }
+      } catch (e) {
+        await new Promise(resolve => setTimeout(resolve, 200));
       }
-    });
-
-    let lastDownloadedBytes = 0;
-    let lastDownloadTime = Date.now();
-    const downloadInterval = setInterval(() => {
-      const now = Date.now();
-      const durationSec = (now - lastDownloadTime) / 1000;
-      const diffBytes = downloadedBytes - lastDownloadedBytes;
-      const currentSpeedMbps = durationSec > 0 ? ((diffBytes * 8) / (durationSec * 1000000)) : 0;
-      
-      sendSSE({ phase: 'download', speedMbps: parseFloat(currentSpeedMbps.toFixed(2)) });
-      
-      lastDownloadedBytes = downloadedBytes;
-      lastDownloadTime = now;
-    }, 250);
-
-    await Promise.all(downloadWorkers);
-    clearInterval(downloadInterval);
-
+    }
     const durationDownloadSec = (Date.now() - startDownload) / 1000;
     const downloadSpeedMbps = durationDownloadSec > 0 
       ? parseFloat(((downloadedBytes * 8) / (durationDownloadSec * 1000000)).toFixed(2)) 
       : 0;
 
     sendSSE({ phase: 'download_complete', downloadSpeedMbps });
-
     if (!isClientConnected) return res.end();
+
+    // 2. Upload Test (Sequential, CPU friendly)
+    const uploadTimeout = 6000;
+    const startUpload = Date.now();
+    let uploadedBytes = 0;
+    const uploadPayload = new Uint8Array(1024 * 1024); // 1MB chunk
 
     sendSSE({ phase: 'upload_start' });
 
-    // 2. Upload Test (Max 10 seconds total)
-    const uploadTimeout = 10000;
-    const startUpload = Date.now();
-    let uploadedBytes = 0;
-    
-    // Use a pre-allocated static buffer of 2MB to upload cleanly without unstable custom ReadableStreams
-    const uploadChunkSize = 2 * 1024 * 1024;
-    const uploadPayload = new Uint8Array(uploadChunkSize);
+    while (isClientConnected && (Date.now() - startUpload < uploadTimeout)) {
+      try {
+        const startChunk = Date.now();
+        const upRes = await fetch('https://speed.cloudflare.com/__up', {
+          method: 'POST',
+          body: uploadPayload,
+          headers: { 'Content-Type': 'application/octet-stream' }
+        });
+        await upRes.text();
+        const chunkDuration = (Date.now() - startChunk) / 1000;
+        uploadedBytes += uploadPayload.length;
 
-    const uploadConcurrency = 3;
-    const uploadWorkers = Array.from({ length: uploadConcurrency }, async () => {
-      while (isClientConnected && (Date.now() - startUpload < uploadTimeout)) {
-        try {
-          const upRes = await fetch('https://speed.cloudflare.com/__up', {
-            method: 'POST',
-            body: uploadPayload,
-            headers: {
-              'Content-Type': 'application/octet-stream'
-            }
-          });
-          if (upRes.ok) {
-            uploadedBytes += uploadChunkSize;
-          } else {
-            await new Promise(resolve => setTimeout(resolve, 500));
-          }
-          await upRes.text(); // Consume stream
-        } catch (e) {
-          await new Promise(resolve => setTimeout(resolve, 500));
+        if (chunkDuration > 0) {
+          const currentSpeedMbps = parseFloat(((uploadPayload.length * 8) / (chunkDuration * 1000000)).toFixed(2));
+          sendSSE({ phase: 'upload', speedMbps: currentSpeedMbps });
         }
+      } catch (e) {
+        await new Promise(resolve => setTimeout(resolve, 200));
       }
-    });
-
-    let lastUploadedBytes = 0;
-    let lastUploadTime = Date.now();
-    const uploadInterval = setInterval(() => {
-      const now = Date.now();
-      const durationSec = (now - lastUploadTime) / 1000;
-      const diffBytes = uploadedBytes - lastUploadedBytes;
-      const currentSpeedMbps = durationSec > 0 ? ((diffBytes * 8) / (durationSec * 1000000)) : 0;
-      
-      sendSSE({ phase: 'upload', speedMbps: parseFloat(currentSpeedMbps.toFixed(2)) });
-      
-      lastUploadedBytes = uploadedBytes;
-      lastUploadTime = now;
-    }, 250);
-
-    await Promise.all(uploadWorkers);
-    clearInterval(uploadInterval);
-
+    }
     const durationUploadSec = (Date.now() - startUpload) / 1000;
     const uploadSpeedMbps = durationUploadSec > 0 
       ? parseFloat(((uploadedBytes * 8) / (durationUploadSec * 1000000)).toFixed(2)) 
