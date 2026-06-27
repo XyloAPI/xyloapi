@@ -175,6 +175,18 @@
   .monitor-table td:nth-child(5) {
     display: none !important;
   }
+
+  /* Optimalkan tabel agar pas sempurna di mobile dan tidak terpotong */
+  .monitor-table th, 
+  .monitor-table td {
+    padding: 10px 8px !important;
+    font-size: 11px !important;
+  }
+  
+  .monitor-table td:nth-child(3) {
+    word-break: break-all !important;
+    white-space: normal !important;
+  }
 }
 
 .monitor-card {
