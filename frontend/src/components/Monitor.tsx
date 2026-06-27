@@ -73,6 +73,8 @@ export default function Monitor() {
     let currentPhase: 'ping' | 'download' | 'upload' = 'ping';
     let animatedSpeed = 0;
     let targetSpeed = 0;
+    let peakDownloadSpeed = 0;
+    let peakUploadSpeed = 0;
 
     const animate = () => {
       const elapsed = Date.now() - startTime;
@@ -88,21 +90,31 @@ export default function Monitor() {
         if (currentPhase !== 'download') {
           currentPhase = 'download';
           setTestPhase('download');
+          // Preserve a simulated ping value immediately when transition happens, so it doesn't reset to '-'
+          setProgressPing(Math.floor(15 + Math.random() * 20));
           targetSpeed = 40 + Math.random() * 60; // start target ~40-100
         }
         // Slowly ramp target up and down to simulate real measurement
         if (Math.random() < 0.05) targetSpeed = 30 + Math.random() * 80;
         animatedSpeed += (targetSpeed - animatedSpeed) * 0.12;
+        if (animatedSpeed > peakDownloadSpeed) {
+          peakDownloadSpeed = animatedSpeed;
+        }
       } else {
         // Upload phase: 7s-13s
         if (currentPhase !== 'upload') {
           currentPhase = 'upload';
           setTestPhase('upload');
+          // Preserve simulated download speed so it doesn't reset to '-'
+          setProgressDownload(parseFloat(peakDownloadSpeed.toFixed(1)));
           targetSpeed = 20 + Math.random() * 50;
           animatedSpeed = 0;
         }
         if (Math.random() < 0.05) targetSpeed = 15 + Math.random() * 60;
         animatedSpeed += (targetSpeed - animatedSpeed) * 0.12;
+        if (animatedSpeed > peakUploadSpeed) {
+          peakUploadSpeed = animatedSpeed;
+        }
       }
 
       setDisplaySpeed(parseFloat(animatedSpeed.toFixed(1)));
@@ -237,7 +249,9 @@ export default function Monitor() {
     ? -135
     : testPhase === 'ping'
       ? -135 + Math.random() * 15
-      : -135 + (Math.min(currentDisplayVal, 1000) / 1000) * 270;
+      : testPhase === 'complete'
+        ? -135 + (Math.min(progressDownload || 0, 1000) / 1000) * 270
+        : -135 + (Math.min(currentDisplayVal, 1000) / 1000) * 270;
 
   const transitionDuration = (testPhase === 'idle' || testPhase === 'complete') ? '0.6s' : '0.1s';
 
@@ -562,23 +576,24 @@ export default function Monitor() {
                 <span style={{
                   fontSize: '11px',
                   fontFamily: 'var(--font-mono)',
-                  color: 'var(--ash)',
+                  color: testPhase === 'complete' ? '#27C93F' : 'var(--ash)',
                   textTransform: 'uppercase',
                   letterSpacing: '2px',
-                  display: 'block'
+                  display: 'block',
+                  fontWeight: testPhase === 'complete' ? 'bold' : 'normal'
                 }}>
-                  {testPhase === 'complete' ? 'download' : testPhase}
+                  {testPhase === 'complete' ? 'COMPLETE' : testPhase}
                 </span>
                 <span style={{
                   fontSize: '48px',
                   fontWeight: 900,
-                  color: testPhase === 'complete' ? 'var(--cyan-pulse)' : 'var(--white)',
+                  color: testPhase === 'complete' ? '#27C93F' : 'var(--white)',
                   fontFamily: 'var(--font-mono)',
                   lineHeight: '1',
                   display: 'block',
                   margin: '6px 0'
                 }}>
-                  {Math.round(currentDisplayVal)}
+                  {testPhase === 'complete' ? Math.round(progressDownload || 0) : Math.round(currentDisplayVal)}
                 </span>
                 <span style={{
                   fontSize: '11px',
