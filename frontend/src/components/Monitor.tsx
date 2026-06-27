@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Activity, Clock, CheckCircle2, XCircle, ArrowUpRight, BarChart3, RefreshCw, Database, Layers, Wifi } from 'lucide-react';
 import './Monitor.css';
+import { docTopics } from './Docs/topicsData';
+
 
 interface RequestLog {
   id: number;
@@ -235,8 +237,8 @@ export default function Monitor() {
             <span>TOTAL ENDPOINTS</span>
             <Layers size={16} style={{ color: 'var(--gold)' }} />
           </div>
-          <span className="stat-card-value">{(stats.totalEndpoints || 72).toLocaleString()}</span>
-          <span className="stat-card-label">Total active route groupings</span>
+          <span className="stat-card-value">{docTopics.length.toLocaleString()}</span>
+          <span className="stat-card-label">Total active playground endpoints</span>
         </div>
         <div className="monitor-stat-card">
           <div className="stat-card-header">

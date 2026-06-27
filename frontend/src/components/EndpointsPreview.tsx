@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import './EndpointsPreview.css';
+import { docTopics } from './Docs/topicsData';
+
 
 interface EndpointModule {
   id: string;
@@ -132,7 +134,7 @@ export default function EndpointsPreview() {
           <span className="endpoints-pretitle">SCOPING MODULES</span>
           <h2 className="endpoints-title">UNIFIED ENDPOINT DIRECTORY</h2>
           <p className="endpoints-desc">
-            XyloAPI registers over 160 active scraping handlers. Toggle the endpoints below to inspect direct request payloads and standardized JSON schemas.
+            XyloAPI registers over {docTopics.length} active playground endpoints. Toggle the endpoints below to inspect direct request payloads and standardized JSON schemas.
           </p>
         </div>
 
