@@ -84,7 +84,8 @@ export default function CustomVideoPlayer({ src, poster }: CustomVideoPlayerProp
         display: 'flex',
         flexDirection: 'column',
         userSelect: 'none',
-        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)'
+        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)',
+        boxSizing: 'border-box'
       }}
     >
       <style>{`

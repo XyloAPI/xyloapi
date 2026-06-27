@@ -55,8 +55,8 @@ export default function DownloaderLayout({ resData, copyToClipboard }: Downloade
           <CustomVideoPlayer src={videoSource} poster={resData.cover} />
         ) : (
           resData.cover && (
-            <div style={{ border: '1px solid var(--border-color)', padding: '8px', backgroundColor: 'var(--black)' }}>
-              <img src={resData.cover} referrerPolicy="no-referrer" alt="Video Thumbnail" style={{ maxWidth: '240px', maxHeight: '240px', display: 'block', objectFit: 'contain' }} />
+            <div style={{ maxWidth: '100%', boxSizing: 'border-box', border: '1px solid var(--border-color)', padding: '8px', backgroundColor: 'var(--black)' }}>
+              <img src={resData.cover} referrerPolicy="no-referrer" alt="Video Thumbnail" style={{ maxWidth: '100%', width: '240px', maxHeight: '240px', display: 'block', objectFit: 'contain' }} />
             </div>
           )
         )}

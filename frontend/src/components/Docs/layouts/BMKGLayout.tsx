@@ -35,16 +35,16 @@ export default function BMKGLayout({ activeTopic, resData }: BMKGLayoutProps) {
         <div className="response-card" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px', backgroundColor: 'rgba(255, 255, 255, 0.01)' }}>
           <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'start' }}>
             {resData.gempa.shakemap && (
-              <div style={{ flexShrink: 0, border: '1px solid var(--border-color)', padding: '6px', backgroundColor: 'var(--black)' }}>
+              <div style={{ maxWidth: '100%', width: '280px', boxSizing: 'border-box', border: '1px solid var(--border-color)', padding: '6px', backgroundColor: 'var(--black)' }}>
                 <img
                   src={resData.gempa.shakemap}
                   alt="BMKG Shakemap"
-                  style={{ maxWidth: '280px', width: '100%', height: 'auto', display: 'block', objectFit: 'contain' }}
+                  style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'contain' }}
                 />
               </div>
             )}
             
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '12px', minWidth: '240px' }}>
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '12px', minWidth: '0' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <div 
                   className="magnitude-badge-large"

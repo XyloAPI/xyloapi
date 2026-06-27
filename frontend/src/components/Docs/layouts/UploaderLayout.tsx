@@ -19,11 +19,11 @@ export default function UploaderLayout({ activeTopic, resData, copyToClipboard }
       </div>
 
       <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', alignItems: 'start' }}>
-        <div style={{ border: '1px solid var(--border-color)', padding: '8px', backgroundColor: 'var(--black)' }}>
+        <div style={{ maxWidth: '100%', boxSizing: 'border-box', border: '1px solid var(--border-color)', padding: '8px', backgroundColor: 'var(--black)' }}>
           {isImage ? (
-            <img src={resData.link} alt="Uploaded Asset" style={{ maxWidth: '240px', maxHeight: '240px', display: 'block', objectFit: 'contain' }} />
+            <img src={resData.link} alt="Uploaded Asset" style={{ maxWidth: '100%', width: '240px', maxHeight: '240px', display: 'block', objectFit: 'contain' }} />
           ) : (
-            <div style={{ width: '240px', height: '240px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'var(--ash)', fontFamily: 'var(--font-mono)', fontSize: '11px', gap: '12px' }}>
+            <div style={{ maxWidth: '100%', width: '240px', height: '240px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'var(--ash)', fontFamily: 'var(--font-mono)', fontSize: '11px', gap: '12px', boxSizing: 'border-box' }}>
               <Upload size={40} style={{ color: 'var(--gold)' }} />
               <span>NON-IMAGE FILE HOSTED</span>
             </div>

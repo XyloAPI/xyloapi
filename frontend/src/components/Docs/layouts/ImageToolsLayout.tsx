@@ -47,7 +47,7 @@ export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard
             {/* Origin Card */}
             <div style={{
               flex: 1,
-              minWidth: '280px',
+              minWidth: '0',
               border: '1px solid var(--border-color)',
               backgroundColor: '#111',
               padding: '16px',
@@ -64,7 +64,7 @@ export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard
             {/* Destination Card */}
             <div style={{
               flex: 1,
-              minWidth: '280px',
+              minWidth: '0',
               border: '1px solid var(--border-color)',
               backgroundColor: '#111',
               padding: '16px',
@@ -262,7 +262,7 @@ export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard
             {/* Source Panel */}
             <div style={{
               flex: 1,
-              minWidth: '280px',
+              minWidth: '0',
               border: '1px solid var(--border-color)',
               backgroundColor: '#111',
               padding: '16px',
@@ -302,7 +302,7 @@ export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard
             {/* Transliterated Panel */}
             <div style={{
               flex: 1,
-              minWidth: '280px',
+              minWidth: '0',
               border: '1px solid var(--border-color)',
               backgroundColor: '#111',
               padding: '16px',
@@ -380,7 +380,7 @@ export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard
             {/* Source Panel */}
             <div style={{
               flex: 1,
-              minWidth: '280px',
+              minWidth: '0',
               border: '1px solid var(--border-color)',
               backgroundColor: '#111',
               padding: '16px',
@@ -420,7 +420,7 @@ export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard
             {/* Translated Panel */}
             <div style={{
               flex: 1,
-              minWidth: '280px',
+              minWidth: '0',
               border: '1px solid var(--border-color)',
               backgroundColor: '#111',
               padding: '16px',
@@ -681,7 +681,7 @@ export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard
           </div>
 
           {/* Slices list with links */}
-          <div className="response-list" style={{ flex: 1, minWidth: '280px' }}>
+          <div className="response-list" style={{ flex: 1, minWidth: '0' }}>
             <span className="response-label">
               DOWNLOAD INDIVIDUAL PARTS
             </span>
