@@ -226,7 +226,6 @@ export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard
 
   const isAksaraJawa = activeTopic.id === 'aksara-jawa' || activeTopic.id === 'aksarajawa';
   if (isAksaraJawa && resData) {
-    const sourceText = resData.text || '';
     const convertedText = resData.result || '';
     const directionLabel = resData.direction === 'jawa2latin' ? 'Aksara Jawa ➔ Latin' : 'Latin ➔ Aksara Jawa';
     const isJawaOutput = resData.direction !== 'jawa2latin';
@@ -259,46 +258,6 @@ export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard
           </div>
 
           <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-            {/* Source Panel */}
-            <div style={{
-              flex: 1,
-              minWidth: '0',
-              border: '1px solid var(--border-color)',
-              backgroundColor: '#111',
-              padding: '16px',
-              borderRadius: '4px'
-            }}>
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                borderBottom: '1px solid var(--border-color)',
-                paddingBottom: '8px',
-                marginBottom: '12px'
-              }}>
-                <span className="response-label" style={{ margin: 0 }}>ORIGINAL TEXT</span>
-                <button 
-                  onClick={() => copyToClipboard(sourceText)} 
-                  className="btn btn-ghost" 
-                  style={{ padding: '4px 12px', fontSize: '10px', height: 'auto', minHeight: 'unset' }}
-                >
-                  COPY
-                </button>
-              </div>
-              <div style={{
-                fontFamily: isJawaOutput ? 'var(--font-display)' : 'var(--font-mono)',
-                fontSize: isJawaOutput ? '14px' : '18px',
-                color: 'var(--ash)',
-                lineHeight: '1.6',
-                minHeight: '80px',
-                maxHeight: '200px',
-                overflowY: 'auto',
-                whiteSpace: 'pre-wrap'
-              }}>
-                {sourceText}
-              </div>
-            </div>
-
             {/* Transliterated Panel */}
             <div style={{
               flex: 1,
