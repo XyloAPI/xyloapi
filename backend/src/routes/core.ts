@@ -169,10 +169,14 @@ router.get('/image-proxy', async (req, res) => {
 });
 
 router.post('/monitor/speedtest', async (req, res) => {
+  const userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
   try {
     const startPing = Date.now();
     try {
-      const pingRes = await fetch('https://speed.cloudflare.com/__down?bytes=0', { method: 'GET' });
+      const pingRes = await fetch('https://speed.cloudflare.com/__down?bytes=0', { 
+        method: 'GET',
+        headers: { 'User-Agent': userAgent }
+      });
       await pingRes.text();
     } catch (e) {}
     const ping = Date.now() - startPing;
@@ -183,7 +187,9 @@ router.post('/monitor/speedtest', async (req, res) => {
     let downloadedBytes = 0;
     while (Date.now() - startDownload < downloadTimeout) {
       try {
-        const downRes = await fetch('https://speed.cloudflare.com/__down?bytes=3000000');
+        const downRes = await fetch('https://speed.cloudflare.com/__down?bytes=3000000', {
+          headers: { 'User-Agent': userAgent }
+        });
         if (!downRes.ok) {
           await new Promise(resolve => setTimeout(resolve, 200));
           continue;
@@ -209,7 +215,10 @@ router.post('/monitor/speedtest', async (req, res) => {
         const upRes = await fetch('https://speed.cloudflare.com/__up', {
           method: 'POST',
           body: uploadPayload,
-          headers: { 'Content-Type': 'application/octet-stream' }
+          headers: { 
+            'Content-Type': 'application/octet-stream',
+            'User-Agent': userAgent
+          }
         });
         await upRes.text();
         uploadedBytes += uploadPayload.length;
