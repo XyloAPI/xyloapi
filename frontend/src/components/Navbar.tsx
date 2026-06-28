@@ -23,8 +23,8 @@ export default function Navbar({ currentView, onViewChange, theme, onToggleTheme
           className="flex items-center gap-2 no-underline text-white"
           onClick={() => setMenuOpen(false)}
         >
-          <Icon icon="lucide:terminal" width="20" height="20" className="text-gold" />
-          <span className="font-display text-xl font-black tracking-[0.2em] uppercase">XYLO<span className="text-gold">API</span></span>
+          <Icon icon="tabler:alien" width="22" height="22" className="text-gold" />
+          <span className="font-brand text-xl font-black tracking-[0.05em] uppercase">XYLO<span className="text-gold">API</span></span>
         </Link>
 
         {/* Center menu links (Desktop & Mobile Drawer) */}

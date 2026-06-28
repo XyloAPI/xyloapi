@@ -8,8 +8,8 @@ export default function Footer() {
         {/* Brand */}
         <div className="max-w-[400px] md:max-w-full mx-auto flex flex-col gap-4 items-center text-center">
           <a href="/" className="flex items-center gap-2 text-white no-underline justify-center">
-            <Icon icon="lucide:terminal" width="18" height="18" className="text-gold" />
-            <span className="font-display text-lg font-black tracking-[0.2em] uppercase">XYLO<span className="text-gold">API</span></span>
+            <Icon icon="tabler:alien" width="20" height="20" className="text-gold" />
+            <span className="font-brand text-lg font-black tracking-[0.05em] uppercase">XYLO<span className="text-gold">API</span></span>
           </a>
           <p className="text-[13.5px] leading-relaxed">
             Platform scraping web yang dirancang untuk developer. Cepat, andal, dan siap menangani kebutuhan mulai dari proyek kecil hingga skala besar.
