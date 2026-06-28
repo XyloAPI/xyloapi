@@ -262,7 +262,7 @@ export default function Monitor() {
                     </TableCell>
                   </TableRow>
                 ) : (
-                  lastRequests.map((req) => (
+                  lastRequests.map((req: any) => (
                     <TableRow key={req.id}>
                       <TableCell className="hidden sm:table-cell font-mono text-[11px] text-ash">
                         {formatTime(req.created_at)}
@@ -303,7 +303,7 @@ export default function Monitor() {
                 TIDAK ADA DATA
               </div>
             ) : (
-              topEndpoints.map((ep, idx) => (
+              topEndpoints.map((ep: any, idx: number) => (
                 <div key={ep.path} className="flex items-center p-4 border border-[#1f1f1f] bg-white/[0.01] hover:bg-white/[0.02] transition-all duration-200">
                   <div className="w-7 h-7 border border-[#2B2B2B] bg-black flex items-center justify-center font-mono text-xs font-bold text-gold mr-4">
                     <span>{idx + 1}</span>

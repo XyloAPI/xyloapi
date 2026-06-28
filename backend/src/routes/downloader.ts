@@ -7,6 +7,12 @@ import { URL } from 'url';
 
 const router = Router();
 
+const BLOCKED_EXTENSIONS = [
+  '.exe', '.msi', '.bat', '.cmd', '.scr', '.iso', '.vbs', '.js', '.wsf', 
+  '.com', '.pif', '.gadget', '.cpl', '.hta', '.msc', 
+  '.zip', '.rar', '.7z', '.tar', '.gz'
+];
+
 router.all('/downloader/:slug', async (req, res) => {
   const { slug } = req.params;
   const payload = {
@@ -119,6 +125,14 @@ router.all('/downloader/:slug', async (req, res) => {
 
 router.get('/downloads/:fileId/:filename', async (req, res) => {
   const { fileId, filename } = req.params;
+  const ext = path.extname(filename).toLowerCase();
+  if (BLOCKED_EXTENSIONS.includes(ext)) {
+    return res.status(403).json({
+      success: false,
+      creator: "XyloAPI",
+      error: "Downloading executable or archive files is disabled for security reasons."
+    });
+  }
   const filePath = path.join(__dirname, '..', '..', 'downloads', fileId, filename);
   const dirPath = path.join(__dirname, '..', '..', 'downloads', fileId);
 
@@ -143,6 +157,14 @@ router.get('/downloads/:fileId/:filename', async (req, res) => {
 
 router.get('/downloads/mega/:urlBase64/:filename', async (req, res) => {
   const { urlBase64, filename } = req.params;
+  const ext = path.extname(filename).toLowerCase();
+  if (BLOCKED_EXTENSIONS.includes(ext)) {
+    return res.status(403).json({
+      success: false,
+      creator: "XyloAPI",
+      error: "Downloading executable or archive files is disabled for security reasons."
+    });
+  }
   try {
     const url = Buffer.from(urlBase64, 'base64url').toString('utf8');
     const file = MegaFile.fromURL(url);

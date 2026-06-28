@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /api/
+Disallow: /api/downloads/
+Disallow: /api/downloader/
+Disallow: /docs
+Disallow: /monitor

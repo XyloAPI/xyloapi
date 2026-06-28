@@ -664,7 +664,7 @@ export default function Docs() {
                             ) : param.type === 'select' ? (
                               <Select
                                 value={String(val)}
-                                onValueChange={(v) => setFormValues(prev => ({ ...prev, [param.name]: v }))}
+                                onValueChange={(v: string) => setFormValues(prev => ({ ...prev, [param.name]: v }))}
                               >
                                 <SelectTrigger>
                                   <SelectValue placeholder="Select option..." />
@@ -683,7 +683,7 @@ export default function Docs() {
                             ) : param.type === 'boolean' ? (
                               <Select
                                 value={String(val ?? 'false')}
-                                onValueChange={(v) => setFormValues(prev => ({ ...prev, [param.name]: v === 'true' }))}
+                                onValueChange={(v: string) => setFormValues(prev => ({ ...prev, [param.name]: v === 'true' }))}
                               >
                                 <SelectTrigger>
                                   <SelectValue />
@@ -719,7 +719,7 @@ export default function Docs() {
               <div className="docs-section" style={{ marginTop: '0' }}>
                 <h3 className="section-title" style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 10px 0', borderBottom: '1px dashed var(--border-color)', paddingBottom: '6px' }}>Response</h3>
                 <div className="sandbox-panel" style={{ marginTop: '0px' }}>
-                  <Tabs value={responseTab} onValueChange={(v) => setResponseTab(v as 'visual' | 'json')}>
+                  <Tabs value={responseTab} onValueChange={(v: string) => setResponseTab(v as 'visual' | 'json')}>
                     <div className="sandbox-panel-header" style={{ padding: '0px' }}>
                       <TabsList className="border-b-0 w-auto">
                         <TabsTrigger value="visual">PREVIEW</TabsTrigger>
