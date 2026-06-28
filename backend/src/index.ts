@@ -1,5 +1,7 @@
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
+import { rateLimit } from 'express-rate-limit';
 import dotenv from 'dotenv';
 import path from 'path';
 
@@ -79,7 +81,23 @@ function killPortOwner(port: number) {
 
 
 const app = express();
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
 app.set('trust proxy', true); // trust X-Forwarded-For from Cloudflare/nginx
+
+const apiLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  limit: 100, // Limit each IP to 100 requests per minute
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: 'Too many requests from this IP. Please try again after 1 minute.'
+  }
+});
+app.use('/api/', apiLimiter);
+
 const PORT = process.env.PORT || 5000;
 
 app.use(cors({

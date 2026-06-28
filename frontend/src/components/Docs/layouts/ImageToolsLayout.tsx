@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { DocTopic } from '../types';
 
 interface ImageToolsLayoutProps {
@@ -7,6 +8,7 @@ interface ImageToolsLayoutProps {
 }
 
 export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard }: ImageToolsLayoutProps) {
+  const [imageLoaded, setImageLoaded] = useState(false);
   const isHitungJarak = activeTopic.id === 'hitung-jarak' || activeTopic.id === 'hitungjarak';
   if (isHitungJarak && resData) {
     const dariNama = resData.dari?.nama || '';
@@ -682,9 +684,50 @@ export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard
             backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px',
             width: '100%',
             maxWidth: '320px',
-            boxSizing: 'border-box'
+            boxSizing: 'border-box',
+            position: 'relative',
+            minHeight: '200px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
           }}>
-            <img src={imageUrl} referrerPolicy="no-referrer" alt={previewAlt} style={{ width: '100%', maxWidth: '320px', maxHeight: '320px', display: 'block', objectFit: 'contain' }} />
+            {!imageLoaded && (
+              <div 
+                className="animate-pulse bg-[#151515]"
+                style={{
+                  position: 'absolute',
+                  top: '8px',
+                  left: '8px',
+                  right: '8px',
+                  bottom: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'var(--ash)',
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '10px',
+                  letterSpacing: '1.5px',
+                  border: '1px dashed var(--border-color)'
+                }}
+              >
+                LOADING PREVIEW...
+              </div>
+            )}
+            <img 
+              src={imageUrl} 
+              referrerPolicy="no-referrer" 
+              alt={previewAlt} 
+              onLoad={() => setImageLoaded(true)}
+              style={{ 
+                width: '100%', 
+                maxWidth: '320px', 
+                maxHeight: '320px', 
+                display: 'block', 
+                objectFit: 'contain',
+                opacity: imageLoaded ? 1 : 0,
+                transition: 'opacity 0.3s ease-in-out'
+              }} 
+            />
           </div>
         )}
 

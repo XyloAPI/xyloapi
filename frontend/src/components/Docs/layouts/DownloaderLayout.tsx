@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import CustomVideoPlayer from '../CustomVideoPlayer';
 
 interface DownloaderLayoutProps {
@@ -6,6 +7,7 @@ interface DownloaderLayoutProps {
 }
 
 export default function DownloaderLayout({ resData, copyToClipboard }: DownloaderLayoutProps) {
+  const [imageLoaded, setImageLoaded] = useState(false);
   // Helper function to check if a link is a video
   const isVideoLink = (link: any) => {
     if (!link || !link.url) return false;
@@ -54,8 +56,44 @@ export default function DownloaderLayout({ resData, copyToClipboard }: Downloade
           <CustomVideoPlayer src={videoSource} poster={resData.cover} />
         ) : (
           resData.cover && (
-            <div style={{ maxWidth: '100%', boxSizing: 'border-box', border: '1px solid var(--border-color)', padding: '8px', backgroundColor: 'var(--black)' }}>
-              <img src={resData.cover} referrerPolicy="no-referrer" alt="Video Thumbnail" style={{ maxWidth: '100%', width: '240px', maxHeight: '240px', display: 'block', objectFit: 'contain' }} />
+            <div style={{ maxWidth: '100%', boxSizing: 'border-box', border: '1px solid var(--border-color)', padding: '8px', backgroundColor: 'var(--black)', position: 'relative', width: '256px', height: '256px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              {!imageLoaded && (
+                <div 
+                  className="animate-pulse bg-[#151515]"
+                  style={{
+                    position: 'absolute',
+                    top: '8px',
+                    left: '8px',
+                    right: '8px',
+                    bottom: '8px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'var(--ash)',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '10px',
+                    letterSpacing: '1.5px',
+                    border: '1px dashed var(--border-color)'
+                  }}
+                >
+                  LOADING THUMBNAIL...
+                </div>
+              )}
+              <img 
+                src={resData.cover} 
+                referrerPolicy="no-referrer" 
+                alt="Video Thumbnail" 
+                onLoad={() => setImageLoaded(true)}
+                style={{ 
+                  maxWidth: '100%', 
+                  width: '240px', 
+                  maxHeight: '240px', 
+                  display: 'block', 
+                  objectFit: 'contain',
+                  opacity: imageLoaded ? 1 : 0,
+                  transition: 'opacity 0.3s ease-in-out'
+                }} 
+              />
             </div>
           )
         )}

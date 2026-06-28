@@ -1,7 +1,22 @@
 import { useState, useEffect } from 'react';
-import './Docs.css';
-import { RefreshCw, Send, Check, Upload, Search } from 'lucide-react';
-import CustomDropdown from './Docs/CustomDropdown';
+import { Icon } from '@iconify/react';
+import { toast } from 'sonner';
+import TadpoleIcon from '@iconify-react/svg-spinners/tadpole';
+import { motion, AnimatePresence } from 'motion/react';
+import { ErrorBoundary } from 'react-error-boundary';
+import { JsonView, allExpanded } from 'react-json-view-lite';
+import 'react-json-view-lite/dist/index.css';
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
+
+NProgress.configure({ showSpinner: false });
+
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { Input } from './ui/input';
+import { Textarea } from './ui/textarea';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
 import type { DocTopic } from './Docs/types';
 import { docTopics } from './Docs/topicsData';
 
@@ -17,8 +32,86 @@ import InformationsLayout from './Docs/layouts/InformationsLayout';
 import PrimbonLayout from './Docs/layouts/PrimbonLayout';
 import SearchLayout from './Docs/layouts/SearchLayout';
 
+const xyloStyles = {
+  container: 'xylo-json-container',
+  basicChildStyle: 'xylo-json-child',
+  label: 'xylo-json-label',
+  nullValue: 'xylo-json-null',
+  undefinedValue: 'xylo-json-undefined',
+  stringValue: 'xylo-json-string',
+  booleanValue: 'xylo-json-boolean',
+  numberValue: 'xylo-json-number',
+  otherValue: 'xylo-json-other',
+  punctuation: 'xylo-json-punctuation',
+  expandIcon: 'xylo-json-expand',
+  collapseIcon: 'xylo-json-collapse',
+  list: 'xylo-json-list',
+  clickableLabel: 'xylo-json-clickable-label'
+};
+
+function PlaygroundErrorFallback({ error, resetErrorBoundary }: any) {
+  return (
+    <div style={{ 
+      padding: '24px', 
+      border: '1px solid #FF3B30', 
+      backgroundColor: 'rgba(255, 59, 48, 0.03)', 
+      fontFamily: 'var(--font-mono)', 
+      fontSize: '11px',
+      color: '#FF8888',
+      textAlign: 'left'
+    }}>
+      <h4 style={{ margin: '0 0 8px 0', textTransform: 'uppercase', color: '#FF4A4A', letterSpacing: '0.05em' }}>
+        Playground Render Error
+      </h4>
+      <p style={{ margin: '0 0 16px 0', color: 'var(--ash)', lineHeight: 1.5 }}>
+        Failed to render the response data. The API payload structure might have changed.
+      </p>
+      <pre style={{ 
+        backgroundColor: 'var(--black)', 
+        border: '1px solid var(--border-color)', 
+        padding: '12px', 
+        overflowX: 'auto',
+        color: 'var(--smoke)',
+        margin: '0 0 16px 0'
+      }}>
+        <code>{error.message}</code>
+      </pre>
+      <Button 
+        onClick={resetErrorBoundary} 
+        variant="destructive" 
+        size="sm"
+      >
+        Reset Playground
+      </Button>
+    </div>
+  );
+}
+
 export default function Docs() {
-  const [activeTopic, setActiveTopic] = useState<DocTopic | null>(null);
+  const [activeTopic, setActiveTopic] = useState<DocTopic | null>(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const apiId = searchParams.get('api');
+    if (apiId) {
+      const found = docTopics.find(t => t.id === apiId);
+      if (found) return found;
+    }
+    return null;
+  });
+
+  // Sync activeTopic with URL query param for deep-linking support
+  useEffect(() => {
+    const pathPart = window.location.pathname;
+    if (activeTopic) {
+      const newSearch = `?api=${activeTopic.id}`;
+      if (window.location.search !== newSearch) {
+        window.history.replaceState(null, '', `${pathPart}${newSearch}`);
+      }
+    } else {
+      if (window.location.search.includes('?api=')) {
+        window.history.replaceState(null, '', pathPart);
+      }
+    }
+  }, [activeTopic]);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [formValues, setFormValues] = useState<{ [key: string]: any }>({});
@@ -30,7 +123,7 @@ export default function Docs() {
   const [uploadMode, setUploadMode] = useState<'file' | 'url'>('file');
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [copiedText, setCopiedText] = useState<string>('');
-  const [focusedField, setFocusedField] = useState<string | null>(null);
+
 
 
   // Populate dynamic form variables on topic selection
@@ -56,6 +149,7 @@ export default function Docs() {
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+    toast.success('Copied to clipboard!');
   };
 
   // Construct JSON request payload programmatically from formState values
@@ -176,6 +270,7 @@ export default function Docs() {
   };
 
   const handleSendRequest = async () => {
+    NProgress.start();
     setLoading(true);
     setResponseJson(null);
 
@@ -199,6 +294,11 @@ export default function Docs() {
       if (res.ok) {
         const json = await res.json();
         setResponseJson(json);
+        if (json.success) {
+          toast.success('Request executed successfully!');
+        } else {
+          toast.error(json.message || 'Request returned an error.');
+        }
       } else {
         const errText = await res.text().catch(() => 'No response body');
         let parsedError = 'Request execution failed.';
@@ -212,14 +312,18 @@ export default function Docs() {
           success: false,
           message: parsedError
         });
+        toast.error(parsedError);
       }
     } catch (err) {
+      const errMsg = err instanceof Error ? err.message : 'Request execution failed.';
       setResponseJson({
         success: false,
-        message: err instanceof Error ? err.message : 'Request execution failed.'
+        message: errMsg
       });
+      toast.error(errMsg);
     } finally {
       setLoading(false);
+      NProgress.done();
     }
   };
 
@@ -424,7 +528,12 @@ export default function Docs() {
                   </code>
                 </div>
                 <button
-                  onClick={() => { navigator.clipboard.writeText(getCurlCode()); setCopiedText('curl'); setTimeout(() => setCopiedText(''), 2000); }}
+                  onClick={() => { 
+                    navigator.clipboard.writeText(getCurlCode()); 
+                    setCopiedText('curl'); 
+                    setTimeout(() => setCopiedText(''), 2000);
+                    toast.success('cURL code copied!');
+                  }}
                   className="docs-playground-url-btn"
                   style={{ padding: '6px 10px', backgroundColor: 'var(--dark-iron)', color: 'var(--white)', border: '1px solid var(--border-color)', fontSize: '9px', fontFamily: 'var(--font-mono)', cursor: 'pointer', borderRadius: '0px', transition: 'border-color 0.2s', flexShrink: 0 }}
                   onMouseOver={(e) => e.currentTarget.style.borderColor = 'var(--gold)'}
@@ -463,14 +572,14 @@ export default function Docs() {
                                     <label htmlFor="docs-file-input" onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }} onDragLeave={() => setIsDragging(false)} onDrop={(e) => { e.preventDefault(); setIsDragging(false); const file = e.dataTransfer.files?.[0]; if (file && (topic.category === 'File Uploaders' || file.type.startsWith('image/'))) { const reader = new FileReader(); reader.onloadend = () => { setFormValues(prev => ({ ...prev, [param.name]: reader.result })); }; reader.readAsDataURL(file); } }} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', border: isDragging ? '1px dashed var(--gold)' : '1px dashed var(--border-color)', padding: '20px 10px', minHeight: '120px', cursor: 'pointer', backgroundColor: isDragging ? 'rgba(255,192,0,0.03)' : 'var(--black)', color: 'var(--ash)', fontFamily: 'var(--font-mono)', fontSize: '10px', textAlign: 'center', transition: 'all 0.2s', width: '100%', boxSizing: 'border-box' }} onMouseOver={(e) => e.currentTarget.style.borderColor = 'var(--gold)'} onMouseOut={(e) => e.currentTarget.style.borderColor = isDragging ? 'var(--gold)' : 'var(--border-color)'}>
                                       {val && String(val).startsWith('data:') ? (
                                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-                                          <span style={{ color: 'var(--gold)', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '10px' }}><Check size={12} strokeWidth={3} /> READY</span>
+                                          <span style={{ color: 'var(--gold)', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '10px' }}><Icon icon="lucide:check" width="12" height="12" style={{ strokeWidth: 3 }} /> READY</span>
                                           <div style={{ border: '1px solid var(--border-color)', padding: '4px', backgroundColor: 'var(--black)' }}>
-                                            {String(val).startsWith('data:image/') ? (<img src={String(val)} alt="Upload preview" style={{ maxWidth: '80px', maxHeight: '80px', display: 'block', objectFit: 'contain' }} />) : (<div style={{ padding: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center', color: 'var(--ash)', fontFamily: 'var(--font-mono)', fontSize: '9px', gap: '4px' }}><Upload size={16} style={{ color: 'var(--gold)' }} /><span>FILE READY</span></div>)}
+                                            {String(val).startsWith('data:image/') ? (<img src={String(val)} alt="Upload preview" style={{ maxWidth: '80px', maxHeight: '80px', display: 'block', objectFit: 'contain' }} />) : (<div style={{ padding: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center', color: 'var(--ash)', fontFamily: 'var(--font-mono)', fontSize: '9px', gap: '4px' }}><Icon icon="lucide:upload" width="16" height="16" style={{ color: 'var(--gold)' }} /><span>FILE READY</span></div>)}
                                           </div>
                                         </div>
                                       ) : (
                                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-                                          <Upload size={16} style={{ color: 'var(--ash)' }} />
+                                          <Icon icon="lucide:upload" width="16" height="16" style={{ color: 'var(--ash)' }} />
                                           <span style={{ fontWeight: 700 }}>CLICK OR DRAG FILE HERE</span>
                                         </div>
                                       )}
@@ -478,12 +587,22 @@ export default function Docs() {
                                   </>
                                 ) : (
                                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                    <input type="text" placeholder="Enter file URL..." value={val && !String(val).startsWith('data:') ? String(val) : ''} onChange={(e) => setFormValues(prev => ({ ...prev, [isUploaderUrl ? 'url' : param.name]: e.target.value }))} className="docs-input" style={{ width: '100%', padding: '10px', backgroundColor: 'var(--black)', color: 'var(--white)', border: focusedField === param.name ? '1px solid var(--gold)' : '1px solid #2B2B2B', borderRadius: '0px', outline: 'none', fontFamily: 'var(--font-mono)', fontSize: '11px', transition: 'border-color 0.2s', boxSizing: 'border-box' }} onFocus={() => setFocusedField(param.name)} onBlur={() => setFocusedField(null)} />
+                                    <Input
+                                      type="text"
+                                      placeholder="Enter file URL..."
+                                      value={val && !String(val).startsWith('data:') ? String(val) : ''}
+                                      onChange={(e) => setFormValues(prev => ({ ...prev, [isUploaderUrl ? 'url' : param.name]: e.target.value }))}
+                                    />
                                   </div>
                                 )}
                               </div>
                             ) : param.type === 'number' ? (
-                              <input type="number" placeholder={`Enter ${param.name}...`} value={val} onChange={(e) => setFormValues(prev => ({ ...prev, [param.name]: Number(e.target.value) }))} className="docs-input" style={{ width: '100%', padding: '10px', backgroundColor: 'var(--black)', color: 'var(--white)', border: focusedField === param.name ? '1px solid var(--gold)' : '1px solid #2B2B2B', borderRadius: '0px', outline: 'none', fontFamily: 'var(--font-mono)', fontSize: '11px', transition: 'border-color 0.2s', boxSizing: 'border-box' }} onFocus={() => setFocusedField(param.name)} onBlur={() => setFocusedField(null)} />
+                              <Input
+                                type="number"
+                                placeholder={`Enter ${param.name}...`}
+                                value={val}
+                                onChange={(e) => setFormValues(prev => ({ ...prev, [param.name]: Number(e.target.value) }))}
+                              />
                             ) : param.type === 'color' ? (
                               <div style={{ display: 'flex', gap: '8px', alignItems: 'center', width: '100%' }}>
                                 <div style={{ 
@@ -524,62 +643,58 @@ export default function Docs() {
                                     }} 
                                   />
                                 </div>
-                                <input 
+                                <Input 
                                   type="text" 
                                   placeholder="Hex/RGB color code..." 
                                   value={val} 
                                   onChange={(e) => setFormValues(prev => ({ ...prev, [param.name]: e.target.value }))} 
-                                  className="docs-input" 
-                                  style={{ 
-                                    flexGrow: 1, 
-                                    padding: '10px', 
-                                    backgroundColor: 'var(--black)', 
-                                    color: 'var(--white)', 
-                                    border: focusedField === param.name ? '1px solid var(--gold)' : '1px solid #2B2B2B', 
-                                    borderRadius: '0px', 
-                                    outline: 'none', 
-                                    fontFamily: 'var(--font-mono)', 
-                                    fontSize: '11px', 
-                                    transition: 'border-color 0.2s', 
-                                    boxSizing: 'border-box' 
-                                  }} 
-                                  onFocus={() => setFocusedField(param.name)} 
-                                  onBlur={() => setFocusedField(null)} 
+                                  className="flex-grow"
                                 />
                               </div>
                             ) : param.type === 'textarea' || label === 'text' || label === 'code' ? (
-                              <textarea
+                              <Textarea
                                 key={`${activeTopic?.id || ''}-${param.name}`}
                                 defaultValue={val || ''}
                                 placeholder={`Enter ${param.name}...`}
                                 onChange={(e) => {
                                   setFormValues(prev => ({ ...prev, [param.name]: e.target.value }));
                                 }}
-                                className="docs-input"
                                 rows={8}
-                                style={{
-                                  width: '100%',
-                                  padding: '10px',
-                                  backgroundColor: 'var(--black)',
-                                  color: 'var(--white)',
-                                  border: focusedField === param.name ? '1px solid var(--gold)' : '1px solid #2B2B2B',
-                                  borderRadius: '0px',
-                                  outline: 'none',
-                                  fontFamily: 'var(--font-mono)',
-                                  fontSize: '11px',
-                                  resize: 'vertical',
-                                  transition: 'border-color 0.2s',
-                                  boxSizing: 'border-box'
-                                }}
-                                onFocus={() => setFocusedField(param.name)}
-                                onBlur={() => setFocusedField(null)}
                               />
                             ) : param.type === 'select' ? (
-                              <CustomDropdown value={String(val)} options={(param as any).options ?? []} onChange={(v) => setFormValues(prev => ({ ...prev, [param.name]: v }))} />
+                              <Select
+                                value={String(val)}
+                                onValueChange={(v) => setFormValues(prev => ({ ...prev, [param.name]: v }))}
+                              >
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select option..." />
+                                </SelectTrigger>
+                                <SelectContent position="popper">
+                                  {((param as any).options ?? []).map((o: any) => {
+                                    const opt = typeof o === 'string' ? { value: o, label: o } : o;
+                                    return (
+                                      <SelectItem key={opt.value} value={opt.value}>
+                                        {opt.label}
+                                      </SelectItem>
+                                    );
+                                  })}
+                                </SelectContent>
+                              </Select>
                             ) : param.type === 'boolean' ? (
-                              <CustomDropdown value={String(val ?? 'false')} options={['true', 'false']} onChange={(v) => setFormValues(prev => ({ ...prev, [param.name]: v === 'true' }))} />
+                              <Select
+                                value={String(val ?? 'false')}
+                                onValueChange={(v) => setFormValues(prev => ({ ...prev, [param.name]: v === 'true' }))}
+                              >
+                                <SelectTrigger>
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent position="popper">
+                                  <SelectItem value="true">true</SelectItem>
+                                  <SelectItem value="false">false</SelectItem>
+                                </SelectContent>
+                              </Select>
                             ) : (
-                              <input type="text" placeholder={`Enter ${param.name}...`} value={val} onChange={(e) => setFormValues(prev => ({ ...prev, [param.name]: e.target.value }))} className="docs-input" style={{ width: '100%', padding: '10px', backgroundColor: 'var(--black)', color: 'var(--white)', border: focusedField === param.name ? '1px solid var(--gold)' : '1px solid #2B2B2B', borderRadius: '0px', outline: 'none', fontFamily: 'var(--font-mono)', fontSize: '11px', transition: 'border-color 0.2s', boxSizing: 'border-box' }} onFocus={() => setFocusedField(param.name)} onBlur={() => setFocusedField(null)} />
+                              <Input type="text" placeholder={`Enter ${param.name}...`} value={val} onChange={(e) => setFormValues(prev => ({ ...prev, [param.name]: e.target.value }))} />
                             )}
                             <span style={{ fontSize: '10px', color: 'var(--ash)', marginTop: '4px', display: 'block', fontFamily: 'var(--font-display)' }}>{param.desc}</span>
                           </div>
@@ -589,10 +704,10 @@ export default function Docs() {
                   ) : (
                     <span style={{ fontSize: '12px', color: 'var(--ash)' }}>No configuration payload required.</span>
                   )}
-                  <button onClick={handleSendRequest} className="btn btn-gold" style={{ width: '100%', padding: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '10px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', cursor: 'pointer', marginTop: '16px' }} disabled={loading}>
-                    {loading ? <RefreshCw size={12} className="animate-spin" /> : <Send size={12} />}
+                  <Button onClick={handleSendRequest} variant="gold" className="w-full mt-4" disabled={loading}>
+                    {loading ? <TadpoleIcon className="mr-2 text-black" width="12" height="12" /> : <Icon icon="lucide:send" width="12" height="12" className="mr-2" />}
                     {loading ? 'RUNNING...' : 'SEND REQUEST'}
-                  </button>
+                  </Button>
                 </div>
               </div>
             )}
@@ -604,26 +719,40 @@ export default function Docs() {
               <div className="docs-section" style={{ marginTop: '0' }}>
                 <h3 className="section-title" style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 10px 0', borderBottom: '1px dashed var(--border-color)', paddingBottom: '6px' }}>Response</h3>
                 <div className="sandbox-panel" style={{ marginTop: '0px' }}>
-                  <div className="sandbox-panel-header" style={{ padding: '0px' }}>
-                    <div style={{ display: 'flex' }}>
-                      <button onClick={() => setResponseTab('visual')} className="nav-link" style={{ whiteSpace: 'nowrap', padding: '10px 16px', background: responseTab === 'visual' ? 'var(--dark-iron)' : 'transparent', color: responseTab === 'visual' ? 'var(--white)' : 'var(--ash)', border: 'none', borderRight: '1px solid var(--border-color)', fontSize: '10px', fontWeight: 700, cursor: 'pointer', borderRadius: '0px' }}>PREVIEW</button>
-                      <button onClick={() => setResponseTab('json')} className="nav-link" style={{ whiteSpace: 'nowrap', padding: '10px 16px', background: responseTab === 'json' ? 'var(--dark-iron)' : 'transparent', color: responseTab === 'json' ? 'var(--white)' : 'var(--ash)', border: 'none', borderRight: '1px solid var(--border-color)', fontSize: '10px', fontWeight: 700, cursor: 'pointer', borderRadius: '0px' }}>RAW JSON</button>
+                  <Tabs value={responseTab} onValueChange={(v) => setResponseTab(v as 'visual' | 'json')}>
+                    <div className="sandbox-panel-header" style={{ padding: '0px' }}>
+                      <TabsList className="border-b-0 w-auto">
+                        <TabsTrigger value="visual">PREVIEW</TabsTrigger>
+                        <TabsTrigger value="json">RAW JSON</TabsTrigger>
+                      </TabsList>
+                      <button onClick={() => copyToClipboard(responseJson ? JSON.stringify(responseJson, null, 2) : getCurlCode())} className="btn-text-copy" style={{ marginRight: '12px', fontSize: '9px' }}>
+                        {copied ? <Icon icon="lucide:check" width="10" height="10" style={{ color: 'var(--gold)' }} /> : responseJson ? 'COPY JSON' : 'COPY CURL'}
+                      </button>
                     </div>
-                    <button onClick={() => copyToClipboard(responseJson ? JSON.stringify(responseJson, null, 2) : getCurlCode())} className="btn-text-copy" style={{ marginRight: '12px', fontSize: '9px' }}>
-                      {copied ? <Check size={10} style={{ color: 'var(--gold)' }} /> : responseJson ? 'COPY JSON' : 'COPY CURL'}
-                    </button>
-                  </div>
-                  <div className="sandbox-response-container" style={{ backgroundColor: 'var(--dark-iron)', padding: '16px', minHeight: '320px', border: '1px solid var(--border-color)', borderTop: 'none' }}>
-                    {responseJson ? (
-                      responseTab === 'visual' ? renderVisualResult() : (
-                        <pre className="response-pre"><code style={{ color: 'var(--smoke)', fontSize: '11px' }}>{JSON.stringify(responseJson, null, 2)}</code></pre>
-                      )
-                    ) : (
-                      <div className="sandbox-empty-message" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '280px', color: 'var(--ash)', fontSize: '11px', textAlign: 'center', padding: '0 20px' }}>
-                        <span>Send request to preview results.</span>
-                      </div>
-                    )}
-                  </div>
+                    <div className="sandbox-response-container" style={{ backgroundColor: 'var(--dark-iron)', padding: '16px', minHeight: '320px', border: '1px solid var(--border-color)', borderTop: 'none', overflowY: 'auto' }}>
+                      {responseJson ? (
+                        <>
+                          <TabsContent value="visual" className="m-0 p-0">
+                            <ErrorBoundary 
+                              FallbackComponent={PlaygroundErrorFallback} 
+                              onReset={() => setResponseJson(null)}
+                            >
+                              {renderVisualResult()}
+                            </ErrorBoundary>
+                          </TabsContent>
+                          <TabsContent value="json" className="m-0 p-0">
+                            <div className="response-json-viewer" style={{ textAlign: 'left' }}>
+                              <JsonView data={responseJson} shouldExpandNode={allExpanded} style={xyloStyles} />
+                            </div>
+                          </TabsContent>
+                        </>
+                      ) : (
+                        <div className="sandbox-empty-message" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '280px', color: 'var(--ash)', fontSize: '11px', textAlign: 'center', padding: '0 20px' }}>
+                          <span>Send request to preview results.</span>
+                        </div>
+                      )}
+                    </div>
+                  </Tabs>
                 </div>
               </div>
             )}
@@ -643,10 +772,10 @@ export default function Docs() {
     <div className="docs-container container">
 
       {/* Search Bar */}
-      <div className="docs-search-wrapper">
-        <Search size={15} />
-        <input
-          className="docs-search-input"
+      <div className="relative flex items-center w-full mb-12">
+        <Icon icon="lucide:search" width="14" height="14" className="absolute left-4 text-gold/80 z-10" />
+        <Input
+          className="pl-11 h-12 w-full text-xs uppercase tracking-wider bg-dark-iron border-b-2 border-b-gold"
           type="text"
           placeholder="FILTER ENDPOINTS..."
           value={searchQuery}
@@ -684,14 +813,26 @@ export default function Docs() {
                         }}
                       >
                         <div className="docs-endpoint-left">
-                          <span className={`method-badge ${method}`}>
+                          <Badge variant={method === 'get' ? 'info' : method === 'post' ? 'default' : 'warning'} className="mr-3 font-bold text-[10px] w-14 justify-center py-1">
                             {topic.method || 'GET'}
-                          </span>
+                          </Badge>
                           <span className="docs-endpoint-row-title">{topic.title}</span>
                         </div>
                         <span className="docs-endpoint-row-path">{topic.path}</span>
                       </div>
-                      {isActive && renderPlayground(topic)}
+                      <AnimatePresence initial={false}>
+                        {isActive && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                            style={{ overflow: 'hidden' }}
+                          >
+                            {renderPlayground(topic)}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
                   );
                 })}
@@ -724,7 +865,13 @@ export default function Docs() {
 
           {/* Active Category Panel */}
           {currentCategory && (
-            <div className="active-category-panel">
+            <motion.div 
+              key={currentCategory}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="active-category-panel"
+            >
               <div className="active-category-panel-header">
                 <span className="active-category-panel-title">
                   {currentCategory} List
@@ -751,19 +898,31 @@ export default function Docs() {
                         }}
                       >
                         <div className="docs-endpoint-left">
-                          <span className={`method-badge ${method}`}>
+                          <Badge variant={method === 'get' ? 'info' : method === 'post' ? 'default' : 'warning'} className="mr-3 font-bold text-[10px] w-14 justify-center py-1">
                             {topic.method || 'GET'}
-                          </span>
+                          </Badge>
                           <span className="docs-endpoint-row-title">{topic.title}</span>
                         </div>
                         <span className="docs-endpoint-row-path">{topic.path}</span>
                       </div>
-                      {isActive && renderPlayground(topic)}
+                      <AnimatePresence initial={false}>
+                        {isActive && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                            style={{ overflow: 'hidden' }}
+                          >
+                            {renderPlayground(topic)}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
                   );
                 })}
               </div>
-            </div>
+            </motion.div>
           )}
         </>
       )}

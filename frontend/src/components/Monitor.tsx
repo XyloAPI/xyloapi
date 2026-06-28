@@ -1,8 +1,13 @@
-import { useState, useEffect } from 'react';
-import { Activity, Clock, CheckCircle2, XCircle, ArrowUpRight, BarChart3, RefreshCw, Database, Layers, Wifi } from 'lucide-react';
-import './Monitor.css';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { docTopics } from './Docs/topicsData';
-
+import { Button } from './ui/button';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from './ui/card';
+import { Badge } from './ui/badge';
+import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from './ui/table';
+import { ResponsiveContainer, BarChart, Bar, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
+import TadpoleIcon from '@iconify-react/svg-spinners/tadpole';
+import { Icon } from '@iconify/react';
 
 interface RequestLog {
   id: number;
@@ -41,9 +46,20 @@ interface MonitorData {
 }
 
 export default function Monitor() {
-  const [data, setData] = useState<MonitorData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const host = (window.location.hostname === 'localhost' && window.location.port !== '3000')
+    ? 'http://localhost:5000'
+    : window.location.origin;
+
+  const { data, isLoading: loading, isRefetching: refreshing, refetch: fetchMonitorData } = useQuery({
+    queryKey: ['monitorData'],
+    queryFn: async () => {
+      const res = await fetch(`${host}/api/monitor`);
+      if (!res.ok) throw new Error('Failed to fetch monitor data');
+      return res.json() as Promise<MonitorData>;
+    },
+    refetchInterval: 5000,
+    refetchIntervalInBackground: true,
+  });
 
   const [testPhase, setTestPhase] = useState<'idle' | 'ping' | 'download' | 'upload' | 'complete'>('idle');
   const [progressPing, setProgressPing] = useState<number | null>(null);
@@ -60,11 +76,6 @@ export default function Monitor() {
     setProgressUpload(null);
     setSpeedTestError(null);
 
-    const host = (window.location.hostname === 'localhost' && window.location.port !== '3000')
-      ? 'http://localhost:5000'
-      : window.location.origin;
-
-    // Fire POST request — returns instantly as soon as backend is done measuring
     fetch(`${host}/api/monitor/speedtest`, { method: 'POST' })
       .then(res => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -82,31 +93,7 @@ export default function Monitor() {
       });
   };
 
-  const fetchMonitorData = async () => {
-    try {
-      const host = (window.location.hostname === 'localhost' && window.location.port !== '3000') ? 'http://localhost:5000' : window.location.origin;
-      const res = await fetch(`${host}/api/monitor`);
-      if (res.ok) {
-        const json = await res.json();
-        setData(json);
-      }
-    } catch (err) {
-      // Safe fallback state on error
-      setData(null);
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchMonitorData();
-    const interval = setInterval(fetchMonitorData, 5000);
-    return () => clearInterval(interval);
-  }, []);
-
   const handleManualRefresh = () => {
-    setRefreshing(true);
     fetchMonitorData();
   };
 
@@ -143,16 +130,15 @@ export default function Monitor() {
 
   if (loading) {
     return (
-      <div className="monitor-container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-        <div style={{ fontFamily: 'var(--font-mono)', color: 'var(--gold)', display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <RefreshCw className="animate-spin" size={18} />
+      <div className="pt-[90px] pb-10 md:pt-[140px] md:pb-[120px] min-h-[calc(100vh-200px)] max-w-[1200px] mx-auto px-4 md:px-8 flex justify-center items-center" style={{ minHeight: '60vh' }}>
+        <div className="font-mono text-gold flex items-center gap-3">
+          <TadpoleIcon width="18" height="18" />
           <span>Memuat Sistem...</span>
         </div>
       </div>
     );
   }
 
-  // Active metrics or fallback parameters
   const stats = data?.stats || {
     requestsToday: 0,
     totalRequests: 0,
@@ -167,428 +153,374 @@ export default function Monitor() {
   const topEndpoints = data?.topEndpoints || [];
   const hourlyData = data?.hourlyChartData || [];
 
-  // SVG Chart Dimensions & Computations
-  const chartWidth = 500;
-  const chartHeight = 160;
-  const paddingX = 40;
-  const paddingY = 20;
-
-  // Calculate maximums for chart scales
-  const maxCount = hourlyData.length > 0 ? Math.max(...hourlyData.map(d => d.count), 5) : 5;
-  const maxLatency = hourlyData.length > 0 ? Math.max(...hourlyData.map(d => d.latency), 100) : 100;
-
-
-
   return (
-    <div className="monitor-container container">
+    <div className="pt-[90px] pb-10 md:pt-[140px] md:pb-[120px] min-h-[calc(100vh-200px)] max-w-[1200px] mx-auto px-4 md:px-8">
       {/* Top Banner Row */}
-      <div className="monitor-header">
+      <div className="flex justify-between items-end border-b border-[#1f1f1f] pb-8 mb-12 flex-wrap gap-6">
         <div>
-          <span className="monitor-pretitle">SYSTEM TELEMETRY</span>
-          <h1 className="monitor-title">LIVE API MONITOR</h1>
+          <span className="font-mono text-[11px] text-gold tracking-[0.15em] uppercase block mb-2">SYSTEM TELEMETRY</span>
+          <h1 className="font-display text-[clamp(24px,4vw,40px)] font-black text-white leading-[1.1] tracking-[0.01em] uppercase">LIVE API MONITOR</h1>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          <button
+        <div className="flex items-center gap-5">
+          <Button
             onClick={handleManualRefresh}
-            className="btn btn-ghost"
-            style={{ padding: '8px 16px', fontSize: '11px', display: 'flex', alignItems: 'center', gap: '8px', border: '1px solid var(--border-color)' }}
+            variant="outline"
+            size="sm"
             disabled={refreshing}
+            className="flex items-center gap-2 h-9"
           >
-            <RefreshCw className={refreshing ? 'animate-spin' : ''} size={12} />
+            {refreshing ? <TadpoleIcon width="12" height="12" /> : <Icon icon="lucide:refresh-cw" width="12" height="12" />}
             {refreshing ? 'REFRESHING...' : 'REFRESH'}
-          </button>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span className={`status-dot ${isOnline ? 'online' : 'offline'}`}></span>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 600, color: isOnline ? 'var(--white)' : 'var(--ash)' }}>
-              {isOnline ? 'ONLINE' : 'OFFLINE'}
-            </span>
-          </div>
+          </Button>
+          <Badge variant={isOnline ? "success" : "secondary"} className="h-9 flex items-center gap-1.5 px-3">
+            <span className={`w-1.5 h-1.5 rounded-none inline-block ${isOnline ? 'bg-[#27C93F] shadow-[0_0_6px_#27C93F]' : 'bg-steel'}`}></span>
+            <span>{isOnline ? 'ONLINE' : 'OFFLINE'}</span>
+          </Badge>
         </div>
       </div>
 
       {/* Grid: Metric Cards */}
-      <div className="monitor-stats-grid">
-        <div className="monitor-stat-card">
-          <div className="stat-card-header">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-6 mb-12">
+        <Card className="p-[12px] md:p-6 flex flex-col justify-between min-h-[95px] md:min-h-[140px] hover:border-gold/30 hover:shadow-[0_0_15px_rgba(212,175,55,0.05)] transition-all duration-300">
+          <div className="flex justify-between items-center font-mono text-[9px] md:text-[11px] text-ash tracking-[0.05em]">
             <span>SYSTEM UPTIME</span>
-            <Clock size={16} style={{ color: 'var(--gold)' }} />
+            <Icon icon="lucide:clock" width="16" height="16" className="text-gold" />
           </div>
-          <span className="stat-card-value">{formatUptime(uptimeVal)}</span>
-          <span className="stat-card-label">Duration since server boot</span>
-        </div>
-        <div className="monitor-stat-card">
-          <div className="stat-card-header">
+          <span className="font-display text-base md:text-2xl lg:text-3xl font-black text-white mt-[6px] md:mt-3 mb-[2px] md:mb-[6px] leading-none">{formatUptime(uptimeVal)}</span>
+          <span className="text-[9px] md:text-[11px] text-steel">Duration since server boot</span>
+        </Card>
+        <Card className="p-[12px] md:p-6 flex flex-col justify-between min-h-[95px] md:min-h-[140px] hover:border-gold/30 hover:shadow-[0_0_15px_rgba(212,175,55,0.05)] transition-all duration-300">
+          <div className="flex justify-between items-center font-mono text-[9px] md:text-[11px] text-ash tracking-[0.05em]">
             <span>REQUESTS HARI INI</span>
-            <Activity size={16} style={{ color: 'var(--gold)' }} />
+            <Icon icon="lucide:activity" width="16" height="16" className="text-gold" />
           </div>
-          <span className="stat-card-value">{stats.requestsToday.toLocaleString()}</span>
-          <span className="stat-card-label">Total logs recorded since midnight</span>
-        </div>
-        <div className="monitor-stat-card">
-          <div className="stat-card-header">
+          <span className="font-display text-base md:text-2xl lg:text-3xl font-black text-white mt-[6px] md:mt-3 mb-[2px] md:mb-[6px] leading-none">{stats.requestsToday.toLocaleString()}</span>
+          <span className="text-[9px] md:text-[11px] text-steel">Total logs recorded since midnight</span>
+        </Card>
+        <Card className="p-[12px] md:p-6 flex flex-col justify-between min-h-[95px] md:min-h-[140px] hover:border-gold/30 hover:shadow-[0_0_15px_rgba(212,175,55,0.05)] transition-all duration-300">
+          <div className="flex justify-between items-center font-mono text-[9px] md:text-[11px] text-ash tracking-[0.05em]">
             <span>JUMLAH REQUESTS</span>
-            <Database size={16} style={{ color: 'var(--gold)' }} />
+            <Icon icon="lucide:database" width="16" height="16" className="text-gold" />
           </div>
-          <span className="stat-card-value">{(stats.totalRequests || 0).toLocaleString()}</span>
-          <span className="stat-card-label">All-time request logs recorded</span>
-        </div>
-        <div className="monitor-stat-card">
-          <div className="stat-card-header">
+          <span className="font-display text-base md:text-2xl lg:text-3xl font-black text-white mt-[6px] md:mt-3 mb-[2px] md:mb-[6px] leading-none">{(stats.totalRequests || 0).toLocaleString()}</span>
+          <span className="text-[9px] md:text-[11px] text-steel">All-time request logs recorded</span>
+        </Card>
+        <Card className="p-[12px] md:p-6 flex flex-col justify-between min-h-[95px] md:min-h-[140px] hover:border-gold/30 hover:shadow-[0_0_15px_rgba(212,175,55,0.05)] transition-all duration-300">
+          <div className="flex justify-between items-center font-mono text-[9px] md:text-[11px] text-ash tracking-[0.05em]">
             <span>TOTAL ENDPOINTS</span>
-            <Layers size={16} style={{ color: 'var(--gold)' }} />
+            <Icon icon="lucide:layers" width="16" height="16" className="text-gold" />
           </div>
-          <span className="stat-card-value">{docTopics.length.toLocaleString()}</span>
-          <span className="stat-card-label">Total active playground endpoints</span>
-        </div>
-        <div className="monitor-stat-card">
-          <div className="stat-card-header">
+          <span className="font-display text-base md:text-2xl lg:text-3xl font-black text-white mt-[6px] md:mt-3 mb-[2px] md:mb-[6px] leading-none">{docTopics.length.toLocaleString()}</span>
+          <span className="text-[9px] md:text-[11px] text-steel">Total active playground endpoints</span>
+        </Card>
+        <Card className="p-[12px] md:p-6 flex flex-col justify-between min-h-[95px] md:min-h-[140px] hover:border-gold/30 hover:shadow-[0_0_15px_rgba(212,175,55,0.05)] transition-all duration-300 col-span-1">
+          <div className="flex justify-between items-center font-mono text-[9px] md:text-[11px] text-ash tracking-[0.05em]">
             <span>SUKSES</span>
-            <CheckCircle2 size={16} style={{ color: '#27C93F' }} />
+            <Icon icon="lucide:check-circle" width="16" height="16" className="text-[#27C93F]" />
           </div>
-          <span className="stat-card-value" style={{ color: stats.successRatePercent < 90 ? 'var(--gold)' : '#27C93F' }}>
+          <span className={`font-display text-base md:text-2xl lg:text-3xl font-black mt-[6px] md:mt-3 mb-[2px] md:mb-[6px] leading-none ${stats.successRatePercent < 90 ? 'text-gold' : 'text-[#27C93F]'}`}>
             {stats.successRatePercent.toFixed(2)}%
           </span>
-          <span className="stat-card-label">Persentase berhasil</span>
-        </div>
-        <div className="monitor-stat-card">
-          <div className="stat-card-header">
+          <span className="text-[9px] md:text-[11px] text-steel">Persentase berhasil</span>
+        </Card>
+        <Card className="p-[12px] md:p-6 flex flex-col justify-between min-h-[95px] md:min-h-[140px] hover:border-gold/30 hover:shadow-[0_0_15px_rgba(212,175,55,0.05)] transition-all duration-300 col-span-1">
+          <div className="flex justify-between items-center font-mono text-[9px] md:text-[11px] text-ash tracking-[0.05em]">
             <span>GAGAL</span>
-            <XCircle size={16} style={{ color: stats.errorRatePercent > 0 ? '#FF3B30' : 'var(--steel)' }} />
+            <Icon icon="lucide:x-circle" width="16" height="16" className={stats.errorRatePercent > 0 ? 'text-[#FF3B30]' : 'text-steel'} />
           </div>
-          <span className="stat-card-value" style={{ color: stats.errorRatePercent > 0 ? '#FF3B30' : 'var(--white)' }}>
+          <span className={`font-display text-base md:text-2xl lg:text-3xl font-black mt-[6px] md:mt-3 mb-[2px] md:mb-[6px] leading-none ${stats.errorRatePercent > 0 ? 'text-[#FF3B30]' : 'text-white'}`}>
             {stats.errorRatePercent.toFixed(2)}%
           </span>
-          <span className="stat-card-label">Persentase gagal</span>
-        </div>
+          <span className="text-[9px] md:text-[11px] text-steel">Persentase gagal</span>
+        </Card>
       </div>
 
       {/* Grid Layout splits: Live Traffic & Top Endpoints */}
-      <div className="monitor-splits-grid">
+      <div className="grid grid-cols-1 lg:grid-cols-[2.2fr_1fr] gap-8 mb-12">
         {/* Live Traffic Feed */}
-        <div className="monitor-card wide-card">
-          <div className="monitor-card-header">
-            <h3 className="card-title">Riwayat Request</h3>
-            <span className="card-subtitle">Log request API</span>
-          </div>
-          <div className="table-responsive">
-            <table className="monitor-table">
-              <thead>
-                <tr>
-                  <th>Waktu</th>
-                  <th>Metode</th>
-                  <th>Path</th>
-                  <th>Kode</th>
-                  <th>Latency</th>
-                </tr>
-              </thead>
-              <tbody>
+        <Card className="p-0 overflow-hidden">
+          <CardHeader className="p-6 md:p-8">
+            <CardTitle>Riwayat Request</CardTitle>
+            <CardDescription>Log request API secara real-time</CardDescription>
+          </CardHeader>
+          <CardContent className="p-0 md:p-6 md:pt-0">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="hidden sm:table-cell">Waktu</TableHead>
+                  <TableHead>Metode</TableHead>
+                  <TableHead>Path</TableHead>
+                  <TableHead>Kode</TableHead>
+                  <TableHead>Latency</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {lastRequests.length === 0 ? (
-                  <tr>
-                    <td colSpan={5} style={{ textAlign: 'center', color: 'var(--steel)', padding: '48px 0', fontFamily: 'var(--font-mono)' }}>
+                  <TableRow>
+                    <TableCell colSpan={5} className="text-center text-steel py-12">
                       TIDAK ADA LALU LINTAS API
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 ) : (
                   lastRequests.map((req) => (
-                    <tr key={req.id}>
-                      <td style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--ash)' }}>
+                    <TableRow key={req.id}>
+                      <TableCell className="hidden sm:table-cell font-mono text-[11px] text-ash">
                         {formatTime(req.created_at)}
-                      </td>
-                      <td style={{ fontWeight: 700, fontSize: '11px', color: req.path.startsWith('/api/data') ? 'var(--gold)' : 'var(--white)' }}>
-                        {req.path.includes('/trigger') ? 'POST' : 'GET'}
-                      </td>
-                      <td style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '12px',
-                        color: 'var(--white)',
-                        maxWidth: '120px',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap'
-                      }} title={req.path}>
+                      </TableCell>
+                      <TableCell className="py-2.5">
+                        <Badge variant={req.path.includes('/trigger') ? "default" : "info"}>
+                          {req.path.includes('/trigger') ? 'POST' : 'GET'}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="font-mono text-xs text-white max-w-[120px] overflow-hidden text-ellipsis whitespace-normal sm:whitespace-nowrap break-all sm:break-normal" title={req.path}>
                         {req.path}
-                      </td>
-                      <td>
-                        <span className={`status-badge ${req.status_code < 400 ? 'success' : req.status_code < 500 ? 'warning' : 'danger'}`}>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={req.status_code < 400 ? "success" : req.status_code < 500 ? "warning" : "destructive"}>
                           {req.status_code}
-                        </span>
-                      </td>
-                      <td style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: req.latency_ms > 500 ? 'var(--gold)' : 'var(--white)' }}>
+                        </Badge>
+                      </TableCell>
+                      <TableCell className={req.latency_ms > 500 ? 'text-gold' : 'text-white'}>
                         {req.latency_ms}ms
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ))
                 )}
-              </tbody>
-            </table>
-          </div>
-        </div>
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
 
         {/* Top Endpoints */}
-        <div className="monitor-card narrow-card">
-          <div className="monitor-card-header">
-            <h3 className="card-title">Top Endpoints</h3>
-            <span className="card-subtitle">5 endpoints terpopuler</span>
-          </div>
-          <div className="top-endpoints-list">
+        <Card className="p-0 overflow-hidden">
+          <CardHeader className="p-6 md:p-8">
+            <CardTitle>Top Endpoints</CardTitle>
+            <CardDescription>5 endpoints terpopuler saat ini</CardDescription>
+          </CardHeader>
+          <CardContent className="p-6 pt-0 flex flex-col gap-4">
             {topEndpoints.length === 0 ? (
-              <div style={{ color: 'var(--steel)', padding: '48px 0', textAlign: 'center', fontFamily: 'var(--font-mono)' }}>
+              <div className="text-steel py-12 text-center font-mono">
                 TIDAK ADA DATA
               </div>
             ) : (
               topEndpoints.map((ep, idx) => (
-                <div key={ep.path} className="top-endpoint-item">
-                  <div className="ep-rank">
+                <div key={ep.path} className="flex items-center p-4 border border-[#1f1f1f] bg-white/[0.01] hover:bg-white/[0.02] transition-all duration-200">
+                  <div className="w-7 h-7 border border-[#2B2B2B] bg-black flex items-center justify-center font-mono text-xs font-bold text-gold mr-4">
                     <span>{idx + 1}</span>
                   </div>
-                  <div className="ep-details">
-                    <span className="ep-path">{ep.path}</span>
-                    <span className="ep-stats">Latency: {ep.avg_latency}ms</span>
+                  <div className="flex flex-col flex-1 min-w-0">
+                    <span className="font-mono text-xs sm:text-sm font-semibold text-white mb-0.5 break-all sm:break-normal whitespace-normal sm:whitespace-nowrap">{ep.path}</span>
+                    <span className="text-[11px] text-steel">Latency: {ep.avg_latency}ms</span>
                   </div>
-                  <div className="ep-count">
+                  <div className="flex items-center font-mono text-xs font-bold text-gold">
                     <span>{ep.count}x</span>
-                    <ArrowUpRight size={12} style={{ color: 'var(--gold)', marginLeft: '4px' }} />
+                    <Icon icon="lucide:arrow-up-right" width="12" height="12" className="text-gold ml-1" />
                   </div>
                 </div>
               ))
             )}
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Section: Server Speed Test */}
-      <div className="monitor-card" style={{ marginBottom: '48px' }}>
-        <div className="monitor-card-header" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '20px', marginBottom: '24px' }}>
-          <h3 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Wifi size={18} style={{ color: 'var(--cyan-pulse)' }} />
+      <Card className="p-0 overflow-hidden mb-12">
+        <CardHeader className="p-6 md:p-8">
+          <CardTitle className="flex items-center gap-2">
+            <Icon icon="lucide:wifi" width="18" height="18" className="text-cyan-pulse" />
             Tes kecepatan server
-          </h3>
-          <span className="card-subtitle">Ukur kecepatan koneksi ke server ini.</span>
-        </div>
+          </CardTitle>
+          <CardDescription>Ukur kecepatan koneksi internet server ini secara real-time.</CardDescription>
+        </CardHeader>
+        <CardContent className="p-6 pt-0 flex flex-col gap-5">
+          {speedTestError && (
+            <div className="p-4 border border-[#FF3B30] bg-[#FF3B30]/5 text-[#FF3B30] font-mono text-[11px] mb-2">
+              ERROR: {speedTestError}
+            </div>
+          )}
 
-        {speedTestError && (
-          <div style={{ padding: '16px', border: '1px solid #FF3B30', background: 'rgba(255, 59, 48, 0.05)', color: '#FF3B30', fontFamily: 'var(--font-mono)', fontSize: '11px', marginBottom: '24px' }}>
-            ERROR: {speedTestError}
-          </div>
-        )}        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           {/* Action Trigger Button */}
-          <button
+          <Button
             onClick={handleRunSpeedTest}
             disabled={testPhase !== 'idle' && testPhase !== 'complete'}
-            style={{
-              width: '100%',
-              padding: '16px 24px',
-              backgroundColor: (testPhase !== 'idle' && testPhase !== 'complete') ? 'var(--dark-iron)' : 'var(--black)',
-              border: '1px solid var(--border-color)',
-              color: (testPhase !== 'idle' && testPhase !== 'complete') ? 'var(--gold)' : 'var(--white)',
-              fontFamily: 'var(--font-display)',
-              fontSize: '13px',
-              fontWeight: 700,
-              letterSpacing: '2px',
-              cursor: (testPhase !== 'idle' && testPhase !== 'complete') ? 'not-allowed' : 'pointer',
-              textTransform: 'uppercase',
-              transition: 'all 0.15s ease',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '12px',
-              outline: 'none'
-            }}
+            variant={(testPhase !== 'idle' && testPhase !== 'complete') ? "outline" : "gold"}
+            className="w-full h-12"
           >
             {(testPhase !== 'idle' && testPhase !== 'complete') ? (
               <>
-                <RefreshCw className="animate-spin" size={16} style={{ color: 'var(--gold)' }} />
+                <TadpoleIcon className="text-gold mr-2 text-black" width="16" height="16" />
                 Testing...
               </>
             ) : (
               <>
-                <Wifi size={16} style={{ color: 'var(--cyan-pulse)' }} />
-                Mulai
+                <Icon icon="lucide:wifi" className="mr-2 text-cyan-pulse animate-pulse" width="16" height="16" />
+                Mulai Tes Kecepatan
               </>
             )}
-          </button>
+          </Button>
 
           {/* Details & Progress Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* Ping */}
-            <div style={{ border: '1px solid var(--border-color)', backgroundColor: 'var(--black)', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div className="border border-[#1f1f1f] bg-black/40 p-5 flex justify-between items-center transition-all hover:border-gold/25">
               <div>
-                <span style={{ fontSize: '9px', color: 'var(--ash)', fontFamily: 'var(--font-mono)', letterSpacing: '1px', display: 'block', textTransform: 'uppercase' }}>Ping Latency</span>
-                <span style={{ fontSize: '24px', fontWeight: 900, fontFamily: 'var(--font-mono)', color: 'var(--white)' }}>
-                  {progressPing !== null ? `${progressPing} ms` : (testPhase !== 'idle' && testPhase !== 'complete') ? '—' : '—'}
+                <span className="text-[9px] text-ash font-mono tracking-[1px] block uppercase">Ping Latency</span>
+                <span className="text-2xl font-black font-mono text-white">
+                  {progressPing !== null ? `${progressPing} ms` : '—'}
                 </span>
               </div>
-              {(testPhase !== 'idle' && testPhase !== 'complete' && progressPing === null) && <RefreshCw className="animate-spin" size={14} style={{ color: 'var(--cyan-pulse)' }} />}
-              {progressPing !== null && <CheckCircle2 size={16} style={{ color: '#27C93F' }} />}
+              {(testPhase !== 'idle' && testPhase !== 'complete' && progressPing === null) && <TadpoleIcon className="text-cyan-pulse" width="14" height="14" />}
+              {progressPing !== null && <Icon icon="lucide:check-circle" width="16" height="16" className="text-[#27C93F]" />}
             </div>
 
             {/* Download */}
-            <div style={{ border: '1px solid var(--border-color)', backgroundColor: 'var(--black)', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div className="border border-[#1f1f1f] bg-black/40 p-5 flex justify-between items-center transition-all hover:border-gold/25">
               <div>
-                <span style={{ fontSize: '9px', color: 'var(--ash)', fontFamily: 'var(--font-mono)', letterSpacing: '1px', display: 'block', textTransform: 'uppercase' }}>Download Speed</span>
-                <span style={{ fontSize: '24px', fontWeight: 900, fontFamily: 'var(--font-mono)', color: 'var(--cyan-pulse)' }}>
-                  {progressDownload !== null ? `${progressDownload} Mbps` : (testPhase !== 'idle' && testPhase !== 'complete') ? '—' : '—'}
+                <span className="text-[9px] text-ash font-mono tracking-[1px] block uppercase">Download Speed</span>
+                <span className="text-2xl font-black font-mono text-cyan-pulse">
+                  {progressDownload !== null ? `${progressDownload} Mbps` : '—'}
                 </span>
               </div>
-              {(testPhase !== 'idle' && testPhase !== 'complete' && progressDownload === null) && <RefreshCw className="animate-spin" size={14} style={{ color: 'var(--cyan-pulse)' }} />}
-              {progressDownload !== null && <CheckCircle2 size={16} style={{ color: '#27C93F' }} />}
+              {(testPhase !== 'idle' && testPhase !== 'complete' && progressDownload === null) && <TadpoleIcon className="text-cyan-pulse" width="14" height="14" />}
+              {progressDownload !== null && <Icon icon="lucide:check-circle" width="16" height="16" className="text-[#27C93F]" />}
             </div>
 
             {/* Upload */}
-            <div style={{ border: '1px solid var(--border-color)', backgroundColor: 'var(--black)', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div className="border border-[#1f1f1f] bg-black/40 p-5 flex justify-between items-center transition-all hover:border-gold/25">
               <div>
-                <span style={{ fontSize: '9px', color: 'var(--ash)', fontFamily: 'var(--font-mono)', letterSpacing: '1px', display: 'block', textTransform: 'uppercase' }}>Upload Speed</span>
-                <span style={{ fontSize: '24px', fontWeight: 900, fontFamily: 'var(--font-mono)', color: 'var(--gold-text)' }}>
-                  {progressUpload !== null ? `${progressUpload} Mbps` : (testPhase !== 'idle' && testPhase !== 'complete') ? '—' : '—'}
+                <span className="text-[9px] text-ash font-mono tracking-[1px] block uppercase">Upload Speed</span>
+                <span className="text-2xl font-black font-mono text-gold-text">
+                  {progressUpload !== null ? `${progressUpload} Mbps` : '—'}
                 </span>
               </div>
-              {(testPhase !== 'idle' && testPhase !== 'complete' && progressUpload === null) && <RefreshCw className="animate-spin" size={14} style={{ color: 'var(--gold)' }} />}
-              {progressUpload !== null && <CheckCircle2 size={16} style={{ color: '#27C93F' }} />}
+              {(testPhase !== 'idle' && testPhase !== 'complete' && progressUpload === null) && <TadpoleIcon className="text-gold" width="14" height="14" />}
+              {progressUpload !== null && <Icon icon="lucide:check-circle" width="16" height="16" className="text-[#27C93F]" />}
             </div>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Section: Dynamic Supporting Charts */}
-      <div className="monitor-charts-section">
-        <div className="monitor-card-header" style={{ marginBottom: '32px' }}>
-          <h3 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <BarChart3 size={18} style={{ color: 'var(--gold)' }} />
+      <Card className="p-0 overflow-hidden">
+        <CardHeader className="p-6 md:p-10">
+          <CardTitle className="flex items-center gap-2">
+            <Icon icon="lucide:bar-chart-3" width="18" height="18" className="text-gold" />
             Grafik aktivitas
-          </h3>
-          <span className="card-subtitle">Data dihitung berdasarkan jumlah request</span>
-        </div>
-
-        <div className="monitor-charts-grid">
+          </CardTitle>
+          <CardDescription>Data dihitung berdasarkan jumlah request dan latency</CardDescription>
+        </CardHeader>
+        <CardContent className="p-6 md:p-10 pt-0 grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Chart 1: Traffic Volume */}
-          <div className="monitor-chart-card">
-            <h4 className="chart-card-title">JUMLAH REQUEST PER JAM</h4>
+          <div className="border border-[#1f1f1f] bg-black/40 p-6">
+            <h4 className="font-mono text-[11px] text-ash tracking-[0.1em] mb-6 uppercase">JUMLAH REQUEST PER JAM</h4>
             {hourlyData.length === 0 ? (
-              <div className="chart-fallback">
-                <span>Belum ada data</span>
-                <p>Menunggu log database...</p>
+              <div className="h-48 flex flex-col justify-center items-center font-mono">
+                <span className="text-steel text-xs font-bold mb-1">Belum ada data</span>
+                <p className="text-steel text-[10px] m-0">Menunggu log database...</p>
               </div>
             ) : (
-              <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} className="svg-chart">
-                {/* Grid Lines */}
-                <line x1={paddingX} y1={paddingY} x2={chartWidth - 20} y2={paddingY} stroke="#1A1A1A" strokeDasharray="3,3" />
-                <line x1={paddingX} y1={chartHeight / 2} x2={chartWidth - 20} y2={chartHeight / 2} stroke="#1A1A1A" strokeDasharray="3,3" />
-                <line x1={paddingX} y1={chartHeight - paddingY} x2={chartWidth - 20} y2={chartHeight - paddingY} stroke="#222" />
-
-                {/* Labels Y */}
-                <text x={paddingX - 10} y={paddingY + 4} textAnchor="end" className="chart-label">{maxCount}</text>
-                <text x={paddingX - 10} y={chartHeight / 2 + 4} textAnchor="end" className="chart-label">{Math.round(maxCount / 2)}</text>
-                <text x={paddingX - 10} y={chartHeight - paddingY + 4} textAnchor="end" className="chart-label">0</text>
-
-                {/* Bars */}
-                {hourlyData.map((d, i) => {
-                  const step = (chartWidth - paddingX - 20) / hourlyData.length;
-                  const x = paddingX + i * step + step * 0.15;
-                  const barWidth = Math.max(step * 0.7 - 2, 2);
-                  const barHeight = ((d.count / maxCount) * (chartHeight - paddingY * 2));
-                  const y = chartHeight - paddingY - barHeight;
-
-                  return (
-                    <g key={i}>
-                      <rect
-                        x={x}
-                        y={y}
-                        width={barWidth}
-                        height={barHeight}
-                        fill="var(--gold)"
-                        opacity={0.8}
-                      />
-                      {/* X Label for every 4th element */}
-                      {i % 4 === 0 && (
-                        <text x={x + barWidth / 2} y={chartHeight - 4} textAnchor="middle" className="chart-label-x">
-                          {formatHourLabel(d.time)}
-                        </text>
-                      )}
-                    </g>
-                  );
-                })}
-              </svg>
+              <div className="h-48 w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={hourlyData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="var(--gold)" stopOpacity={0.8} />
+                        <stop offset="100%" stopColor="var(--gold)" stopOpacity={0.1} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid stroke="#161616" strokeDasharray="3 3" vertical={false} />
+                    <XAxis 
+                      dataKey="time" 
+                      tickFormatter={formatHourLabel} 
+                      stroke="#444" 
+                      tick={{ fill: 'var(--steel)', fontSize: 9, fontFamily: 'monospace' }}
+                      axisLine={{ stroke: '#222' }}
+                    />
+                    <YAxis 
+                      stroke="#444" 
+                      tick={{ fill: 'var(--steel)', fontSize: 9, fontFamily: 'monospace' }}
+                      axisLine={false}
+                      tickLine={false}
+                    />
+                    <Tooltip 
+                      cursor={{ fill: 'rgba(255,255,255,0.03)' }} 
+                      content={({ active, payload, label }: any) => {
+                        if (active && payload && payload.length) {
+                          return (
+                            <div className="bg-black/90 border border-[#1f1f1f] p-3 font-mono text-[11px] shadow-lg">
+                              <p className="text-ash mb-1">{formatHourLabel(label)}</p>
+                              <p className="text-gold font-bold">
+                                Requests: {payload[0].value} req
+                              </p>
+                            </div>
+                          );
+                        }
+                        return null;
+                      }}
+                    />
+                    <Bar dataKey="count" name="Requests" fill="url(#barGrad)" radius={[2, 2, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
             )}
           </div>
 
-          {/* Chart 2: Latency Trend */}
-          <div className="monitor-chart-card">
-            <h4 className="chart-card-title">RATA-RATA LATENCY PER JAM</h4>
+          {/* Chart 2: Latency Time */}
+          <div className="border border-[#1f1f1f] bg-black/40 p-6">
+            <h4 className="font-mono text-[11px] text-ash tracking-[0.1em] mb-6 uppercase">LATENCY PER JAM</h4>
             {hourlyData.length === 0 ? (
-              <div className="chart-fallback">
-                <span>Belum ada data</span>
-                <p>Menunggu log database...</p>
+              <div className="h-48 flex flex-col justify-center items-center font-mono">
+                <span className="text-steel text-xs font-bold mb-1">Belum ada data</span>
+                <p className="text-steel text-[10px] m-0">Menunggu log database...</p>
               </div>
             ) : (
-              <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} className="svg-chart">
-                <defs>
-                  <linearGradient id="latencyGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="var(--cyan-pulse)" stopOpacity="0.25" />
-                    <stop offset="100%" stopColor="var(--cyan-pulse)" stopOpacity="0.0" />
-                  </linearGradient>
-                </defs>
-                {/* Grid Lines */}
-                <line x1={paddingX} y1={paddingY} x2={chartWidth - 20} y2={paddingY} stroke="#1A1A1A" strokeDasharray="3,3" />
-                <line x1={paddingX} y1={chartHeight / 2} x2={chartWidth - 20} y2={chartHeight / 2} stroke="#1A1A1A" strokeDasharray="3,3" />
-                <line x1={paddingX} y1={chartHeight - paddingY} x2={chartWidth - 20} y2={chartHeight - paddingY} stroke="#222" />
-
-                {/* Labels Y */}
-                <text x={paddingX - 10} y={paddingY + 4} textAnchor="end" className="chart-label">{formatLatencyLabel(maxLatency)}</text>
-                <text x={paddingX - 10} y={chartHeight / 2 + 4} textAnchor="end" className="chart-label">{formatLatencyLabel(Math.round(maxLatency / 2))}</text>
-                <text x={paddingX - 10} y={chartHeight - paddingY + 4} textAnchor="end" className="chart-label">0ms</text>
-
-                {/* Path & Fill */}
-                {(() => {
-                  const step = (chartWidth - paddingX - 20) / (hourlyData.length > 1 ? hourlyData.length - 1 : 1);
-                  const points = hourlyData.map((d, i) => {
-                    const x = paddingX + i * step;
-                    const valHeight = ((d.latency / maxLatency) * (chartHeight - paddingY * 2));
-                    const y = chartHeight - paddingY - valHeight;
-                    return `${x},${y}`;
-                  }).join(' ');
-
-                  const areaPoints = `${paddingX},${chartHeight - paddingY} ${points} ${paddingX + (hourlyData.length - 1) * step},${chartHeight - paddingY}`;
-
-                  return (
-                    <>
-                      <polygon
-                        points={areaPoints}
-                        fill="url(#latencyGrad)"
-                      />
-                      <polyline
-                        fill="none"
-                        stroke="var(--cyan-pulse)"
-                        strokeWidth="1.5"
-                        points={points}
-                      />
-                    </>
-                  );
-                })()}
-
-                {/* Dots (Brutalist Tiny Squares) & Labels X */}
-                {hourlyData.map((d, i) => {
-                  const step = (chartWidth - paddingX - 20) / (hourlyData.length > 1 ? hourlyData.length - 1 : 1);
-                  const x = paddingX + i * step;
-                  const valHeight = ((d.latency / maxLatency) * (chartHeight - paddingY * 2));
-                  const y = chartHeight - paddingY - valHeight;
-
-                  return (
-                    <g key={i}>
-                      <rect x={x - 2} y={y - 2} width="4" height="4" fill="var(--cyan-pulse)" />
-                      {/* X Label for every 4th element */}
-                      {i % 4 === 0 && (
-                        <text x={x} y={chartHeight - 4} textAnchor="middle" className="chart-label-x">
-                          {formatHourLabel(d.time)}
-                        </text>
-                      )}
-                    </g>
-                  );
-                })}
-              </svg>
+              <div className="h-48 w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={hourlyData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="latencyGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="var(--cyan-pulse)" stopOpacity="0.4" />
+                        <stop offset="100%" stopColor="var(--cyan-pulse)" stopOpacity="0.0" />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid stroke="#161616" strokeDasharray="3 3" vertical={false} />
+                    <XAxis 
+                      dataKey="time" 
+                      tickFormatter={formatHourLabel} 
+                      stroke="#444" 
+                      tick={{ fill: 'var(--steel)', fontSize: 9, fontFamily: 'monospace' }}
+                      axisLine={{ stroke: '#222' }}
+                    />
+                    <YAxis 
+                      stroke="#444" 
+                      tickFormatter={formatLatencyLabel}
+                      tick={{ fill: 'var(--steel)', fontSize: 9, fontFamily: 'monospace' }}
+                      axisLine={false}
+                      tickLine={false}
+                    />
+                    <Tooltip 
+                      content={({ active, payload, label }: any) => {
+                        if (active && payload && payload.length) {
+                          return (
+                            <div className="bg-black/90 border border-[#1f1f1f] p-3 font-mono text-[11px] shadow-lg">
+                              <p className="text-ash mb-1">{formatHourLabel(label)}</p>
+                              <p className="text-gold font-bold">
+                                Latency: {payload[0].value}ms
+                              </p>
+                            </div>
+                          );
+                        }
+                        return null;
+                      }}
+                    />
+                    <Area type="monotone" dataKey="latency" name="Latency" stroke="var(--cyan-pulse)" strokeWidth={1.5} fill="url(#latencyGrad)" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
             )}
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

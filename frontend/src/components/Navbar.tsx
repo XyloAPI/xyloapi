@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Terminal, Sun, Moon, Menu, X } from 'lucide-react';
-import './Navbar.css';
+import { Icon } from '@iconify/react';
+import { Button } from './ui/button';
+import { Link } from 'react-router-dom';
 
 interface NavbarProps {
   currentView: 'landing' | 'monitor' | 'docs';
@@ -12,87 +13,86 @@ interface NavbarProps {
 export default function Navbar({ currentView, onViewChange, theme, onToggleTheme }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const handleNavClick = (view: 'landing' | 'monitor' | 'docs', hash: string) => {
-    onViewChange(view);
-    window.location.hash = hash;
-    setMenuOpen(false); // Close mobile menu on click
-  };
-
   return (
-    <nav className="landing-header">
-      <div className="container header-inner">
+    <nav className="fixed top-0 left-0 w-full h-20 bg-header-bg backdrop-blur-md border-b border-border-color z-50">
+      <div className="max-w-[1200px] mx-auto px-4 md:px-8 flex items-center justify-between h-full">
         
         {/* Brand identity */}
-        <a 
-          href="#landing" 
-          className="brand-link"
-          onClick={(e) => {
-            e.preventDefault();
-            handleNavClick('landing', '');
-          }}
+        <Link 
+          to="/" 
+          className="flex items-center gap-2 no-underline text-white"
+          onClick={() => setMenuOpen(false)}
         >
-          <Terminal size={20} style={{ color: 'var(--gold)' }} />
-          <span className="brand-text">XYLO<span>API</span></span>
-        </a>
+          <Icon icon="lucide:terminal" width="20" height="20" className="text-gold" />
+          <span className="font-display text-xl font-black tracking-[0.2em] uppercase">XYLO<span className="text-gold">API</span></span>
+        </Link>
 
         {/* Center menu links (Desktop & Mobile Drawer) */}
-        <div className={`header-nav-links ${menuOpen ? 'mobile-open' : ''}`}>
-          <a 
-            href="#landing" 
-            className={`nav-link ${currentView === 'landing' ? 'active' : ''}`}
-            onClick={(e) => {
-              e.preventDefault();
-              handleNavClick('landing', '');
-            }}
+        <div className={`md:flex items-center gap-10 ${menuOpen ? 'flex flex-col absolute top-20 left-0 w-full bg-dark-iron border-b border-border-color p-6 gap-5 z-40' : 'hidden md:flex'}`}>
+          <Link 
+            to="/" 
+            className={`no-underline font-display text-[13.5px] font-medium uppercase tracking-[0.1em] transition-colors duration-150 ${currentView === 'landing' ? 'text-gold' : 'text-ash hover:text-white'}`}
+            onClick={() => setMenuOpen(false)}
           >
             Home
-          </a>
-          <a 
-            href="#monitor" 
-            className={`nav-link ${currentView === 'monitor' ? 'active' : ''}`}
-            onClick={(e) => {
-              e.preventDefault();
-              handleNavClick('monitor', 'monitor');
-            }}
+          </Link>
+          <Link 
+            to="/monitor" 
+            className={`no-underline font-display text-[13.5px] font-medium uppercase tracking-[0.1em] transition-colors duration-150 ${currentView === 'monitor' ? 'text-gold' : 'text-ash hover:text-white'}`}
+            onClick={() => setMenuOpen(false)}
           >
             Monitor
-          </a>
-          <a 
-            href="#docs" 
-            className={`nav-link ${currentView === 'docs' ? 'active' : ''}`}
-            onClick={(e) => {
-              e.preventDefault();
-              handleNavClick('docs', 'docs');
-            }}
+          </Link>
+          <Link 
+            to="/docs" 
+            className={`no-underline font-display text-[13.5px] font-medium uppercase tracking-[0.1em] transition-colors duration-150 ${currentView === 'docs' ? 'text-gold' : 'text-ash hover:text-white'}`}
+            onClick={() => setMenuOpen(false)}
           >
             Docs
-          </a>
+          </Link>
           <a 
-            href="#features" 
-            className="nav-link"
-            onClick={() => setMenuOpen(false)}
+            href="/" 
+            className="no-underline font-display text-[13.5px] font-medium uppercase tracking-[0.1em] transition-colors duration-150 text-ash hover:text-white"
+            onClick={(e) => {
+              e.preventDefault();
+              setMenuOpen(false);
+              if (currentView !== 'landing') {
+                onViewChange('landing');
+                setTimeout(() => {
+                  const el = document.getElementById('features');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+              } else {
+                const el = document.getElementById('features');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
           >
             Features
           </a>
         </div>
 
         {/* Right action status - Dark/Light Theme Toggle & Hamburger */}
-        <div className="header-actions">
-          <button 
+        <div className="flex items-center gap-3">
+          <Button 
             onClick={onToggleTheme} 
-            className="theme-toggle-btn"
+            variant="outline"
+            size="icon"
+            className="w-10 h-10"
             aria-label="Toggle Theme"
           >
-            {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
-          </button>
+            {theme === 'dark' ? <Icon icon="lucide:sun" width="16" height="16" /> : <Icon icon="lucide:moon" width="16" height="16" />}
+          </Button>
 
-          <button 
+          <Button 
             onClick={() => setMenuOpen(!menuOpen)} 
-            className="hamburger-btn"
+            variant="outline"
+            size="icon"
+            className="md:hidden w-10 h-10"
             aria-label="Toggle Menu"
           >
-            {menuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+            {menuOpen ? <Icon icon="lucide:x" width="20" height="20" /> : <Icon icon="lucide:menu" width="20" height="20" />}
+          </Button>
         </div>
 
       </div>
