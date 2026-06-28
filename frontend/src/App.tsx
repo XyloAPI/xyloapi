@@ -57,6 +57,32 @@ function AppContent() {
     }
   }, [navigate]);
 
+  // Dynamic Title & Meta Description SEO updates
+  useEffect(() => {
+    let title = 'XyloAPI - Platform API Scraping & Developer Tools Terlengkap';
+    let description = 'Akses ratusan API gratis, scraper web, downloader, dan alat bantu developer berkecepatan tinggi dengan respons JSON terstruktur.';
+
+    if (location.pathname === '/monitor') {
+      title = 'Monitor Sistem & Status Latensi API | XyloAPI';
+      description = 'Pemantauan real-time status server XyloAPI, latensi endpoint, rasio sukses, dan log performa sistem secara instan.';
+    } else if (location.pathname.startsWith('/docs')) {
+      title = 'Dokumentasi API Interaktif & Sandbox Developer | XyloAPI';
+      description = 'Jelajahi dan uji coba ratusan API scraper, downloader, dan banyak lagi secara interaktif dengan preview JSON instan.';
+    }
+
+    document.title = title;
+    
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute('content', description);
+    }
+    
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) {
+      ogTitle.setAttribute('content', title);
+    }
+  }, [location.pathname]);
+
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     return (localStorage.getItem('xyloapi-theme') as 'dark' | 'light') || 'dark';
   });
