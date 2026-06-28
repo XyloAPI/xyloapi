@@ -7,7 +7,7 @@ export const trumpTweetsRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/trumptweets',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate Donald Trump tweets with custom text.',
+  description: 'Hasilkan cuitan Donald Trump dengan teks kustom.',
   parameters: [
     { name: 'text', type: 'textarea', required: false, desc: 'The tweet message to render. Defaults to "MAKE AMERICA GREAT AGAIN!".' },
     {

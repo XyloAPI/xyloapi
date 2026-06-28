@@ -7,13 +7,13 @@ export const msnowRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/msnow',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest news from MS NOW / MSNBC (ms.now) by category. Returns up to 20 articles with title, image, description, author, and publish date.',
+    description: 'Ambil berita terbaru dari MS NOW / MSNBC (ms.now) berdasarkan kategori. Mengembalikan hingga 20 artikel dengan judul, gambar, deskripsi, penulis, dan tanggal terbit.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select an MS NOW category.',
+        desc: 'Pilih kategori berita MS NOW.',
         options: [
           { value: 'latest', label: 'Latest' },
           { value: 'news', label: 'News' },

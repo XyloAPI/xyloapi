@@ -7,9 +7,9 @@ export const toSingaporeRoute: DocTopic = {
     method: 'POST',
     path: '/api/ai-image-edit/to-singapore',
     pathTemplate: '/api/ai-image-edit/:slug',
-    description: 'Edit a person to appear standing in front of Singapore Merlion and Marina Bay Sands using advanced AI. Upload an image file or provide a direct image URL.',
+    description: 'Ubah latar belakang foto menjadi Merlion dan Marina Bay Sands Singapura.',
     parameters: [
-        { name: 'image', type: 'file', required: true, desc: 'Image file or direct image URL to edit.' }
+        { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diubah.' }
     ],
     payloadTemplate: {
         image: ''

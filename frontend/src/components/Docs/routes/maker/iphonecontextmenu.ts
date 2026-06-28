@@ -7,7 +7,7 @@ export const iphoneContextMenuRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/iphonecontextmenu',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate an iPhone long-press haptic touch context menu mockup with custom options.',
+  description: 'Buat mockup menu konteks haptic touch (tekan lama) ala iPhone dengan opsi kustom.',
   parameters: [
     { name: 'image', type: 'text', required: true, desc: 'Direct URL to the image to display.' }
   ],

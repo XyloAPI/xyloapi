@@ -7,7 +7,7 @@ export const myipRoute: DocTopic = {
   method: 'GET',
   path: '/api/info/myip',
   pathTemplate: '/api/info/:slug',
-  description: 'Automatically detect and look up geolocation information for the caller\'s own IP address. No parameters required.',
+  description: 'Deteksi otomatis dan cari informasi geolokasi untuk alamat IP panggilan Anda sendiri. Tidak memerlukan parameter.',
   parameters: [],
   payloadTemplate: {}
 };

@@ -7,9 +7,9 @@ export const ipv6CompatibilityRoute: DocTopic = {
   method: 'GET',
   path: '/api/info/ipv6-compatibility',
   pathTemplate: '/api/info/:slug',
-  description: 'Validate if a domain has IPv6 records configured for its web servers and name servers.',
+  description: 'Validasi apakah suatu domain memiliki record IPv6 yang dikonfigurasi untuk web server dan nameserver-nya.',
   parameters: [
-    { name: 'host', type: 'text', required: true, desc: 'Domain name to check (e.g. google.com).' }
+    { name: 'host', type: 'text', required: true, desc: 'Nama domain untuk dicek (contoh: google.com).' }
   ],
   payloadTemplate: {
     host: 'google.com'

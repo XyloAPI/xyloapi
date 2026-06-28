@@ -7,13 +7,13 @@ export const biRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/bi',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch latest official news releases, policy updates, and economic statements from Bank Indonesia (bi.go.id) with clean description extraction and retry handler.',
+    description: 'Ambil rilis berita resmi terbaru, pembaruan kebijakan, dan pernyataan ekonomi dari Bank Indonesia (bi.go.id) dengan ekstraksi deskripsi yang rapi dan penanganan retry.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a Bank Indonesia news category.',
+        desc: 'Pilih kategori berita Bank Indonesia.',
         options: [
           { value: 'news-release', label: 'News Release' }
         ]

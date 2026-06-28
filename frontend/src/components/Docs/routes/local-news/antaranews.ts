@@ -7,13 +7,13 @@ export const antaranewsRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/antaranews',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch latest local news from Antara News (antaranews.com) in Indonesia. Returns up to 20 articles with title, link, description, publish date, source, and media content by reading real-time RSS feeds.',
+    description: 'Ambil berita lokal terbaru dari Antara News (antaranews.com) di Indonesia. Mengembalikan hingga 20 artikel dengan judul, tautan, deskripsi, tanggal terbit, sumber, dan media melalui feed RSS real-time.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select an Antara News sub-portal.',
+        desc: 'Pilih sub-portal berita Antara News.',
         options: [
           { value: 'top-news', label: 'Antara Top News' },
           { value: 'politik', label: 'Antara Politik' },

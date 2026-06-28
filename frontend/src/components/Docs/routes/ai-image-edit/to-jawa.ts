@@ -7,9 +7,9 @@ export const toJawaRoute: DocTopic = {
     method: 'POST',
     path: '/api/ai-image-edit/to-jawa',
     pathTemplate: '/api/ai-image-edit/:slug',
-    description: 'Transform a person to wear traditional Javanese outfit (kebaya for women, beskap with blangkon for men) using advanced AI. Upload an image file or provide a direct image URL.',
+    description: 'Ubah foto mengenakan pakaian adat Jawa (kebaya/beskap & blangkon).',
     parameters: [
-        { name: 'image', type: 'file', required: true, desc: 'Image file or direct image URL to edit.' }
+        { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diubah.' }
     ],
     payloadTemplate: {
         image: ''

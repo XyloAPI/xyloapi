@@ -3,9 +3,10 @@ import { useState, useEffect, useRef } from 'react';
 interface CustomVideoPlayerProps {
   src: string;
   poster?: string;
+  style?: React.CSSProperties;
 }
 
-export default function CustomVideoPlayer({ src, poster }: CustomVideoPlayerProps) {
+export default function CustomVideoPlayer({ src, poster, style }: CustomVideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -86,7 +87,8 @@ export default function CustomVideoPlayer({ src, poster }: CustomVideoPlayerProp
         flexDirection: 'column',
         userSelect: 'none',
         boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)',
-        boxSizing: 'border-box'
+        boxSizing: 'border-box',
+        ...style
       }}
     >
       <style>{`

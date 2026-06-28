@@ -7,13 +7,13 @@ export const cnaRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/cna',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch latest local news, economy, lifestyle, and regional updates from CNA Indonesia (cna.id). Returns up to 20 articles with title, link, description, publish date, source, and image content.',
+    description: 'Ambil berita lokal terbaru, ekonomi, gaya hidup, dan pembaruan regional dari CNA Indonesia (cna.id). Mengembalikan hingga 20 artikel.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a CNA Indonesia category.',
+        desc: 'Pilih kategori berita CNA Indonesia.',
         options: [
           { value: 'news', label: 'Berita Utama' },
           { value: 'terbaru', label: 'Terbaru' },

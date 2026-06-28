@@ -21,7 +21,9 @@ categories = [
     'uploader',
     'maker',
     'ai_image_edit',
-    'tools'
+    'tools',
+    'primbon',
+    'search'
 ]
 for cat in categories:
     sys.path.append(os.path.join(scrapers_dir, cat))

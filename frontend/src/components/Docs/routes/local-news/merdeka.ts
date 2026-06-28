@@ -7,13 +7,13 @@ export const merdekaRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/merdeka',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch latest local news, politics, economy, celebrities, trending topics, and regional updates from Merdeka News (merdeka.com). Returns up to 20 articles with title, link, description, publish date, source, and image content.',
+    description: 'Ambil berita lokal terbaru, politik, ekonomi, selebritas, topik hangat, dan berita regional dari Merdeka News (merdeka.com).',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a Merdeka News category.',
+        desc: 'Pilih kategori berita Merdeka News.',
         options: [
           { value: 'news', label: 'News' },
           { value: 'politik', label: 'Politik' },

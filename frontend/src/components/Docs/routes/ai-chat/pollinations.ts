@@ -7,9 +7,9 @@ export const pollinationsRoute: DocTopic = {
     method: 'GET',
     path: '/api/ai-chat/pollinations',
     pathTemplate: '/api/ai-chat/:slug',
-    description: 'Interact with Pollinations AI. A free and open AI model for general chat and text generation.',
+    description: 'Model AI gratis dan terbuka untuk obrolan umum dan pembuatan teks.',
     parameters: [
-      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+      { name: 'prompt', type: 'text', required: true, desc: 'Pesan atau pertanyaan yang ingin diajukan ke AI.' }
     ],
     payloadTemplate: {
       prompt: ''

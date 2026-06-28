@@ -7,7 +7,7 @@ export const vgdRoute: DocTopic = {
     method: 'GET',
     path: '/api/shortlink/vgd',
     pathTemplate: '/api/shortlink/:slug',
-    description: 'Shorten long URLs instantly using the v.gd shortening service.',
+    description: 'Perpendek URL panjang secara instan menggunakan layanan v.gd.',
     parameters: [
       { name: 'url', type: 'text', required: true, desc: 'The long URL to be shortened.' }
     ],

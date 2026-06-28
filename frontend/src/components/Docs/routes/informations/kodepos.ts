@@ -7,10 +7,10 @@ export const kodeposRoute: DocTopic = {
   method: 'GET',
   path: '/api/info/kodepos',
   pathTemplate: '/api/info/:slug',
-  description: 'Search for Indonesian postal codes (kodepos) by postal code number or area names (province, regency, district, village).',
+  description: 'Cari kode pos Indonesia berdasarkan nomor kode pos atau nama area (provinsi, kabupaten, kecamatan, desa).',
   parameters: [
-    { name: 'query', type: 'text', required: true, desc: 'Search query (e.g. area name or postal code digits).' },
-    { name: 'limit', type: 'text', required: false, desc: 'Maximum number of results to return (default: 50).' }
+    { name: 'query', type: 'text', required: true, desc: 'Kueri pencarian (contoh: nama area atau digit kode pos).' },
+    { name: 'limit', type: 'text', required: false, desc: 'Kueri pencarian (contoh: nama area atau digit kode pos).' }
   ],
   payloadTemplate: {
     query: '',

@@ -7,9 +7,9 @@ export const toZombieRoute: DocTopic = {
     method: 'POST',
     path: '/api/ai-image-edit/to-zombie',
     pathTemplate: '/api/ai-image-edit/:slug',
-    description: 'Transform a person into a scary zombie using advanced AI editing. Upload an image file or direct image URL.',
+    description: 'Ubah wajah menjadi zombie yang menyeramkan.',
     parameters: [
-        { name: 'image', type: 'file', required: true, desc: 'Image file or direct image URL to edit.' }
+        { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diubah.' }
     ],
     payloadTemplate: {
         image: ''

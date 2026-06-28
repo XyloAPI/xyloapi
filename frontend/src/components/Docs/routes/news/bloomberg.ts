@@ -7,13 +7,13 @@ export const bloombergRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/bloomberg',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest news from Bloomberg (bloomberg.com) by category. Returns up to 25 articles with title, high-res image (1200px), description, author, and publish date — powered by official Bloomberg RSS feeds.',
+    description: 'Ambil berita terbaru dari Bloomberg (bloomberg.com) berdasarkan kategori. Mengembalikan hingga 25 artikel dengan judul, gambar beresolusi tinggi, deskripsi, penulis, dan tanggal terbit - didukung oleh feed RSS resmi Bloomberg.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a Bloomberg category.',
+        desc: 'Pilih kategori berita Bloomberg.',
         options: [
           { value: 'markets', label: 'Markets' },
           { value: 'technology', label: 'Technology' },

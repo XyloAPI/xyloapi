@@ -7,9 +7,9 @@ export const magicstudioRoute: DocTopic = {
   method: 'POST',
   path: '/api/ai-image/magicstudio',
   pathTemplate: '/api/ai-image/:slug',
-  description: 'Generate artistic and photographic styles using Magic Studio AI image generation.',
+  description: 'Buat gaya artistik dan fotografi menggunakan fitur pembuatan gambar Magic Studio AI.',
   parameters: [
-    { name: 'prompt', type: 'text', required: true, desc: 'The text prompt to generate an image for.' }
+    { name: 'prompt', type: 'text', required: true, desc: 'Teks prompt untuk membuat gambar.' }
   ],
   payloadTemplate: {
     prompt: ''

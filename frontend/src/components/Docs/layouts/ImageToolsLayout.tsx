@@ -25,9 +25,6 @@ export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard
     return (
       <div className="response-layout">
         <div className="response-header">
-          <span className="response-status-badge" style={{ backgroundColor: '#4caf50', color: 'var(--black)', fontWeight: 700 }}>
-            ✓ DISTANCE CALCULATED SUCCESSFULLY
-          </span>
           <h2 className="response-title">
             {dariNama} ➔ {keNama} Route Calculation
           </h2>
@@ -114,9 +111,6 @@ export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard
     return (
       <div className="response-layout">
         <div className="response-header">
-          <span className="response-status-badge" style={{ backgroundColor: '#4caf50', color: 'var(--black)', fontWeight: 700 }}>
-            ✓ IP INFORMATION RETRIEVED SUCCESSFULLY
-          </span>
           <h2 className="response-title">
             Lookup Result: {ip}
           </h2>
@@ -233,9 +227,6 @@ export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard
     return (
       <div className="response-layout">
         <div className="response-header">
-          <span className="response-status-badge" style={{ backgroundColor: 'var(--gold)', color: 'var(--black)' }}>
-            ✓ TRANSLITERATION COMPLETED
-          </span>
           <h2 className="response-title">
             {activeTopic.title} Result
           </h2>
@@ -310,9 +301,6 @@ export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard
     return (
       <div className="response-layout">
         <div className="response-header">
-          <span className="response-status-badge">
-            ✓ TRANSLATION COMPLETED
-          </span>
           <h2 className="response-title">
             {activeTopic.title} Result
           </h2>
@@ -388,9 +376,6 @@ export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard
     return (
       <div className="response-layout">
         <div className="response-header">
-          <span className="response-status-badge">
-            ✓ TEXT EXTRACTED SUCCESSFULLY
-          </span>
           <h2 className="response-title">
             {activeTopic.title} Result
           </h2>
@@ -464,9 +449,6 @@ export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard
     return (
       <div className="response-layout">
         <div className="response-header">
-          <span className="response-status-badge">
-            ✓ WEBSITE CLONED SUCCESSFULLY
-          </span>
           <h2 className="response-title">
             {activeTopic.title} Result
           </h2>
@@ -536,9 +518,6 @@ export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard
     return (
       <div className="response-layout">
         <div className="response-header">
-          <span className="response-status-badge">
-            ✓ IMAGE SPLIT SUCCESSFUL
-          </span>
           <h2 className="response-title">
             Split Image Grid ({gridCols}x{gridRows})
           </h2>
@@ -658,26 +637,7 @@ export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard
   const isTools = activeTopic.category === 'Tools';
   const isBase64ToImage = activeTopic.id === 'base64-to-image';
 
-  let badgeText = '✓ BACKGROUND REMOVED';
-  if (isUpscale) badgeText = '✓ IMAGE UPSCALED';
-  if (isSepia) badgeText = '✓ SEPIA FILTER APPLIED';
-  if (isInvert) badgeText = '✓ COLORS INVERTED';
-  if (isFlip) badgeText = '✓ IMAGE FLIPPED';
-  if (isPixelate) badgeText = '✓ RETRO PIXELATION APPLIED';
-  if (isRound) badgeText = '✓ CORNERS ROUNDED';
-  if (isNoise) badgeText = '✓ NOISE FILTER APPLIED';
-  if (isBlur) badgeText = '✓ IMAGE BLURRED';
-  if (isSharpen) badgeText = '✓ IMAGE SHARPENED';
-  if (isSolarize) badgeText = '✓ SOLARIZE EFFECT APPLIED';
-  if (isGlow) badgeText = '✓ GLOW EFFECT APPLIED';
-  if (isPosterize) badgeText = '✓ POSTERIZE EFFECT APPLIED';
-  if (isBlurFace) badgeText = '✓ FACES BLURRED';
-  if (isEnhance) badgeText = '✓ IMAGE ENHANCED';
-  if (isQR) badgeText = '✓ QR CODE GENERATED';
-  if (isAIImage) badgeText = '✓ AI IMAGE GENERATED';
-  if (isAIEdit) badgeText = '✓ IMAGE EDITED SUCCESSFULLY';
-  if (isTools) badgeText = '✓ WEBSITE SCREENSHOT CAPTURED';
-  if (isBase64ToImage) badgeText = '✓ BASE64 IMAGE DECODED';
+
 
   let downloadText = 'DOWNLOAD TRANSPARENT IMAGE';
   if (isUpscale) downloadText = 'DOWNLOAD UPSCALED IMAGE';
@@ -706,9 +666,6 @@ export default function ImageToolsLayout({ activeTopic, resData, copyToClipboard
   return (
     <div className="response-layout">
       <div className="response-header">
-        <span className="response-status-badge">
-          {badgeText}
-        </span>
         <h2 className="response-title">
           {activeTopic.title} Result
         </h2>

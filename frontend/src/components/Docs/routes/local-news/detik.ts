@@ -7,13 +7,13 @@ export const detikRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/detik',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch latest local news from Detik (detik.com) in Indonesia. Returns up to 20 articles with title, link, description, publish date, source, and media content by crawling real-time sub-portal article indices.',
+    description: 'Ambil berita lokal terbaru dari Detik (detik.com) di Indonesia. Mengembalikan hingga 20 artikel melalui pemindaian indeks artikel real-time.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a Detik news sub-portal.',
+        desc: 'Pilih sub-portal berita Detik.',
         options: [
           { value: 'news', label: 'Detik News' },
           { value: 'finance', label: 'Detik Finance' },

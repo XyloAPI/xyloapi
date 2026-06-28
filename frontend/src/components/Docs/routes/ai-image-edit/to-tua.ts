@@ -7,9 +7,9 @@ export const toTuaRoute: DocTopic = {
     method: 'POST',
     path: '/api/ai-image-edit/to-tua',
     pathTemplate: '/api/ai-image-edit/:slug',
-    description: 'Transform a person to look old with realistic wrinkles and grey hair using advanced AI. Upload an image file or provide a direct image URL.',
+    description: 'Ubah wajah menjadi terlihat tua dengan kerutan dan rambut beruban yang realistis.',
     parameters: [
-        { name: 'image', type: 'file', required: true, desc: 'Image file or direct image URL to edit.' }
+        { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diubah.' }
     ],
     payloadTemplate: {
         image: ''

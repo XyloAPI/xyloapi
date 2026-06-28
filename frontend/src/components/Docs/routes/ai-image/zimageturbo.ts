@@ -7,10 +7,10 @@ export const zimageturboRoute: DocTopic = {
   method: 'POST',
   path: '/api/ai-image/zimageturbo',
   pathTemplate: '/api/ai-image/:slug',
-  description: 'Generate high-definition imagery using Z-Image Turbo with fast reasoning and negative prompt capabilities.',
+  description: 'Hasilkan gambar berdefinisi tinggi menggunakan Z-Image Turbo dengan kemampuan penalaran cepat dan prompt negatif.',
   parameters: [
-    { name: 'prompt', type: 'text', required: true, desc: 'The text prompt to generate an image for.' },
-    { name: 'negative_prompt', type: 'text', required: false, desc: 'Description of what to avoid in the generated image.' }
+    { name: 'prompt', type: 'text', required: true, desc: 'Teks prompt untuk membuat gambar.' },
+    { name: 'negative_prompt', type: 'text', required: false, desc: 'Deskripsi tentang apa yang harus dihindari dalam gambar yang dihasilkan.' }
   ],
   payloadTemplate: {
     prompt: '',

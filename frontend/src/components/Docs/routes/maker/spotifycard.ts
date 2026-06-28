@@ -7,7 +7,7 @@ export const spotifycardRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/spotifycard',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate Spotify-style music player cards.',
+  description: 'Hasilkan kartu pemutar musik bergaya aplikasi Spotify.',
   parameters: [
     { name: 'title', type: 'text', required: false, desc: 'The title of the song/track. Defaults to "STAY HERE 4 LIFE".' },
     { name: 'artist', type: 'text', required: false, desc: 'The name of the artist(s). Defaults to "A$AP Rocky".' },

@@ -7,13 +7,13 @@ export const hukumonlineRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/hukumonline',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch latest legal news, analyses, commentaries, and campus updates from Hukumonline (hukumonline.com) bypassing anti-scraping protections via advanced browser impersonation.',
+    description: 'Ambil berita hukum terbaru, analisis, komentar, dan pembaruan kampus dari Hukumonline (hukumonline.com) yang menembus perlindungan anti-scraping dengan simulasi browser tingkat lanjut.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a Hukumonline news category.',
+        desc: 'Pilih kategori berita Hukumonline.',
         options: [
           { value: 'latest', label: 'Berita Terbaru' },
           { value: 'utama', label: 'Berita Utama' },

@@ -7,7 +7,7 @@ export const cleanuriRoute: DocTopic = {
     method: 'GET',
     path: '/api/shortlink/cleanuri',
     pathTemplate: '/api/shortlink/:slug',
-    description: 'Shorten long URLs instantly using the CleanURI shortening service.',
+    description: 'Perpendek URL panjang secara instan menggunakan layanan CleanURI.',
     parameters: [
       { name: 'url', type: 'text', required: true, desc: 'The long URL to be shortened.' }
     ],

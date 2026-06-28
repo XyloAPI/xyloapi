@@ -7,11 +7,11 @@ export const splitRoute: DocTopic = {
     method: 'POST',
     path: '/api/image-tool/split',
     pathTemplate: '/api/image-tool/:slug',
-    description: 'Split your images into multiple parts (horizontal rows and vertical columns grid) instantly. Upload an image file or provide a direct image URL.',
+    description: 'Bagi (split) gambar Anda menjadi beberapa bagian (kolom vertikal dan baris horizontal) secara instan.',
     parameters: [
-      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' },
-      { name: 'rows', type: 'number', required: false, desc: 'Number of rows to split the image into (1-10). Default is 2.' },
-      { name: 'cols', type: 'number', required: false, desc: 'Number of columns to split the image into (1-10). Default is 2.' }
+      { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diproses.' },
+      { name: 'rows', type: 'number', required: false, desc: 'Jumlah baris untuk membagi gambar (1-10). Default adalah 2.' },
+      { name: 'cols', type: 'number', required: false, desc: 'Jumlah kolom untuk membagi gambar (1-10). Default adalah 2.' }
     ],
     payloadTemplate: {
       image: '',

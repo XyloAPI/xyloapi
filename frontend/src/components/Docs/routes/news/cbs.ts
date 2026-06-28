@@ -7,13 +7,13 @@ export const cbsRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/cbs',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest news from CBS News (cbsnews.com) by category. Returns up to 25 articles with title, image (1200x630), description, and publish date — powered by official CBS News RSS feeds.',
+    description: 'Ambil berita terbaru dari CBS News (cbsnews.com) berdasarkan kategori. Mengembalikan hingga 25 artikel dengan judul, gambar, deskripsi, dan tanggal terbit - didukung oleh feed RSS resmi CBS News.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a CBS News category.',
+        desc: 'Pilih kategori berita CBS News.',
         options: [
           { value: 'main', label: 'Main / Top Stories' },
           { value: 'us', label: 'US' },

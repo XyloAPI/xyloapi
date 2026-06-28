@@ -7,13 +7,13 @@ export const independentRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/independent',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch general news, politics, business, sport, tech, and travel updates from The Independent (independent.co.uk). Returns up to 20 articles with title, link, description, publish date, source, and media content directly from their official RSS feeds.',
+    description: 'Ambil berita umum, politik, bisnis, olahraga, tekno, dan perjalanan dari The Independent (independent.co.uk). Mengembalikan hingga 20 artikel langsung dari feed RSS resmi.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a section from The Independent.',
+        desc: 'Pilih kategori berita The Independent.',
         options: [
           { value: 'top', label: 'Top Stories' },
           { value: 'news', label: 'General News' },

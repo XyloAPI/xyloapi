@@ -7,13 +7,13 @@ export const skynewsRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/skynews',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest news from Sky News (news.sky.com) by category. Returns up to 20 articles with title, high-res image (1920×1080), description, and publish date — powered by official Sky News RSS feeds.',
+    description: 'Ambil berita terbaru dari Sky News (news.sky.com) berdasarkan kategori. Mengembalikan hingga 20 artikel dengan judul, gambar beresolusi tinggi, dan deskripsi.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a Sky News category.',
+        desc: 'Pilih kategori berita Sky News.',
         options: [
           { value: 'home', label: 'Home' },
           { value: 'uk', label: 'UK' },

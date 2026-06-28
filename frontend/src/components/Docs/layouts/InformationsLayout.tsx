@@ -409,9 +409,6 @@ export default function InformationsLayout({ activeTopic, resData }: Information
   return (
     <div className="response-layout">
       <div className="response-header">
-        <span className="response-status-badge">
-          ✓ RESPONSE PROCESSED
-        </span>
         <h2 className="response-title">
           {activeTopic.title} Results
         </h2>
@@ -478,9 +475,6 @@ export default function InformationsLayout({ activeTopic, resData }: Information
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         <div className="response-header" style={{ marginBottom: '0' }}>
-          <span className="response-status-badge" style={{ backgroundColor: 'var(--cyan-pulse)', color: 'var(--black)', fontWeight: 700 }}>
-            ✓ URL ANALYZED SUCCESSFULLY
-          </span>
           <h2 className="response-title">
             URL Component Analyzer
           </h2>

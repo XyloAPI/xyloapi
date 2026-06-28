@@ -7,10 +7,10 @@ export const sepiaRoute: DocTopic = {
     method: 'POST',
     path: '/api/image-tool/sepia',
     pathTemplate: '/api/image-tool/:slug',
-    description: 'Apply a classic, warm, vintage sepia tone filter to your images instantly. Upload an image file or provide a direct image URL, and adjust the optional intensity parameter.',
+    description: 'Terapkan filter warna sepia bergaya klasik dan vintage pada gambar dengan intensitas yang dapat disesuaikan.',
     parameters: [
-      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' },
-      { name: 'intensity', type: 'number', required: false, desc: 'Sepia effect intensity (amount) from 0 to 100. Default is 80.' }
+      { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diproses.' },
+      { name: 'intensity', type: 'number', required: false, desc: 'Intensitas efek sepia dari 0 hingga 100. Default adalah 80.' }
     ],
     payloadTemplate: {
       image: '',

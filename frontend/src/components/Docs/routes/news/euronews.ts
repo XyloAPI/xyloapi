@@ -7,13 +7,13 @@ export const euronewsRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/euronews',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch multi-language pan-European news from Euronews (euronews.com). Returns up to 20 articles with title, link, description, source, and publish date by parsing their official XML feeds directly.',
+    description: 'Ambil berita multi-bahasa se-Eropa dari Euronews (euronews.com). Mengembalikan hingga 20 artikel dengan mem-parsing feed XML resmi mereka secara langsung.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a Euronews news section.',
+        desc: 'Pilih kategori berita Euronews.',
         options: [
           { value: 'top', label: 'Latest News' },
           { value: 'news', label: 'News' },

@@ -7,9 +7,9 @@ export const toMalaysiaRoute: DocTopic = {
     method: 'POST',
     path: '/api/ai-image-edit/to-malaysia',
     pathTemplate: '/api/ai-image-edit/:slug',
-    description: 'Edit a person to appear standing in front of the Petronas Twin Towers in Kuala Lumpur using advanced AI. Upload an image file or provide a direct image URL.',
+    description: 'Ubah latar belakang foto menjadi Menara Kembar Petronas di Kuala Lumpur.',
     parameters: [
-        { name: 'image', type: 'file', required: true, desc: 'Image file or direct image URL to edit.' }
+        { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diubah.' }
     ],
     payloadTemplate: {
         image: ''

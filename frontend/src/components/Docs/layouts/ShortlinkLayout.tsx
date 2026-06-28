@@ -7,9 +7,6 @@ export default function ShortlinkLayout({ resData, copyToClipboard }: ShortlinkL
   return (
     <div className="response-layout">
       <div className="response-header">
-        <span className="response-status-badge">
-          ✓ URL SHORTENED SUCCESSFULLY
-        </span>
         <h2 className="response-title">
           Shortlink Result
         </h2>

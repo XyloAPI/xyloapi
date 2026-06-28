@@ -7,9 +7,9 @@ export const gitaaiRoute: DocTopic = {
     method: 'GET',
     path: '/api/ai-chat/gitaai',
     pathTemplate: '/api/ai-chat/:slug',
-    description: 'Interact with Gita AI. Get spiritual guidance and wisdom inspired by the Bhagavad Gita.',
+    description: 'Dapatkan bimbingan spiritual dan kebijaksanaan yang terinspirasi dari Bhagavad Gita.',
     parameters: [
-      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+      { name: 'prompt', type: 'text', required: true, desc: 'Pesan atau pertanyaan yang ingin diajukan ke AI.' }
     ],
     payloadTemplate: {
       prompt: ''

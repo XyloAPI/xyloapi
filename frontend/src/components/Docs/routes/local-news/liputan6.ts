@@ -7,13 +7,13 @@ export const liputan6Route: DocTopic = {
     method: 'POST',
     path: '/api/news/liputan6',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch latest local news from Liputan6 (liputan6.com) in Indonesia. Returns up to 20 articles with title, link, description, publish date, source, and media content by crawling real-time sub-portal article indices.',
+    description: 'Ambil berita lokal terbaru dari Liputan6 (liputan6.com) di Indonesia. Mengembalikan hingga 20 artikel dengan pemindaian indeks sub-portal real-time.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a Liputan6 news sub-portal.',
+        desc: 'Pilih sub-portal berita Liputan6.',
         options: [
           { value: 'news', label: 'Liputan6 News' },
           { value: 'bisnis', label: 'Liputan6 Bisnis (Economy)' },

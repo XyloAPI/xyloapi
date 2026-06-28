@@ -7,9 +7,9 @@ export const xRoute: DocTopic = {
     method: 'POST',
     path: '/api/downloader/x',
     pathTemplate: '/api/downloader/:slug',
-    description: 'Download videos, images, and GIFs from Twitter / X posts.',
+    description: 'Unduh video, gambar, dan GIF dari postingan Twitter / X.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'public Twitter/X post URL.' }
+      { name: 'url', type: 'text', required: true, desc: 'URL publik postingan Twitter / X.' }
     ],
     payloadTemplate: {
       url: ''

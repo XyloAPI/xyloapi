@@ -7,9 +7,9 @@ export const douyinRoute: DocTopic = {
     method: 'POST',
     path: '/api/downloader/douyin',
     pathTemplate: '/api/downloader/:slug',
-    description: 'Download Douyin videos and photos in high quality without watermark.',
+    description: 'Unduh video dan foto dari Douyin dengan kualitas tinggi tanpa watermark.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'Douyin video/post URL.' }
+      { name: 'url', type: 'text', required: true, desc: 'URL video/postingan Douyin.' }
     ],
     payloadTemplate: {
       url: ''

@@ -14,6 +14,8 @@ import UploaderLayout from './Docs/layouts/UploaderLayout';
 import AIChatLayout from './Docs/layouts/AIChatLayout';
 import BMKGLayout from './Docs/layouts/BMKGLayout';
 import InformationsLayout from './Docs/layouts/InformationsLayout';
+import PrimbonLayout from './Docs/layouts/PrimbonLayout';
+import SearchLayout from './Docs/layouts/SearchLayout';
 
 export default function Docs() {
   const [activeTopic, setActiveTopic] = useState<DocTopic | null>(null);
@@ -58,11 +60,28 @@ export default function Docs() {
 
   // Construct JSON request payload programmatically from formState values
   const getPayloadJson = () => {
-    if (!activeTopic || !activeTopic.payloadTemplate) return '';
+    if (!activeTopic) return '';
     const bodyObj: any = {};
+    if (activeTopic.payloadTemplate) {
+      Object.entries(activeTopic.payloadTemplate).forEach(([key, val]) => {
+        bodyObj[key] = val;
+      });
+    }
     Object.entries(formValues).forEach(([key, val]) => {
       bodyObj[key] = val;
     });
+
+    // Fallback for select parameters
+    if (activeTopic.parameters) {
+      activeTopic.parameters.forEach(param => {
+        if (param.type === 'select' && (bodyObj[param.name] === undefined || bodyObj[param.name] === '')) {
+          const firstOpt = param.options?.[0];
+          if (firstOpt) {
+            bodyObj[param.name] = typeof firstOpt === 'string' ? firstOpt : firstOpt.value;
+          }
+        }
+      });
+    }
     return JSON.stringify(bodyObj, null, 2);
   };
 
@@ -109,7 +128,11 @@ export default function Docs() {
         if (topic.parameters) {
           topic.parameters.forEach(param => {
             if (param.name !== 'image' && param.name !== 'url') {
-              const val = formValues[param.name] !== undefined ? formValues[param.name] : '';
+              let val = formValues[param.name] !== undefined ? formValues[param.name] : '';
+              if (param.type === 'select' && (val === undefined || val === '')) {
+                const firstOpt = param.options?.[0];
+                if (firstOpt) val = typeof firstOpt === 'string' ? firstOpt : (firstOpt as any).value;
+              }
               const displayVal = val !== '' ? encodeURIComponent(String(val)) : `:${param.name}`;
               queryParts.push(`${param.name}=${displayVal}`);
             }
@@ -119,7 +142,11 @@ export default function Docs() {
         topic.parameters.forEach(param => {
           const isPathSnippet = path.includes(`:${param.name}`) || (topic.path && topic.path.includes(`:${param.name}`));
           if (!isPathSnippet) {
-            const val = formValues[param.name] !== undefined ? formValues[param.name] : '';
+            let val = formValues[param.name] !== undefined ? formValues[param.name] : '';
+            if (param.type === 'select' && (val === undefined || val === '')) {
+              const firstOpt = param.options?.[0];
+              if (firstOpt) val = typeof firstOpt === 'string' ? firstOpt : (firstOpt as any).value;
+            }
             const displayVal = val !== '' ? encodeURIComponent(String(val)) : `:${param.name}`;
             queryParts.push(`${param.name}=${displayVal}`);
           }
@@ -134,7 +161,11 @@ export default function Docs() {
       if (selectParams.length > 0) {
         const params = new URLSearchParams();
         selectParams.forEach((param: any) => {
-          const val = formValues[param.name] !== undefined ? formValues[param.name] : '';
+          let val = formValues[param.name] !== undefined ? formValues[param.name] : '';
+          if (param.type === 'select' && (val === undefined || val === '')) {
+            const firstOpt = param.options?.[0];
+            if (firstOpt) val = typeof firstOpt === 'string' ? firstOpt : (firstOpt as any).value;
+          }
           if (val) params.append(param.name, String(val));
         });
         const qs = params.toString();
@@ -334,6 +365,20 @@ export default function Docs() {
     if ((activeTopic.category === 'Informations' || activeTopic.category === 'DNS Tools' || activeTopic.category === 'Email Tools' || activeTopic.category === 'IP Tools' || activeTopic.category === 'Dev Tools' || activeTopic.category === 'Cyber Security Tools') && resData) {
       return <InformationsLayout activeTopic={activeTopic} resData={resData} />;
     }
+
+    if (activeTopic.category === 'Primbon' && resData) {
+      return <PrimbonLayout activeTopic={activeTopic} resData={resData} />;
+    }
+
+    if (activeTopic.category === 'Search' && resData) {
+      return (
+        <SearchLayout
+          resData={resData}
+          copyToClipboard={copyToClipboard}
+        />
+      );
+    }
+
 
     return (
       <pre className="response-pre">

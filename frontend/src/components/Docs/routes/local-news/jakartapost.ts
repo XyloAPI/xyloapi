@@ -7,13 +7,13 @@ export const jakartapostRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/jakartapost',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch latest English local news, business, opinion editorials, world affairs, culture, and sports updates from The Jakarta Post (thejakartapost.com). Returns up to 20 articles with title, link, description, publish date, source, and image content.',
+    description: 'Ambil berita lokal berbahasa Inggris terbaru, bisnis, opini editorial, urusan dunia, budaya, dan olahraga dari The Jakarta Post (thejakartapost.com).',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a Jakarta Post category.',
+        desc: 'Pilih kategori berita Jakarta Post.',
         options: [
           { value: 'indonesia', label: 'Indonesia' },
           { value: 'business', label: 'Business' },

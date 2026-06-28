@@ -7,13 +7,13 @@ export const forbesRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/forbes',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch global business, investing, technology, and leadership news from Forbes (forbes.com). Combines direct high-fidelity parsing of official Forbes RSS feeds (for top, business, and innovation sections) with targeted Google News query fallbacks for secondary sections.',
+    description: 'Ambil berita bisnis global, investasi, teknologi, dan kepemimpinan dari Forbes (forbes.com). Menggabungkan parsing feed RSS resmi dan pencarian fallback Google News.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a Forbes news section.',
+        desc: 'Pilih kategori berita Forbes.',
         options: [
           { value: 'top', label: 'Most Popular' },
           { value: 'business', label: 'Business' },

@@ -7,13 +7,13 @@ export const okezoneRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/okezone',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch latest general, techno, and sports news from Okezone (okezone.com) in Indonesia. Returns up to 20 articles with title, link, description, publish date, source, and image using sindikasi RSS feeds with concurrent metadata resolution.',
+    description: 'Ambil berita umum, tekno, dan olahraga terbaru dari Okezone (okezone.com) di Indonesia melalui sindikasi feed RSS.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select an Okezone news category.',
+        desc: 'Pilih kategori berita Okezone.',
         options: [
           { value: 'breaking', label: 'Okezone Breaking News' },
           { value: 'news', label: 'Okezone News' },

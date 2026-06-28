@@ -7,9 +7,9 @@ export const litterboxRoute: DocTopic = {
     method: 'POST',
     path: '/api/uploader/litterbox',
     pathTemplate: '/api/uploader/:slug',
-    description: 'Upload temporary files up to 1GB directly to the Litterbox.catbox.moe platform (expires in 24h).',
+    description: 'Unggah file sementara hingga 1GB langsung ke platform Litterbox.catbox.moe (kedaluwarsa dalam 24 jam).',
     parameters: [
-      { name: 'image', type: 'file', required: true, desc: 'Select local image file to upload or enter image URL' }
+      { name: 'image', type: 'file', required: true, desc: 'Pilih file gambar lokal untuk diunggah atau masukkan URL gambar' }
     ],
     payloadTemplate: {
       image: ''

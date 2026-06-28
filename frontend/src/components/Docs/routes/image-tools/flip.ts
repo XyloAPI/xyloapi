@@ -7,14 +7,14 @@ export const flipRoute: DocTopic = {
     method: 'POST',
     path: '/api/image-tool/flip',
     pathTemplate: '/api/image-tool/:slug',
-    description: 'Flip your images horizontally (mirror effect) or vertically (upside down) instantly. Upload an image file or provide a direct image URL.',
+    description: 'Balik (flip) gambar Anda secara vertikal atau horizontal secara online.',
     parameters: [
-      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' },
+      { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diproses.' },
       {
         name: 'direction',
         type: 'select',
         required: false,
-        desc: 'Flip direction: "horizontal" or "vertical". Default is "horizontal".',
+        desc: 'Arah flip: "horizontal" atau "vertical". Default adalah "horizontal".',
         options: [
           { value: 'horizontal', label: 'Horizontal (Mirror Effect)' },
           { value: 'vertical', label: 'Vertical (Upside Down)' }

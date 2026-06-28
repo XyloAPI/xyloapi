@@ -7,13 +7,13 @@ export const kompasRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/kompas',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch latest local news from Kompas (kompas.com) in Indonesia. Returns up to 20 articles with title, link, description, publish date, source, and media content by crawling real-time sub-portal article indices.',
+    description: 'Ambil berita lokal terbaru dari Kompas (kompas.com) di Indonesia. Mengembalikan hingga 20 artikel dengan indeks artikel yang dipindai secara real-time.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a Kompas news sub-portal.',
+        desc: 'Pilih sub-portal berita Kompas.',
         options: [
           { value: 'news', label: 'Kompas News' },
           { value: 'nasional', label: 'Kompas Nasional' },

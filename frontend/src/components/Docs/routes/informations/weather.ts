@@ -7,9 +7,9 @@ export const weatherRoute: DocTopic = {
   method: 'GET',
   path: '/api/info/weather',
   pathTemplate: '/api/info/:slug',
-  description: 'Retrieve real-time weather information and forecast for a specified city or location globally.',
+  description: 'Ambil informasi cuaca secara real-time dan prakiraan cuaca untuk kota atau lokasi yang ditentukan di seluruh dunia.',
   parameters: [
-    { name: 'location', type: 'text', required: false, desc: 'City or location name (default: jakarta).' }
+    { name: 'location', type: 'text', required: false, desc: 'Nama kota atau lokasi (default: jakarta).' }
   ],
   payloadTemplate: {
     location: 'jakarta'

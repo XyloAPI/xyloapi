@@ -7,13 +7,13 @@ export const sindonewsRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/sindonews',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch latest local news from Sindonews (sindonews.com) in Indonesia. Returns up to 20 articles with title, link, description, publish date, source, and media content by reading real-time RSS feeds.',
+    description: 'Ambil berita lokal terbaru dari Sindonews (sindonews.com) di Indonesia. Mengembalikan hingga 20 artikel melalui feed RSS real-time.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a Sindonews sub-portal.',
+        desc: 'Pilih sub-portal berita Sindonews.',
         options: [
           { value: 'latest', label: 'Sindonews Terbaru' },
           { value: 'nasional', label: 'Sindonews Nasional' },

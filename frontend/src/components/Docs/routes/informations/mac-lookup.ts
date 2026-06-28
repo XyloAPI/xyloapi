@@ -7,9 +7,9 @@ export const macLookupRoute: DocTopic = {
   method: 'GET',
   path: '/api/info/mac-lookup',
   pathTemplate: '/api/info/:slug',
-  description: 'Lookup detailed organization, block registry, private status, and record history for any MAC address.',
+  description: 'Cari detail organisasi, registri blok, status pribadi, dan riwayat record untuk alamat MAC apa pun.',
   parameters: [
-    { name: 'mac', type: 'text', required: true, desc: 'MAC Address to look up (e.g. 40-A8-F0-4F-50-9E or 40:A8:F0:4F:50:9E).' }
+    { name: 'mac', type: 'text', required: true, desc: 'Alamat MAC yang akan dicari (contoh: 40-A8-F0-4F-50-9E atau 40:A8:F0:4F:50:9E).' }
   ],
   payloadTemplate: {
     mac: '40-A8-F0-4F-50-9E'

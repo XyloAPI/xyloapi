@@ -7,9 +7,9 @@ export const toDubaiRoute: DocTopic = {
     method: 'POST',
     path: '/api/ai-image-edit/to-dubai',
     pathTemplate: '/api/ai-image-edit/:slug',
-    description: 'Edit a person to appear standing in front of Dubai skyscrapers like Burj Khalifa and Burj Al Arab using advanced AI. Upload an image file or provide a direct image URL.',
+    description: 'Ubah latar belakang foto menjadi gedung pencakar langit Dubai (Burj Khalifa, dll).',
     parameters: [
-        { name: 'image', type: 'file', required: true, desc: 'Image file or direct image URL to edit.' }
+        { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diubah.' }
     ],
     payloadTemplate: {
         image: ''

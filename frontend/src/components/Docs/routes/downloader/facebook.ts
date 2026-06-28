@@ -7,9 +7,9 @@ export const facebookRoute: DocTopic = {
     method: 'POST',
     path: '/api/downloader/facebook',
     pathTemplate: '/api/downloader/:slug',
-    description: 'Download videos from Facebook posts in HD or SD quality.',
+    description: 'Unduh video dari postingan Facebook dalam kualitas HD atau SD.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'public Facebook video URL.' }
+      { name: 'url', type: 'text', required: true, desc: 'URL video publik Facebook.' }
     ],
     payloadTemplate: {
       url: ''

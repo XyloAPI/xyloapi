@@ -7,7 +7,7 @@ export const gempa_dirasakanRoute: DocTopic = {
   method: 'GET',
   path: '/api/bmkg/gempa-dirasakan',
   pathTemplate: '/api/bmkg/:slug',
-  description: 'Retrieve a list of the most recent earthquakes felt in Indonesia from BMKG (gempadirasakan.json), including MMI levels and impact details.',
+  description: 'Ambil daftar gempa bumi terbaru yang dirasakan di Indonesia dari BMKG, lengkap dengan skala MMI dan area terdampak.',
   parameters: [],
   payloadTemplate: {}
 };

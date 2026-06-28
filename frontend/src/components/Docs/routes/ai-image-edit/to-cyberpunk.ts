@@ -7,9 +7,9 @@ export const toCyberpunkRoute: DocTopic = {
     method: 'POST',
     path: '/api/ai-image-edit/to-cyberpunk',
     pathTemplate: '/api/ai-image-edit/:slug',
-    description: 'Transform a person into a futuristic cyberpunk cyborg with neon accents using advanced AI. Upload an image file or provide a direct image URL.',
+    description: 'Ubah foto menjadi gaya cyborg cyberpunk futuristik dengan aksen neon.',
     parameters: [
-        { name: 'image', type: 'file', required: true, desc: 'Image file or direct image URL to edit.' }
+        { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diubah.' }
     ],
     payloadTemplate: {
         image: ''

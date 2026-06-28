@@ -7,13 +7,13 @@ export const bmkgRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/bmkg',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch latest weather, climate, geophysics, and activities news from BMKG (bmkg.go.id) in Indonesia. Returns up to 12 articles with title, link, description, publish date, source, and image by crawling real-time sub-portal article indices.',
+    description: 'Ambil berita cuaca, iklim, geofisika, dan aktivitas terbaru dari BMKG (bmkg.go.id) di Indonesia. Mengembalikan hingga 12 artikel dengan detail lengkap dari indeks portal berita mereka.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a BMKG news category.',
+        desc: 'Pilih kategori berita BMKG.',
         options: [
           { value: 'all', label: 'BMKG Semua Berita' },
           { value: 'utama', label: 'BMKG Berita Utama' },

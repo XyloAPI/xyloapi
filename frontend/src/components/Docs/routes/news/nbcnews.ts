@@ -7,13 +7,13 @@ export const nbcnewsRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/nbcnews',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest news and headlines from NBC News (nbcnews.com). Returns up to 20 articles with title, link, description, publish date, source, and thumbnail image URL resolved directly from official NBC News RSS feeds.',
+    description: 'Ambil berita utama terbaru dari NBC News (nbcnews.com). Mengembalikan hingga 20 artikel langsung dari feed RSS resmi NBC News.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select an NBC News section.',
+        desc: 'Pilih kategori berita NBC News.',
         options: [
           { value: 'top', label: 'Top Stories' },
           { value: 'us', label: 'U.S. News' },

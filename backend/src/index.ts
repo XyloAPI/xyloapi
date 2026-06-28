@@ -24,6 +24,8 @@ import infoRouter from './routes/info';
 import makerRouter from './routes/maker';
 import aiImageEditRouter from './routes/ai-image-edit';
 import toolsRouter from './routes/tools';
+import primbonRouter from './routes/primbon';
+import searchRouter from './routes/search';
 
 function killPortOwner(port: number) {
   if (process.platform === 'win32') {
@@ -122,6 +124,8 @@ app.use('/api/info', infoRouter);
 app.use('/api/maker', makerRouter);
 app.use('/api/ai-image-edit', aiImageEditRouter);
 app.use('/api/tools', toolsRouter);
+app.use('/api/primbon', primbonRouter);
+app.use('/api', searchRouter);
 
 killPortOwner(Number(PORT));
 app.listen(PORT, () => {

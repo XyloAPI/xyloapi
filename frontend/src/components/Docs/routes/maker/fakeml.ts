@@ -7,7 +7,7 @@ export const fakemlRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/fakeml',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate a mock Mobile Legends lobby.',
+  description: 'Buat gambar lobi game Mobile Legends palsu.',
   parameters: [
     { name: 'username', type: 'text', required: false, desc: 'Mobile Legends display username.' },
     { name: 'avatar', type: 'text', required: false, desc: 'URL of the profile avatar image.' },

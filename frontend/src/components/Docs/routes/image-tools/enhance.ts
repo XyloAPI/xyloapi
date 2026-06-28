@@ -7,9 +7,9 @@ export const enhanceRoute: DocTopic = {
     method: 'POST',
     path: '/api/image-tool/enhance',
     pathTemplate: '/api/image-tool/:slug',
-    description: 'Enhance your images online automatically using AI. Balances exposure, colors, contrast, and clarity instantly. Upload an image file or provide a direct image URL.',
+    description: 'Tingkatkan warna, kontras, dan ketajaman gambar Anda secara otomatis dengan satu klik.',
     parameters: [
-      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' }
+      { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diproses.' }
     ],
     payloadTemplate: {
       image: ''

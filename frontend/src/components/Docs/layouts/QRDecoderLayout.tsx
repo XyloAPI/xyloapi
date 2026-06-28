@@ -6,9 +6,6 @@ export default function QRDecoderLayout({ resData }: QRDecoderLayoutProps) {
   return (
     <div className="response-layout">
       <div className="response-header">
-        <span className="response-status-badge">
-          ✓ QR CODE DECODED SUCCESSFULLY
-        </span>
         <h2 className="response-title">
           Decoded Content
         </h2>

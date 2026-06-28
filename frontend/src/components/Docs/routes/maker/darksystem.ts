@@ -7,7 +7,7 @@ export const darksystemRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/darksystem',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate a Dark System Certificate mockup with a custom recipient name.',
+  description: 'Buat mockup Sertifikat Dark System dengan nama penerima kustom.',
   parameters: [
     { name: 'name', type: 'text', required: true, desc: 'Recipient name to write on the certificate.' }
   ],

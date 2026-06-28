@@ -7,9 +7,9 @@ export const nemotronRoute: DocTopic = {
     method: 'GET',
     path: '/api/ai-chat/nemotron',
     pathTemplate: '/api/ai-chat/:slug',
-    description: 'Interact with Nemotron 3 Ultra 550B. A massive LLM designed for complex reasoning and analytical tasks.',
+    description: 'Model besar yang dirancang untuk penalaran kompleks dan tugas-tugas analitis berat.',
     parameters: [
-      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+      { name: 'prompt', type: 'text', required: true, desc: 'Pesan atau pertanyaan yang ingin diajukan ke AI.' }
     ],
     payloadTemplate: {
       prompt: ''

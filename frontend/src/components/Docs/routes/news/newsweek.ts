@@ -7,13 +7,13 @@ export const newsweekRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/newsweek',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest news and features from Newsweek (newsweek.com). Returns up to 20 articles with title, high-res image, description, author, and publish date — resolved dynamically from Newsweek category channels and article pages.',
+    description: 'Ambil berita dan fitur terbaru dari Newsweek (newsweek.com). Mengembalikan hingga 20 artikel yang diselesaikan secara dinamis.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a Newsweek section.',
+        desc: 'Pilih kategori berita Newsweek.',
         options: [
           { value: 'us', label: 'U.S. News' },
           { value: 'world', label: 'World' },

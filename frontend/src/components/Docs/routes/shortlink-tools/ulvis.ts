@@ -7,7 +7,7 @@ export const ulvisRoute: DocTopic = {
     method: 'GET',
     path: '/api/shortlink/ulvis',
     pathTemplate: '/api/shortlink/:slug',
-    description: 'Shorten long URLs instantly using the ulvis.net shortening service.',
+    description: 'Perpendek URL panjang secara instan menggunakan layanan ulvis.net.',
     parameters: [
       { name: 'url', type: 'text', required: true, desc: 'The long URL to be shortened.' }
     ],

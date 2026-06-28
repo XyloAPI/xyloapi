@@ -6,7 +6,6 @@ export default function NewsLayout({ resData }: NewsLayoutProps) {
   return (
     <div className="response-layout">
       <div className="response-header">
-        <span className="response-status-badge">✓ NEWS FETCHED</span>
         <h2 className="response-title">
           {resData.source || 'The Straits Times'}
         </h2>

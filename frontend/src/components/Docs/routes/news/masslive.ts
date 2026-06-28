@@ -7,13 +7,13 @@ export const massliveRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/masslive',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch real-time news, sports, politics, and business updates from MassLive (masslive.com). Parses official outbound RSS feeds directly, extracting high-resolution images, clean descriptions, and detailed publish dates.',
+    description: 'Ambil berita real-time, olahraga, politik, dan bisnis dari MassLive (masslive.com). Mem-parsing feed RSS resmi secara langsung.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a MassLive news section.',
+        desc: 'Pilih kategori berita MassLive.',
         options: [
           { value: 'top', label: 'Top Stories' },
           { value: 'news', label: 'Local News' },

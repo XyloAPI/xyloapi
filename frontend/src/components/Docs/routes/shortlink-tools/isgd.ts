@@ -7,7 +7,7 @@ export const isgdRoute: DocTopic = {
     method: 'GET',
     path: '/api/shortlink/isgd',
     pathTemplate: '/api/shortlink/:slug',
-    description: 'Shorten long URLs instantly using the is.gd shortening service.',
+    description: 'Perpendek URL panjang secara instan menggunakan layanan is.gd.',
     parameters: [
       { name: 'url', type: 'text', required: true, desc: 'The long URL to be shortened.' }
     ],

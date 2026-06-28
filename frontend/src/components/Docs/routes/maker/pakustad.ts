@@ -7,7 +7,7 @@ export const pakustadRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/pakustad',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate customized "Pak Ustad" meme board images.',
+  description: "Hasilkan gambar meme 'Pak Ustad' dengan pesan kustom pada papan tulis.",
   parameters: [
     { name: 'isi', type: 'textarea', required: true, desc: 'The text message to display on the board (maximum 68 characters).' },
     {

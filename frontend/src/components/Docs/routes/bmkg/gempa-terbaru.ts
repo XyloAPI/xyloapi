@@ -7,7 +7,7 @@ export const gempa_terbaruRoute: DocTopic = {
   method: 'GET',
   path: '/api/bmkg/gempa-terbaru',
   pathTemplate: '/api/bmkg/:slug',
-  description: 'Retrieve a list of the 15 most recent earthquakes recorded in Indonesia from BMKG (gempaterkini.json).',
+  description: 'Ambil daftar 15 gempa bumi terbaru yang tercatat di Indonesia dari BMKG.',
   parameters: [],
   payloadTemplate: {}
 };

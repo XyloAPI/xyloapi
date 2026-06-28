@@ -7,9 +7,9 @@ export const uguuRoute: DocTopic = {
     method: 'POST',
     path: '/api/uploader/uguu',
     pathTemplate: '/api/uploader/:slug',
-    description: 'Upload temporary files up to 100MB directly to the Uguu.se platform (expires in 24h).',
+    description: 'Unggah file sementara hingga 100MB langsung ke platform Uguu.se (kedaluwarsa dalam 24 jam).',
     parameters: [
-      { name: 'image', type: 'file', required: true, desc: 'Select local image file to upload or enter image URL' }
+      { name: 'image', type: 'file', required: true, desc: 'Pilih file gambar lokal untuk diunggah atau masukkan URL gambar' }
     ],
     payloadTemplate: {
       image: ''

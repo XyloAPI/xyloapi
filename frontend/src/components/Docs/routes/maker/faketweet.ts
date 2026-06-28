@@ -7,7 +7,7 @@ export const faketweetRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/faketweet',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate a realistic Twitter/X tweet mockup with custom author and message content.',
+  description: 'Buat mockup cuitan Twitter/X yang realistis dengan pembuat dan isi pesan kustom.',
   parameters: [
     { name: 'name', type: 'text', required: false, desc: 'Display name of the user. Defaults to "Twitter".' },
     { name: 'username', type: 'text', required: false, desc: 'Username handle of the user. Defaults to "twitter".' },

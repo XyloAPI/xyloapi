@@ -7,13 +7,13 @@ export const foxnewsRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/foxnews',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest news headlines from Fox News (foxnews.com) by category. Returns up to 25 articles with title, image, description, and publish date — powered by official Fox News RSS feeds.',
+    description: 'Ambil berita utama terbaru dari Fox News (foxnews.com) berdasarkan kategori. Mengembalikan hingga 25 artikel dengan judul, gambar, deskripsi, dan tanggal terbit.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a Fox News category.',
+        desc: 'Pilih kategori berita Fox News.',
         options: [
           { value: 'latest', label: 'Latest' },
           { value: 'national', label: 'National' },

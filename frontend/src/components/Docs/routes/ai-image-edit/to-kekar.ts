@@ -7,9 +7,9 @@ export const toKekarRoute: DocTopic = {
     method: 'POST',
     path: '/api/ai-image-edit/to-kekar',
     pathTemplate: '/api/ai-image-edit/:slug',
-    description: 'Transform a person into an extremely muscular bodybuilder physique inside a gym using advanced AI. Upload an image file or provide a direct image URL.',
+    description: 'Ubah postur tubuh menjadi sangat kekar dan berotot di dalam gym.',
     parameters: [
-        { name: 'image', type: 'file', required: true, desc: 'Image file or direct image URL to edit.' }
+        { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diubah.' }
     ],
     payloadTemplate: {
         image: ''

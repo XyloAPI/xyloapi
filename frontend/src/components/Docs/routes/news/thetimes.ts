@@ -7,13 +7,13 @@ export const thetimesRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/thetimes',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest news from The Times (thetimes.com) by category. Returns up to 20 articles with title, description, and publish date. Note: images are not available as thetimes.com is behind a hard paywall (HTTP 403).',
+    description: 'Ambil berita terbaru dari The Times (thetimes.com) berdasarkan kategori. Gambar tidak tersedia karena paywall.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a The Times category.',
+        desc: 'Pilih kategori berita The Times.',
         options: [
           { value: 'top', label: 'Top News' },
           { value: 'uk', label: 'UK News' },

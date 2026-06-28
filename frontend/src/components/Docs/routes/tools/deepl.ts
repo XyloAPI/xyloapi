@@ -45,7 +45,7 @@ export const deeplRoute: DocTopic = {
   method: 'GET',
   path: '/api/tools/deepl',
   pathTemplate: '/api/tools/:slug',
-  description: 'Translate text using DeepL Translation service.',
+  description: 'Terjemahkan teks menggunakan layanan Terjemahan DeepL yang canggih.',
   parameters: [
     { name: 'text', type: 'text', required: true, desc: 'Text to translate.' },
     { name: 'to', type: 'select', required: false, desc: 'Target language.', options: deeplLanguages },

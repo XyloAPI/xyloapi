@@ -7,7 +7,7 @@ export const tinyurlRoute: DocTopic = {
     method: 'GET',
     path: '/api/shortlink/tinyurl',
     pathTemplate: '/api/shortlink/:slug',
-    description: 'Shorten long URLs instantly using the TinyURL shortening service.',
+    description: 'Perpendek URL panjang secara instan menggunakan layanan TinyURL.',
     parameters: [
       { name: 'url', type: 'text', required: true, desc: 'The long URL to be shortened.' }
     ],

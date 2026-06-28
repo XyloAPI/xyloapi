@@ -7,13 +7,13 @@ export const timesRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/times',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch latest general, regional, and national news from TIMES Indonesia (timesindonesia.co.id). Returns up to 20 articles with title, link, description, publish date, source, and image using their authorized backend API.',
+    description: 'Ambil berita umum, regional, dan nasional terbaru dari TIMES Indonesia (timesindonesia.co.id). Menggunakan API backend resmi mereka.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a TIMES Indonesia news category.',
+        desc: 'Pilih kategori berita TIMES Indonesia.',
         options: [
           { value: 'latest', label: 'TIMES Terbaru' },
           { value: 'ekonomi', label: 'Ekonomi' },

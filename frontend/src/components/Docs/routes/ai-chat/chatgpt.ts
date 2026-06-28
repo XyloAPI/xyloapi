@@ -7,9 +7,9 @@ export const chatgptRoute: DocTopic = {
     method: 'GET',
     path: '/api/ai-chat/chatgpt',
     pathTemplate: '/api/ai-chat/:slug',
-    description: 'Interact with ChatGPT (GPT-OSS 120B). Ask questions, generate code, translate texts, or chat freely.',
+    description: 'Berinteraksilah dengan ChatGPT. Ajukan pertanyaan, buat kode, terjemahkan teks, atau mengobrol sesuka hati.',
     parameters: [
-      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+      { name: 'prompt', type: 'text', required: true, desc: 'Pesan atau pertanyaan yang ingin diajukan ke AI.' }
     ],
     payloadTemplate: {
       prompt: ''

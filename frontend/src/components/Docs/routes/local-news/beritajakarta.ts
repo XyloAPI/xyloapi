@@ -7,13 +7,13 @@ export const beritajakartaRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/beritajakarta',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch official news releases, policies, public services, and infrastructure developments in Jakarta from Berita Jakarta (beritajakarta.id).',
+    description: 'Ambil rilis berita resmi, kebijakan, layanan publik, dan perkembangan infrastruktur di Jakarta dari Berita Jakarta (beritajakarta.id).',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a Berita Jakarta news category.',
+        desc: 'Pilih kategori berita Berita Jakarta.',
         options: [
           { value: 'latest', label: 'Terbaru' },
           { value: 'ekonomi', label: 'Ekonomi' },

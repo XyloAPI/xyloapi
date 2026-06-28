@@ -7,13 +7,13 @@ export const tangerangkotaRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/tangerangkota',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch latest news releases, announcements, and popular articles from the official Tangerang City portal (tangerangkota.go.id).',
+    description: 'Ambil rilis berita terbaru, pengumuman, dan artikel populer dari portal resmi Kota Tangerang (tangerangkota.go.id).',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a Tangerang Kota news category.',
+        desc: 'Pilih kategori berita Tangerang Kota.',
         options: [
           { value: 'latest', label: 'Terbaru' },
           { value: 'populer', label: 'Populer' }

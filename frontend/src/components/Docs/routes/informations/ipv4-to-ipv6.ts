@@ -7,9 +7,9 @@ export const ipv4ToIpv6Route: DocTopic = {
   method: 'GET',
   path: '/api/info/ipv4-to-ipv6',
   pathTemplate: '/api/info/:slug',
-  description: 'Convert an IPv4 address to its IPv6 compatibility, expanded, and shorthand forms.',
+  description: 'Konversi alamat IPv4 ke bentuk kompatibilitas IPv6, bentuk yang diekspansi, dan bentuk singkatnya.',
   parameters: [
-    { name: 'ip', type: 'text', required: true, desc: 'IPv4 address to convert (e.g. 192.168.1.1).' }
+    { name: 'ip', type: 'text', required: true, desc: 'Alamat IPv4 untuk dikonversi (contoh: 192.168.1.1).' }
   ],
   payloadTemplate: {
     ip: '192.168.1.1'

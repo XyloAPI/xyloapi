@@ -7,9 +7,9 @@ export const toBrewokRoute: DocTopic = {
     method: 'POST',
     path: '/api/ai-image-edit/to-brewok',
     pathTemplate: '/api/ai-image-edit/:slug',
-    description: 'Add a realistic thick beard and mustache to a person using advanced AI. Upload an image file or provide a direct image URL.',
+    description: 'Tambahkan brewok dan kumis tebal yang realistis pada wajah.',
     parameters: [
-        { name: 'image', type: 'file', required: true, desc: 'Image file or direct image URL to edit.' }
+        { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diubah.' }
     ],
     payloadTemplate: {
         image: ''

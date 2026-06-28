@@ -7,9 +7,9 @@ export const geminiRoute: DocTopic = {
     method: 'GET',
     path: '/api/ai-chat/gemini',
     pathTemplate: '/api/ai-chat/:slug',
-    description: 'Interact with Google Gemini. Ask questions, generate content, translate texts, or chat freely.',
+    description: 'Berinteraksilah dengan Google Gemini. Ajukan pertanyaan, buat konten, terjemahkan teks, atau mengobrol sesuka hati.',
     parameters: [
-      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+      { name: 'prompt', type: 'text', required: true, desc: 'Pesan atau pertanyaan yang ingin diajukan ke AI.' }
     ],
     payloadTemplate: {
       prompt: ''

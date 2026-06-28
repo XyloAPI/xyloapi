@@ -7,9 +7,9 @@ export const n_8uploadsRoute: DocTopic = {
     method: 'POST',
     path: '/api/uploader/8uploads',
     pathTemplate: '/api/uploader/:slug',
-    description: 'Upload local image files or remote URLs directly to the 8upload.com hosting platform.',
+    description: 'Unggah file gambar lokal atau URL jarak jauh langsung ke platform hosting 8upload.com.',
     parameters: [
-      { name: 'image', type: 'file', required: true, desc: 'Select local image file to upload or enter image URL' }
+      { name: 'image', type: 'file', required: true, desc: 'Pilih file gambar lokal untuk diunggah atau masukkan URL gambar' }
     ],
     payloadTemplate: {
       image: ''

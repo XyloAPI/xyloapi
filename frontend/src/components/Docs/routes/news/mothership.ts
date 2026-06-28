@@ -7,7 +7,7 @@ export const mothershipRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/mothership',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest news articles from Mothership.sg — Singapore\'s leading digital news platform. Returns up to 25 articles with title, image, author, description, and publish date.',
+    description: 'Ambil artikel berita terbaru dari Mothership.sg di Singapura. Mengembalikan hingga 20 artikel.',
     parameters: [],
     payloadTemplate: {}
   };

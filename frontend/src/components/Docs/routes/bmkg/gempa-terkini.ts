@@ -7,7 +7,7 @@ export const gempa_terkiniRoute: DocTopic = {
   method: 'GET',
   path: '/api/bmkg/gempa-terkini',
   pathTemplate: '/api/bmkg/:slug',
-  description: 'Retrieve real-time data about the most recent earthquake in Indonesia from BMKG (autogempa.json), including coordinates, magnitude, depth, and shakemap URL.',
+  description: 'Ambil data gempa bumi terbaru secara real-time di Indonesia dari BMKG, mencakup koordinat, magnitudo, kedalaman, dan URL shakemap.',
   parameters: [],
   payloadTemplate: {}
 };

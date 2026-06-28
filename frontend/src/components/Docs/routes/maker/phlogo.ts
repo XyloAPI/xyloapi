@@ -7,7 +7,7 @@ export const phlogoRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/phlogo',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate custom text logo images in the iconic Pornhub style.',
+  description: 'Buat gambar teks logo kustom dengan gaya ikonik Pornhub.',
   parameters: [
     { name: 'porn', type: 'text', required: false, desc: 'The left text content (usually white). Defaults to "Porn".' },
     { name: 'hub', type: 'text', required: false, desc: 'The right text content (usually black inside orange box). Defaults to "Hub".' },

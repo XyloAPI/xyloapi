@@ -7,9 +7,9 @@ export const asyntRoute: DocTopic = {
     method: 'GET',
     path: '/api/ai-chat/asynt',
     pathTemplate: '/api/ai-chat/:slug',
-    description: 'Interact with Asynt AI. A conversational AI assistant for general questions and information.',
+    description: 'Asisten AI berbasis percakapan untuk pertanyaan dan informasi umum.',
     parameters: [
-      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+      { name: 'prompt', type: 'text', required: true, desc: 'Pesan atau pertanyaan yang ingin diajukan ke AI.' }
     ],
     payloadTemplate: {
       prompt: ''

@@ -7,9 +7,9 @@ export const dnsvalidationRoute: DocTopic = {
   method: 'GET',
   path: '/api/info/dns-validation',
   pathTemplate: '/api/info/:slug',
-  description: 'Validate DNS records, test name servers, open recursive queries, and SOA settings for a domain.',
+  description: 'Validasi record DNS, uji server nama (nameserver), kueri rekursif terbuka, dan pengaturan SOA untuk suatu domain.',
   parameters: [
-    { name: 'host', type: 'text', required: true, desc: 'Domain name to validate (e.g. google.com).' }
+    { name: 'host', type: 'text', required: true, desc: 'Nama domain untuk divalidasi (contoh: google.com).' }
   ],
   payloadTemplate: {
     host: 'google.com'

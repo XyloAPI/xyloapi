@@ -7,10 +7,10 @@ export const posterizeRoute: DocTopic = {
     method: 'POST',
     path: '/api/image-tool/posterize',
     pathTemplate: '/api/image-tool/:slug',
-    description: 'Reduce the number of colors in your image to create a retro, artistic posterized effect. Upload an image file or provide a direct image URL.',
+    description: 'Kurangi jumlah warna pada gambar untuk menciptakan efek artistik poster jadul.',
     parameters: [
-      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' },
-      { name: 'color_levels', type: 'number', required: false, desc: 'Number of color levels from 2 to 256. Default is 8.' }
+      { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diproses.' },
+      { name: 'color_levels', type: 'number', required: false, desc: 'Jumlah tingkat warna dari 2 hingga 256. Default adalah 8.' }
     ],
     payloadTemplate: {
       image: '',

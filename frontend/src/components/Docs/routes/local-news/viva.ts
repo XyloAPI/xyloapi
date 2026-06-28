@@ -7,13 +7,13 @@ export const vivaRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/viva',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch latest local news, sports, business, and lifestyle updates from VIVA News (viva.co.id) in Indonesia. Returns up to 20 articles with title, link, description, publish date, source, and image content.',
+    description: 'Ambil berita lokal terbaru, olahraga, bisnis, dan gaya hidup dari VIVA News (viva.co.id) di Indonesia.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a VIVA News category.',
+        desc: 'Pilih kategori berita VIVA News.',
         options: [
           { value: 'news', label: 'Berita Terbaru (All)' },
           { value: 'nasional', label: 'Nasional' },

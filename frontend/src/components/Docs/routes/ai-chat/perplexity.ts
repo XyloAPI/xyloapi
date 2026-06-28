@@ -7,9 +7,9 @@ export const perplexityRoute: DocTopic = {
     method: 'GET',
     path: '/api/ai-chat/perplexity',
     pathTemplate: '/api/ai-chat/:slug',
-    description: 'Interact with Perplexity AI. Get real-time web-grounded answers with source citations stripped.',
+    description: 'Dapatkan jawaban berbasis web real-time langsung dari Perplexity AI.',
     parameters: [
-      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+      { name: 'prompt', type: 'text', required: true, desc: 'Pesan atau pertanyaan yang ingin diajukan ke AI.' }
     ],
     payloadTemplate: {
       prompt: ''

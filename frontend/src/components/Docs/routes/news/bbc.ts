@@ -7,13 +7,13 @@ export const bbcRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/bbc',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest news headlines and articles from BBC News (bbc.com) by category. Returns up to 25 articles with title, image, description, and publish date — powered by official BBC RSS feeds.',
+    description: 'Ambil berita utama dan artikel terbaru dari BBC News (bbc.com) berdasarkan kategori. Mengembalikan hingga 25 artikel dengan judul, gambar, deskripsi, dan tanggal terbit - didukung oleh feed RSS resmi BBC.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a BBC news category.',
+        desc: 'Pilih kategori berita BBC News.',
         options: [
           { value: 'top', label: 'Top Stories' },
           { value: 'world', label: 'World' },

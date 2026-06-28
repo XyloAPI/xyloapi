@@ -7,9 +7,9 @@ export const capcutRoute: DocTopic = {
     method: 'POST',
     path: '/api/downloader/capcut',
     pathTemplate: '/api/downloader/:slug',
-    description: 'Download CapCut video templates without watermark in high quality.',
+    description: 'Unduh video template CapCut tanpa watermark dengan kualitas tinggi.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'CapCut video URL.' }
+      { name: 'url', type: 'text', required: true, desc: 'URL video CapCut.' }
     ],
     payloadTemplate: {
       url: ''

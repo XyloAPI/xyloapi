@@ -7,7 +7,7 @@ export const wastedRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/wasted',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate GTA-style Wasted screen overlays.',
+  description: "Hasilkan efek layar 'Wasted' ala game GTA di atas gambar Anda.",
   parameters: [
     { name: 'image', type: 'text', required: true, desc: 'Direct URL to the target person image.' }
   ],

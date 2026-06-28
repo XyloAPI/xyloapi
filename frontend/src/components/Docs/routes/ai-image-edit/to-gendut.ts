@@ -7,9 +7,9 @@ export const toGendutRoute: DocTopic = {
     method: 'POST',
     path: '/api/ai-image-edit/to-gendut',
     pathTemplate: '/api/ai-image-edit/:slug',
-    description: 'Transform a person to look overweight or have a cute chubby face using advanced AI. Upload an image file or provide a direct image URL.',
+    description: 'Ubah wajah menjadi terlihat gemuk atau chubby.',
     parameters: [
-        { name: 'image', type: 'file', required: true, desc: 'Image file or direct image URL to edit.' }
+        { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diubah.' }
     ],
     payloadTemplate: {
         image: ''

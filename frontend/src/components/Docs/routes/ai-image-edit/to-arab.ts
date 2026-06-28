@@ -7,9 +7,9 @@ export const toArabRoute: DocTopic = {
     method: 'POST',
     path: '/api/ai-image-edit/to-arab',
     pathTemplate: '/api/ai-image-edit/:slug',
-    description: 'Transform a person to wear traditional Arabic clothing (abaya/hijab for women, thobe/shemagh for men) using advanced AI. Upload an image file or provide a direct image URL.',
+    description: 'Ubah foto wajah mengenakan pakaian tradisional Arab (abaya/hijab atau thobe/sorban).',
     parameters: [
-        { name: 'image', type: 'file', required: true, desc: 'Image file or direct image URL to edit.' }
+        { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diubah.' }
     ],
     payloadTemplate: {
         image: ''

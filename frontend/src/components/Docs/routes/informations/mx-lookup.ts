@@ -7,9 +7,9 @@ export const mxlookupRoute: DocTopic = {
   method: 'GET',
   path: '/api/info/mx-lookup',
   pathTemplate: '/api/info/:slug',
-  description: 'Query MX (Mail Exchange) DNS records for a domain to identify its mail server configuration, priority, and TTL.',
+  description: 'Kueri record DNS MX (Mail Exchange) untuk suatu domain guna mengidentifikasi konfigurasi server email, prioritas, dan TTL-nya.',
   parameters: [
-    { name: 'host', type: 'text', required: true, desc: 'Domain name to query (e.g. google.com).' }
+    { name: 'host', type: 'text', required: true, desc: 'Nama domain yang akan di-kueri (contoh: google.com).' }
   ],
   payloadTemplate: {
     host: 'google.com'

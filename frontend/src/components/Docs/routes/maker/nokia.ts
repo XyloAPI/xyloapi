@@ -7,7 +7,7 @@ export const nokiaRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/nokia',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate a retro Nokia monophonic phone screen displaying a custom text message and details.',
+  description: 'Hasilkan layar ponsel monofonik Nokia retro yang menampilkan pesan teks dan detail kustom.',
   parameters: [
     { name: 'message', type: 'text', required: true, desc: 'The main message body content.' },
     { name: 'header', type: 'text', required: false, desc: 'The text displayed on the top status header.' },

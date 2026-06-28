@@ -7,7 +7,7 @@ export const carbonRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/carbon',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate beautiful carbon code images from code snippets.',
+  description: 'Hasilkan gambar potongan kode yang estetik dari kode sumber Anda menggunakan efek Carbon.',
   parameters: [
     { name: 'code', type: 'textarea', required: false, desc: 'The source code snippet to render. Defaults to Python print statement.' },
     { 

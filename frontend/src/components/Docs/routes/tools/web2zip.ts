@@ -7,7 +7,7 @@ export const web2zipRoute: DocTopic = {
   method: 'GET',
   path: '/api/tools/web2zip',
   pathTemplate: '/api/tools/:slug',
-  description: 'Clone and download any website into a ZIP file.',
+  description: 'Klon dan unduh situs web apa pun menjadi file ZIP.',
   parameters: [
     { name: 'url', type: 'text', required: true, desc: 'Target website URL to clone.' }
   ],

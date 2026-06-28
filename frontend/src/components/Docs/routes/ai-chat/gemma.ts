@@ -7,9 +7,9 @@ export const gemmaRoute: DocTopic = {
   method: 'GET',
   path: '/api/ai-chat/gemma',
   pathTemplate: '/api/ai-chat/:slug',
-  description: 'Interact with Google Gemma 2. A lightweight and open-source model optimized for general questions, instruction following, and reasoning.',
+  description: 'Berinteraksi dengan Google Gemma 2. Sebuah model yang ringan dan bersumber terbuka yang dioptimalkan untuk pertanyaan umum, mengikuti instruksi, dan penalaran.',
   parameters: [
-    { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    { name: 'prompt', type: 'text', required: true, desc: 'Pesan atau pertanyaan yang ingin diajukan ke AI.' }
   ],
   payloadTemplate: {
     prompt: ''

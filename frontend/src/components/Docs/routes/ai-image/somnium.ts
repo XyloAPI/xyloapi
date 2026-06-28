@@ -7,9 +7,9 @@ export const somniumRoute: DocTopic = {
   method: 'POST',
   path: '/api/ai-image/somnium',
   pathTemplate: '/api/ai-image/:slug',
-  description: 'Generate dreamy, fantastical, and surreal visual scenes with Somnium AI.',
+  description: 'Ciptakan pemandangan visual yang memukau, fantastis, dan surealis dengan Somnium AI.',
   parameters: [
-    { name: 'prompt', type: 'text', required: true, desc: 'The text prompt to generate an image for.' }
+    { name: 'prompt', type: 'text', required: true, desc: 'Teks prompt untuk membuat gambar.' }
   ],
   payloadTemplate: {
     prompt: ''

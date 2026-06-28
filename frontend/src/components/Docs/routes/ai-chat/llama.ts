@@ -7,9 +7,9 @@ export const llamaRoute: DocTopic = {
     method: 'GET',
     path: '/api/ai-chat/llama',
     pathTemplate: '/api/ai-chat/:slug',
-    description: 'Interact with the state-of-the-art Llama AI model. Ask questions, translate texts, generate code, or analyze details.',
+    description: 'Model Llama AI mutakhir untuk pertanyaan, penerjemahan, pembuatan kode, dan analisis detail.',
     parameters: [
-      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+      { name: 'prompt', type: 'text', required: true, desc: 'Pesan atau pertanyaan yang ingin diajukan ke AI.' }
     ],
     payloadTemplate: {
       prompt: ''

@@ -7,7 +7,7 @@ export const fakedmRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/fakedm',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate high-fidelity Instagram-style Direct Message (DM) list items. Customize username, avatar, online dot, message text, unread state, verified status, and light/dark theme.',
+  description: 'Buat gambar daftar pesan Direct Message (DM) ala Instagram dengan tingkat kemiripan tinggi.',
   parameters: [
     { name: 'username', type: 'text', required: false, desc: 'The username of the sender. Defaults to "username".' },
     { name: 'avatar', type: 'text', required: false, desc: 'Direct URL to the avatar image.' },

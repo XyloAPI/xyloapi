@@ -7,9 +7,9 @@ export const toJepangRoute: DocTopic = {
     method: 'POST',
     path: '/api/ai-image-edit/to-jepang',
     pathTemplate: '/api/ai-image-edit/:slug',
-    description: 'Transform a person to wear a classic Japanese Kimono with a Kyoto temple and cherry blossom backdrop using advanced AI. Upload an image file or provide a direct image URL.',
+    description: 'Ubah foto mengenakan Kimono Jepang dengan latar belakang kuil dan bunga sakura.',
     parameters: [
-        { name: 'image', type: 'file', required: true, desc: 'Image file or direct image URL to edit.' }
+        { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diubah.' }
     ],
     payloadTemplate: {
         image: ''

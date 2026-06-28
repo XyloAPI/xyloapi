@@ -7,13 +7,13 @@ export const nytimesRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/nytimes',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest news from The New York Times (nytimes.com) by category. Returns up to 25 articles with title, image, description, author, and publish date — powered by official NYT RSS feeds with high-res media:content images.',
+    description: 'Ambil berita terbaru dari The New York Times (nytimes.com) berdasarkan kategori. Mengembalikan hingga 25 artikel dengan judul, gambar, deskripsi, penulis, dan tanggal terbit.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a New York Times category.',
+        desc: 'Pilih kategori berita NY Times.',
         options: [
           { value: 'home', label: 'Home Page' },
           { value: 'world', label: 'World' },

@@ -7,9 +7,9 @@ export const ipv6RangeRoute: DocTopic = {
   method: 'GET',
   path: '/api/info/ipv6-range-to-cidr',
   pathTemplate: '/api/info/:slug',
-  description: 'Convert an IPv6 start-end address range into equivalent CIDR network blocks.',
+  description: 'Konversi rentang alamat IPv6 dari awal-akhir menjadi blok jaringan CIDR yang setara.',
   parameters: [
-    { name: 'range', type: 'text', required: true, desc: 'IPv6 address range (e.g. 2620:0:2d0:200::7-2620:0:2d0:2df::7).' }
+    { name: 'range', type: 'text', required: true, desc: 'Rentang alamat IPv6 (contoh: 2620:0:2d0:200::7-2620:0:2d0:2df::7).' }
   ],
   payloadTemplate: {
     range: '2620:0:2d0:200::7-2620:0:2d0:2df::7'

@@ -7,13 +7,13 @@ export const mediaindonesiaRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/mediaindonesia',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch latest economic, political, human rights, and sports news from Media Indonesia (mediaindonesia.com) with image and date parsing.',
+    description: 'Ambil berita ekonomi, politik, hak asasi manusia, dan olahraga terbaru dari Media Indonesia (mediaindonesia.com) beserta parsing gambar dan tanggal.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a Media Indonesia news category.',
+        desc: 'Pilih kategori berita Media Indonesia.',
         options: [
           { value: 'latest', label: 'Terbaru' },
           { value: 'ekonomi', label: 'Ekonomi' },

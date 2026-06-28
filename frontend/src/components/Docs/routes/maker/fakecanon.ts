@@ -7,7 +7,7 @@ export const fakeCanonRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/fakecanon',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate realistic, tilted Canon DSLR camera viewfinder mockup screenshots with your photo aligned in the viewport.',
+  description: 'Hasilkan mockup tangkapan layar viewfinder kamera Canon DSLR yang realistis dengan foto Anda di dalamnya.',
   parameters: [
     { name: 'image', type: 'text', required: true, desc: 'Direct URL to the image to display.' }
   ],

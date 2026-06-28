@@ -7,14 +7,14 @@ export const dnsrecordsRoute: DocTopic = {
   method: 'GET',
   path: '/api/info/dns-records',
   pathTemplate: '/api/info/:slug',
-  description: 'Lookup all DNS records (A, AAAA, MX, NS, TXT, SOA, CAA, CNAME) for a given domain.',
+  description: 'Cari semua record DNS (A, AAAA, MX, NS, TXT, SOA, CAA, CNAME) untuk domain tertentu.',
   parameters: [
-    { name: 'host', type: 'text', required: true, desc: 'Domain name to lookup DNS records (e.g. google.com).' },
+    { name: 'host', type: 'text', required: true, desc: 'Nama domain untuk mencari record DNS (contoh: google.com).' },
     {
       name: 'type',
       type: 'select',
       required: false,
-      desc: 'Record category filter (default: COMMON).',
+      desc: 'Nama domain untuk mencari record DNS (contoh: google.com).',
       options: ['COMMON', 'A', 'AAAA', 'MX', 'NS', 'TXT', 'SOA', 'CAA', 'CNAME']
     }
   ],

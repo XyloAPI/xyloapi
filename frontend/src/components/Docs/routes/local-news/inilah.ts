@@ -7,13 +7,13 @@ export const inilahRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/inilah',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch latest political, economic, sports, and entertainment news from Inilah.com. Returns up to 20 articles with title, link, description, publish date, source, and image using dehydrated react-query layout analysis.',
+    description: 'Ambil berita politik, ekonomi, olahraga, dan hiburan terbaru dari Inilah.com. Mengembalikan hingga 20 artikel dengan gambar dan detail lainnya melalui analisis tata letak react-query.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select an Inilah.com news category.',
+        desc: 'Pilih kategori berita Inilah.com.',
         options: [
           { value: 'latest', label: 'Inilah Terbaru' },
           { value: 'news', label: 'News' },

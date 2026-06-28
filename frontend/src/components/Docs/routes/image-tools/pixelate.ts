@@ -7,10 +7,10 @@ export const pixelateRoute: DocTopic = {
     method: 'POST',
     path: '/api/image-tool/pixelate',
     pathTemplate: '/api/image-tool/:slug',
-    description: 'Create a cool retro 8-bit blocky pixelation effect on your photos instantly. Upload an image file or provide a direct image URL, and adjust the optional pixel size parameter.',
+    description: 'Buat efek piksel retro 8-bit pada gambar secara instan dengan menyesuaikan ukuran piksel.',
     parameters: [
-      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' },
-      { name: 'pixel_size', type: 'number', required: false, desc: 'Pixel block size from 2 to 100. Default is 10.' }
+      { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diproses.' },
+      { name: 'pixel_size', type: 'number', required: false, desc: 'Ukuran blok piksel dari 2 hingga 100. Default adalah 10.' }
     ],
     payloadTemplate: {
       image: '',

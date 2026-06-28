@@ -7,13 +7,13 @@ export const nprRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/npr',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest news from NPR (npr.org) by topic. Returns up to 20 articles with title, image, description, author, and publish date — powered by official NPR RSS feeds.',
+    description: 'Ambil berita terbaru dari NPR (npr.org) berdasarkan topik. Mengembalikan hingga 20 artikel dengan judul, gambar, deskripsi, dan tanggal terbit.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select an NPR topic.',
+        desc: 'Pilih topik berita NPR.',
         options: [
           { value: 'news', label: 'News' },
           { value: 'world', label: 'World' },

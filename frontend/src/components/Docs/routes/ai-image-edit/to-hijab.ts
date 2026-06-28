@@ -7,9 +7,9 @@ export const toHijabRoute: DocTopic = {
     method: 'POST',
     path: '/api/ai-image-edit/to-hijab',
     pathTemplate: '/api/ai-image-edit/:slug',
-    description: 'Add a beautiful hijab headscarf to a person using advanced AI. Upload an image file or provide a direct image URL.',
+    description: 'Tambahkan hijab yang cantik pada foto wanita.',
     parameters: [
-        { name: 'image', type: 'file', required: true, desc: 'Image file or direct image URL to edit.' }
+        { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diubah.' }
     ],
     payloadTemplate: {
         image: ''

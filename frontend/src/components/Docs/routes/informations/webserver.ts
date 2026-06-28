@@ -7,15 +7,15 @@ export const webserverRoute: DocTopic = {
   method: 'GET',
   path: '/api/info/webserver',
   pathTemplate: '/api/info/:slug',
-  description: 'Check HTTP response headers, redirect hops, server details, cookies, and cache policies for a domain or URL.',
+  description: 'Periksa header respons HTTP, hop pengalihan (redirect), detail server, cookie, dan kebijakan cache untuk suatu domain atau URL.',
   parameters: [
-    { name: 'host', type: 'text', required: true, desc: 'Domain or URL to check (e.g. google.com or https://xyloapi.qzz.io).' },
-    { name: 'advOptions', type: 'select', required: false, desc: 'HTTP request method to use (default: get).', options: ['get', 'head'] },
-    { name: 'acceptCompressedContent', type: 'boolean', required: false, desc: 'Accept compressed content encoding (gzip, deflate, br) (default: true).' },
-    { name: 'followRedirects', type: 'boolean', required: false, desc: 'Follow HTTP 3xx redirect status locations (default: true).' },
-    { name: 'authOptions', type: 'select', required: false, desc: 'Authentication type to use (default: none).', options: ['none', 'basic', 'digest'] },
-    { name: 'username', type: 'text', required: false, desc: 'Username for basic/digest authentication.' },
-    { name: 'password', type: 'text', required: false, desc: 'Password for basic/digest authentication.' }
+    { name: 'host', type: 'text', required: true, desc: 'Domain atau URL yang akan dicek (contoh: google.com atau https://xyloapi.qzz.io).' },
+    { name: 'advOptions', type: 'select', required: false, desc: 'Metode permintaan HTTP yang digunakan (default: get).', options: ['get', 'head'] },
+    { name: 'acceptCompressedContent', type: 'boolean', required: false, desc: 'Terima encoding konten yang dikompresi (gzip, deflate, br) (default: true).' },
+    { name: 'followRedirects', type: 'boolean', required: false, desc: 'Ikuti lokasi pengalihan (redirect) HTTP 3xx (default: true).' },
+    { name: 'authOptions', type: 'select', required: false, desc: 'Jenis autentikasi yang digunakan (default: none).', options: ['none', 'basic', 'digest'] },
+    { name: 'username', type: 'text', required: false, desc: 'Username untuk autentikasi basic/digest.' },
+    { name: 'password', type: 'text', required: false, desc: 'Password untuk autentikasi basic/digest.' }
   ],
   payloadTemplate: {
     host: 'google.com',

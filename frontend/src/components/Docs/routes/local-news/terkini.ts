@@ -7,13 +7,13 @@ export const terkiniRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/terkini',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch latest local news, economy, lifestyle, sports, and tech updates from Terkini News (terkini.id) in Indonesia. Returns up to 20 articles with title, link, description, publish date, source, and image content.',
+    description: 'Ambil berita lokal terbaru, ekonomi, gaya hidup, olahraga, dan tekno dari Terkini News (terkini.id) di Indonesia.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a Terkini News category.',
+        desc: 'Pilih kategori berita Terkini News.',
         options: [
           { value: 'news', label: 'News' },
           { value: 'ekobis', label: 'Ekobis' },

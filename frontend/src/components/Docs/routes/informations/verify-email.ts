@@ -7,9 +7,9 @@ export const verifyemailRoute: DocTopic = {
   method: 'GET',
   path: '/api/info/verify-email',
   pathTemplate: '/api/info/:slug',
-  description: 'Validate and verify if an email address exists and is capable of receiving emails.',
+  description: 'Validasi dan verifikasi apakah alamat email ada dan dapat menerima pesan email.',
   parameters: [
-    { name: 'email', type: 'text', required: true, desc: 'Email address to verify (e.g. example@gmail.com).' }
+    { name: 'email', type: 'text', required: true, desc: 'Alamat email yang akan diverifikasi (contoh: example@gmail.com).' }
   ],
   payloadTemplate: {
     email: 'me.lvi.ng.om.ez.640@gmail.com'

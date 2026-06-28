@@ -7,7 +7,7 @@ export const kuitansiRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/kuitansi',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate a mock "Kuitansi" (Receipt).',
+  description: 'Buat gambar kuitansi pembayaran palsu secara instan.',
   parameters: [
     { name: 'nomor', type: 'text', required: false, desc: 'Receipt reference number. Defaults to "234".' },
     { name: 'dari', type: 'text', required: false, desc: 'Payer name (Telah terima dari). Defaults to "Ibnu Maksum".' },

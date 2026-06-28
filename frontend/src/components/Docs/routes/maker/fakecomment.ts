@@ -7,7 +7,7 @@ export const fakecommentRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/fakecomment',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate high-fidelity Instagram-style comment preview cards. Customize username, avatar, comment text, time, likes, verified status, like state, and light/dark theme.',
+  description: 'Buat gambar pratinjau komentar ala Instagram dengan tampilan sangat realistis.',
   parameters: [
     { name: 'username', type: 'text', required: false, desc: 'The username of the commenter. Defaults to "username".' },
     { name: 'avatar', type: 'text', required: false, desc: 'Direct URL to the avatar image.' },

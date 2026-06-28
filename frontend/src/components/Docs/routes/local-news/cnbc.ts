@@ -7,13 +7,13 @@ export const cnbcRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/cnbc',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch latest business, market, investment, and general news from CNBC Indonesia (cnbcindonesia.com). Returns up to 20 articles with title, link, description, publish date, source, and image using official RSS feeds.',
+    description: 'Ambil berita bisnis, pasar, investasi, dan umum terbaru dari CNBC Indonesia (cnbcindonesia.com). Mengembalikan hingga 20 artikel melalui feed RSS resmi.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a CNBC Indonesia news category.',
+        desc: 'Pilih kategori berita CNBC Indonesia.',
         options: [
           { value: 'all', label: 'CNBC Terbaru' },
           { value: 'news', label: 'CNBC News' },

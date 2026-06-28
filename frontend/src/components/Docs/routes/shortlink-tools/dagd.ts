@@ -7,7 +7,7 @@ export const dagdRoute: DocTopic = {
     method: 'GET',
     path: '/api/shortlink/dagd',
     pathTemplate: '/api/shortlink/:slug',
-    description: 'Shorten long URLs instantly using the da.gd shortening service. Optionally, specify a custom short URL suffix.',
+    description: 'Perpendek URL panjang secara instan menggunakan layanan da.gd. Secara opsional, tentukan akhiran URL pendek kustom.',
     parameters: [
       { name: 'url', type: 'text', required: true, desc: 'The long URL to be shortened.' },
       { name: 'shorturl', type: 'text', required: false, desc: 'Custom short URL suffix (optional).' }

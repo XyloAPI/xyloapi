@@ -7,9 +7,9 @@ export const toVintageRoute: DocTopic = {
     method: 'POST',
     path: '/api/ai-image-edit/to-vintage',
     pathTemplate: '/api/ai-image-edit/:slug',
-    description: 'Transform an image to look like a retro 1980s polaroid photo with faded colors and warm grain using advanced AI. Upload an image file or provide a direct image URL.',
+    description: 'Ubah gaya foto menjadi bergaya retro polaroid 1980-an dengan warna pudar.',
     parameters: [
-        { name: 'image', type: 'file', required: true, desc: 'Image file or direct image URL to edit.' }
+        { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diubah.' }
     ],
     payloadTemplate: {
         image: ''

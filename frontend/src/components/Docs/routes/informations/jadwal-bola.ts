@@ -7,7 +7,7 @@ export const jadwal_bolaRoute: DocTopic = {
   method: 'GET',
   path: '/api/info/jadwal-bola',
   pathTemplate: '/api/info/:slug',
-  description: 'Retrieve real-time football match schedules and live scores from various major leagues worldwide powered by OneFootball.',
+  description: 'Ambil jadwal pertandingan sepak bola secara real-time dan skor langsung dari berbagai liga besar di seluruh dunia yang didukung oleh OneFootball.',
   parameters: [],
   payloadTemplate: {}
 };

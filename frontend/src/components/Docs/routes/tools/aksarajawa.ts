@@ -7,7 +7,7 @@ export const aksarajawaRoute: DocTopic = {
   method: 'GET',
   path: '/api/tools/aksara-jawa',
   pathTemplate: '/api/tools/:slug',
-  description: 'Transliterate text between Latin and Aksara Jawa (Javanese Script).',
+  description: 'Transliterasi (ubah teks) antara huruf Latin dan Aksara Jawa.',
   parameters: [
     { name: 'text', type: 'text', required: true, desc: 'Text to transliterate.' },
     {

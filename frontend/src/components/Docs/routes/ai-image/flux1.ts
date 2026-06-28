@@ -7,10 +7,10 @@ export const flux1Route: DocTopic = {
   method: 'POST',
   path: '/api/ai-image/flux1',
   pathTemplate: '/api/ai-image/:slug',
-  description: 'Generate stunning images instantly with the high-speed Flux 1 Schnell model.',
+  description: 'Hasilkan gambar menakjubkan dalam sekejap dengan model Flux 1 Schnell berkecepatan tinggi.',
   parameters: [
-    { name: 'prompt', type: 'text', required: true, desc: 'The text prompt to generate an image for.' },
-    { name: 'aspect_ratio', type: 'select', required: false, desc: 'Aspect ratio of the generated image.', options: ['1:1', '16:9', '9:16', '4:3', '3:4', '3:2', '2:3', '21:9'] }
+    { name: 'prompt', type: 'text', required: true, desc: 'Teks prompt untuk membuat gambar.' },
+    { name: 'aspect_ratio', type: 'select', required: false, desc: 'Rasio aspek gambar yang akan dibuat.', options: ['1:1', '16:9', '9:16', '4:3', '3:4', '3:2', '2:3', '21:9'] }
   ],
   payloadTemplate: {
     prompt: '',

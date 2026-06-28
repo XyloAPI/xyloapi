@@ -7,9 +7,9 @@ export const olabibaRoute: DocTopic = {
     method: 'GET',
     path: '/api/ai-chat/olabiba',
     pathTemplate: '/api/ai-chat/:slug',
-    description: 'Interact with Olabiba AI. A friendly conversational AI companion powered by DeepSeek.',
+    description: 'Asisten AI percakapan yang ramah dan mudah diajak bicara untuk berbagai topik.',
     parameters: [
-      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+      { name: 'prompt', type: 'text', required: true, desc: 'Pesan atau pertanyaan yang ingin diajukan ke AI.' }
     ],
     payloadTemplate: {
       prompt: ''

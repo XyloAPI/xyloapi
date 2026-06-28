@@ -7,9 +7,9 @@ export const nslookupRoute: DocTopic = {
   method: 'GET',
   path: '/api/info/ns-lookup',
   pathTemplate: '/api/info/:slug',
-  description: 'Query NS (Name Server) DNS records for a domain to determine authoritative name servers and TTL.',
+  description: 'Kueri record DNS NS (Name Server) untuk suatu domain guna menentukan nameserver otoritatif dan TTL-nya.',
   parameters: [
-    { name: 'host', type: 'text', required: true, desc: 'Domain name to query (e.g. google.com).' }
+    { name: 'host', type: 'text', required: true, desc: 'Nama domain yang akan di-kueri (contoh: google.com).' }
   ],
   payloadTemplate: {
     host: 'google.com'

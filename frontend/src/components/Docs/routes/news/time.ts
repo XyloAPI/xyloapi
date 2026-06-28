@@ -7,13 +7,13 @@ export const timeRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/time',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest news from TIME Magazine (time.com). Returns up to 25 articles with title, image, description, author, and publish date. Images are extracted from video thumbnails or fetched concurrently via og:image.',
+    description: 'Ambil berita terbaru dari Majalah TIME (time.com). Mengembalikan hingga 25 artikel. Gambar diambil dari thumbnail video atau og:image.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'TIME Magazine currently exposes a single unified feed.',
+        desc: 'Pilih kategori berita TIME.',
         options: [
           { value: 'top', label: 'Top Stories' },
         ]

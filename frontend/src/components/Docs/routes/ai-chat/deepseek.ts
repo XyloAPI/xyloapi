@@ -7,9 +7,9 @@ export const deepseekRoute: DocTopic = {
     method: 'GET',
     path: '/api/ai-chat/deepseek',
     pathTemplate: '/api/ai-chat/:slug',
-    description: 'Interact with the state-of-the-art DeepSeek V4 Pro AI model. Ask questions, translate texts, generate code, or analyze details.',
+    description: 'Berinteraksilah dengan model AI DeepSeek V4 Pro yang canggih. Ajukan pertanyaan, terjemahkan teks, buat kode, atau analisis detail.',
     parameters: [
-      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+      { name: 'prompt', type: 'text', required: true, desc: 'Pesan atau pertanyaan yang ingin diajukan ke AI.' }
     ],
     payloadTemplate: {
       prompt: ''

@@ -7,7 +7,7 @@ export const qr_decoderRoute: DocTopic = {
     method: 'POST',
     path: '/api/qr-tool/qr-decode',
     pathTemplate: '/api/qr-tool/:slug',
-    description: 'Decode and extract text content from any QR Code or barcode image. Upload an image file or provide a direct image URL.',
+    description: 'Dekode dan ekstrak konten teks dari gambar QR Code atau barcode apa pun. Unggah file gambar atau berikan URL gambar langsung.',
     parameters: [
       { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' }
     ],

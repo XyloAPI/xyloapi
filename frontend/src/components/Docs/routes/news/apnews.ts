@@ -7,13 +7,13 @@ export const apnewsRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/apnews',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest news from AP News (apnews.com) by category. Returns up to 20 articles with title, image, description, and publish date.',
+    description: 'Ambil berita terbaru dari AP News (apnews.com) berdasarkan kategori. Mengembalikan hingga 20 artikel dengan judul, gambar, deskripsi, dan tanggal terbit.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select an AP News category.',
+        desc: 'Pilih kategori berita AP News.',
         options: [
           { value: 'top', label: 'Top Stories' },
           { value: 'world', label: 'World News' },

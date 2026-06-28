@@ -7,10 +7,10 @@ export const sharpenRoute: DocTopic = {
     method: 'POST',
     path: '/api/image-tool/sharpen',
     pathTemplate: '/api/image-tool/:slug',
-    description: 'Sharpen the details of your images online with adjustable intensity. Upload an image file or provide a direct image URL.',
+    description: 'Pertajam detail gambar Anda secara online dengan intensitas yang dapat disesuaikan.',
     parameters: [
-      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' },
-      { name: 'intensity', type: 'number', required: false, desc: 'Sharpen intensity from 0 to 100. Default is 50.' }
+      { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diproses.' },
+      { name: 'intensity', type: 'number', required: false, desc: 'Intensitas penajaman dari 0 hingga 100. Default adalah 50.' }
     ],
     payloadTemplate: {
       image: '',

@@ -7,13 +7,13 @@ export const nhlRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/nhl',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest news and stories from the NHL (nhl.com). Returns up to 20 articles with title, 16:9 image, summary, author, tags, and publish date — powered by the official NHL D3 content API.',
+    description: 'Ambil berita dan cerita terbaru dari NHL (nhl.com). Mengembalikan hingga 20 artikel dengan gambar, ringkasan, dan tanggal terbit.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select NHL news scope.',
+        desc: 'Pilih kategori berita NHL.',
         options: [
           { value: 'nhl', label: 'NHL News (league-wide)' },
           { value: 'all', label: 'All Stories (includes team content)' },

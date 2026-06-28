@@ -7,9 +7,9 @@ export const toTniRoute: DocTopic = {
     method: 'POST',
     path: '/api/ai-image-edit/to-tni',
     pathTemplate: '/api/ai-image-edit/:slug',
-    description: 'Transform a person to wear a TNI military army camouflage uniform on a training field using advanced AI. Upload an image file or provide a direct image URL.',
+    description: 'Ubah foto mengenakan seragam loreng TNI di lapangan latihan.',
     parameters: [
-        { name: 'image', type: 'file', required: true, desc: 'Image file or direct image URL to edit.' }
+        { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diubah.' }
     ],
     payloadTemplate: {
         image: ''

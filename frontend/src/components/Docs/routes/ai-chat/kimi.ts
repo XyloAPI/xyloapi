@@ -7,9 +7,9 @@ export const kimiRoute: DocTopic = {
     method: 'GET',
     path: '/api/ai-chat/kimi',
     pathTemplate: '/api/ai-chat/:slug',
-    description: 'Interact with the state-of-the-art Kimi-K2.6 AI model. Ask questions, translate texts, generate code, or analyze details.',
+    description: 'Model AI Kimi-K2.6 yang canggih untuk pertanyaan, penerjemahan, pemrograman, dan analisis.',
     parameters: [
-      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+      { name: 'prompt', type: 'text', required: true, desc: 'Pesan atau pertanyaan yang ingin diajukan ke AI.' }
     ],
     payloadTemplate: {
       prompt: ''

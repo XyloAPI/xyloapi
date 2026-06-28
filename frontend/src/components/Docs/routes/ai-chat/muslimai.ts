@@ -7,9 +7,9 @@ export const muslimaiRoute: DocTopic = {
     method: 'GET',
     path: '/api/ai-chat/muslimai',
     pathTemplate: '/api/ai-chat/:slug',
-    description: 'Interact with Muslim AI. Get answers grounded in the Quran with cited surah references.',
+    description: 'Dapatkan jawaban berdasarkan Al-Quran lengkap dengan referensi surah yang dikutip.',
     parameters: [
-      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+      { name: 'prompt', type: 'text', required: true, desc: 'Pesan atau pertanyaan yang ingin diajukan ke AI.' }
     ],
     payloadTemplate: {
       prompt: ''

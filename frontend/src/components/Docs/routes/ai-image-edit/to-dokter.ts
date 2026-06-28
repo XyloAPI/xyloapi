@@ -7,9 +7,9 @@ export const toDokterRoute: DocTopic = {
     method: 'POST',
     path: '/api/ai-image-edit/to-dokter',
     pathTemplate: '/api/ai-image-edit/:slug',
-    description: 'Transform a person to wear a white doctor lab coat with a hospital backdrop using advanced AI. Upload an image file or provide a direct image URL.',
+    description: 'Ubah foto mengenakan jas dokter putih dengan latar belakang rumah sakit.',
     parameters: [
-        { name: 'image', type: 'file', required: true, desc: 'Image file or direct image URL to edit.' }
+        { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diubah.' }
     ],
     payloadTemplate: {
         image: ''

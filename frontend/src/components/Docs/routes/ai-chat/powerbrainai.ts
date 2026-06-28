@@ -7,9 +7,9 @@ export const powerbrainaiRoute: DocTopic = {
     method: 'GET',
     path: '/api/ai-chat/powerbrainai',
     pathTemplate: '/api/ai-chat/:slug',
-    description: 'Interact with PowerBrain AI. A general-purpose AI assistant for questions, ideas, and conversations.',
+    description: 'Asisten AI serbaguna untuk pertanyaan, ide, dan percakapan sehari-hari.',
     parameters: [
-      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+      { name: 'prompt', type: 'text', required: true, desc: 'Pesan atau pertanyaan yang ingin diajukan ke AI.' }
     ],
     payloadTemplate: {
       prompt: ''

@@ -7,7 +7,7 @@ export const bratRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/brat',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate a Brat-style album cover image with custom text on a lime green background.',
+  description: 'Buat gambar sampul album ala Brat dengan teks kustom dan latar belakang hijau limau.',
   parameters: [
     { name: 'text', type: 'text', required: true, desc: 'The text message to display on the Brat image.' }
   ],

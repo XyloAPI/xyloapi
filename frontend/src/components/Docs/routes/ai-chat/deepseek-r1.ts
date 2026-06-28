@@ -7,9 +7,9 @@ export const deepseek_r1Route: DocTopic = {
   method: 'GET',
   path: '/api/ai-chat/deepseek-r1',
   pathTemplate: '/api/ai-chat/:slug',
-  description: 'Interact with DeepSeek R1 model. A highly reasoning-optimized model capable of math, coding, logic, and deep thoughts.',
+  description: 'Berinteraksilah dengan model DeepSeek R1. Sebuah model yang sangat dioptimalkan untuk penalaran dan mampu menangani matematika, pemrograman, logika, serta pemikiran mendalam.',
   parameters: [
-    { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+    { name: 'prompt', type: 'text', required: true, desc: 'Pesan atau pertanyaan yang ingin diajukan ke AI.' }
   ],
   payloadTemplate: {
     prompt: ''

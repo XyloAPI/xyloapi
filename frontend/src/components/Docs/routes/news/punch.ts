@@ -7,13 +7,13 @@ export const punchRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/punch',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch latest, featured, politics, sports, business, and metro news from The Punch (punchng.com) in Nigeria. Returns up to 20 articles with title, link, description, publish date, source, and media content directly from their official RSS feeds.',
+    description: 'Ambil berita terbaru, politik, olahraga, bisnis, dan metro dari The Punch (punchng.com) di Nigeria.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a section from The Punch.',
+        desc: 'Pilih kategori berita The Punch.',
         options: [
           { value: 'latest', label: 'Latest News' },
           { value: 'featured', label: 'Featured Stories' },

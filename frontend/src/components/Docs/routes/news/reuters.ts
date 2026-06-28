@@ -7,13 +7,13 @@ export const reutersRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/reuters',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest news from Reuters (reuters.com) by category. Returns up to 20 articles with title, description, and publish date. Note: article images are not available as reuters.com returns 401 for all server-side requests.',
+    description: 'Ambil berita terbaru dari Reuters (reuters.com) berdasarkan kategori. Mengembalikan hingga 20 artikel. Catatan: gambar artikel tidak tersedia karena larangan HTTP 401.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a Reuters news category.',
+        desc: 'Pilih kategori berita Reuters.',
         options: [
           { value: 'top', label: 'Top News' },
           { value: 'world', label: 'World' },

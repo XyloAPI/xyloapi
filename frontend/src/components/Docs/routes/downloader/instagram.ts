@@ -7,9 +7,9 @@ export const instagramRoute: DocTopic = {
     method: 'POST',
     path: '/api/downloader/instagram',
     pathTemplate: '/api/downloader/:slug',
-    description: 'Download Instagram videos, reels, photos, and carousel slides.',
+    description: 'Unduh video, reels, foto, dan slide carousel dari Instagram.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'public Instagram post/reel URL.' }
+      { name: 'url', type: 'text', required: true, desc: 'URL publik postingan atau reels Instagram.' }
     ],
     payloadTemplate: {
       url: ''

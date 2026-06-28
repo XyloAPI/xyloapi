@@ -7,7 +7,7 @@ export const ytlogoRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/ytlogo',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate custom text logo images in the classic YouTube style.',
+  description: 'Buat gambar teks logo kustom dengan gaya klasik YouTube.',
   parameters: [
     { name: 'you', type: 'text', required: false, desc: 'The left text content. Defaults to "You".' },
     { name: 'tube', type: 'text', required: false, desc: 'The right text content (inside the rounded box). Defaults to "Tube".' },

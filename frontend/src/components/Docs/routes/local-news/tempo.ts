@@ -7,13 +7,13 @@ export const tempoRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/tempo',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch latest local news from Tempo (tempo.co) in Indonesia. Returns up to 20 articles with title, link, description, publish date, source, and image by reading real-time RSS feeds.',
+    description: 'Ambil berita lokal terbaru dari Tempo (tempo.co) di Indonesia. Mengembalikan hingga 20 artikel menggunakan feed RSS real-time.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a Tempo news category.',
+        desc: 'Pilih kategori berita Tempo.',
         options: [
           { value: 'nasional', label: 'Tempo Nasional' },
           { value: 'bisnis', label: 'Tempo Bisnis' },

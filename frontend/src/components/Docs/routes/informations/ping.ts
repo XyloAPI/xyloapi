@@ -7,9 +7,9 @@ export const pingRoute: DocTopic = {
   method: 'GET',
   path: '/api/info/ping',
   pathTemplate: '/api/info/:slug',
-  description: 'Ping a domain or IP address and return RTT latency, resolved IP, packet loss, and min/avg/max statistics.',
+  description: 'Lakukan Ping ke domain atau alamat IP dan kembalikan latensi RTT, IP ter-resolve, packet loss, serta statistik min/avg/max.',
   parameters: [
-    { name: 'domain', type: 'text', required: true, desc: 'Domain or IP address to ping (e.g. google.com or 8.8.8.8).' }
+    { name: 'domain', type: 'text', required: true, desc: 'Domain atau alamat IP yang akan di-ping (contoh: google.com atau 8.8.8.8).' }
   ],
   payloadTemplate: {
     domain: 'google.com'

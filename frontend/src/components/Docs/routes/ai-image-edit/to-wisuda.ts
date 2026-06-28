@@ -7,9 +7,9 @@ export const toWisudaRoute: DocTopic = {
     method: 'POST',
     path: '/api/ai-image-edit/to-wisuda',
     pathTemplate: '/api/ai-image-edit/:slug',
-    description: 'Transform a person to wear a graduation gown and cap holding a diploma using advanced AI. Upload an image file or provide a direct image URL.',
+    description: 'Ubah foto mengenakan toga wisuda sambil memegang ijazah.',
     parameters: [
-        { name: 'image', type: 'file', required: true, desc: 'Image file or direct image URL to edit.' }
+        { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diubah.' }
     ],
     payloadTemplate: {
         image: ''

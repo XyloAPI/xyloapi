@@ -7,9 +7,9 @@ export const sahabataiRoute: DocTopic = {
     method: 'GET',
     path: '/api/ai-chat/sahabatai',
     pathTemplate: '/api/ai-chat/:slug',
-    description: 'Interact with Sahabat AI by Indosat Ooredoo Hutchison. A conversational AI assistant in Indonesian.',
+    description: 'Asisten AI percakapan dalam Bahasa Indonesia dari Indosat Ooredoo Hutchison.',
     parameters: [
-      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+      { name: 'prompt', type: 'text', required: true, desc: 'Pesan atau pertanyaan yang ingin diajukan ke AI.' }
     ],
     payloadTemplate: {
       prompt: ''

@@ -23,9 +23,6 @@ export default function BMKGLayout({ activeTopic, resData }: BMKGLayoutProps) {
   return (
     <div className="response-layout">
       <div className="response-header">
-        <span className="response-status-badge">
-          ✓ DATA RETRIEVED SUCCESSFULLY
-        </span>
         <h2 className="response-title">
           {activeTopic.title} - BMKG Indonesia
         </h2>

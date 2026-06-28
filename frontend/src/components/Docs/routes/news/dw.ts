@@ -7,13 +7,13 @@ export const dwRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/dw',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest news from DW - Deutsche Welle (dw.com) by category. Returns up to 20 articles with title, image, description, and publish date — powered by official DW RSS feeds.',
+    description: 'Ambil berita terbaru dari DW - Deutsche Welle (dw.com) berdasarkan kategori. Mengembalikan hingga 20 artikel dengan judul, gambar, deskripsi, dan tanggal terbit - didukung oleh feed RSS resmi DW.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a DW news category.',
+        desc: 'Pilih kategori berita DW.',
         options: [
           { value: 'top', label: 'Top News' },
           { value: 'all', label: 'All News' },

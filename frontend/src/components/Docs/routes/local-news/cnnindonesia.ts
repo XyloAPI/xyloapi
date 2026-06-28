@@ -7,13 +7,13 @@ export const cnnindonesiaRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/cnnindonesia',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch latest local news from CNN Indonesia (cnnindonesia.com). Returns up to 20 articles with title, link, description, publish date, source, and media content by reading real-time RSS feeds.',
+    description: 'Ambil berita lokal terbaru dari CNN Indonesia (cnnindonesia.com). Mengembalikan hingga 20 artikel dengan judul, tautan, deskripsi, dan media dari feed RSS real-time.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a CNN Indonesia news sub-portal.',
+        desc: 'Pilih sub-portal berita CNN Indonesia.',
         options: [
           { value: 'nasional', label: 'CNN Indonesia Nasional' },
           { value: 'internasional', label: 'CNN Indonesia Internasional' },

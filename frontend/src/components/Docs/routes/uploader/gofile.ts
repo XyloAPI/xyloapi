@@ -7,9 +7,9 @@ export const gofileRoute: DocTopic = {
     method: 'POST',
     path: '/api/uploader/gofile',
     pathTemplate: '/api/uploader/:slug',
-    description: 'Upload any local file, image, video, or document directly to the GoFile file sharing platform.',
+    description: 'Unggah file lokal, gambar, video, atau dokumen apa pun langsung ke platform berbagi file GoFile.',
     parameters: [
-      { name: 'image', type: 'file', required: true, desc: 'Select local file to upload or enter file URL' }
+      { name: 'image', type: 'file', required: true, desc: 'Pilih file lokal untuk diunggah atau masukkan URL file' }
     ],
     payloadTemplate: {
       image: ''

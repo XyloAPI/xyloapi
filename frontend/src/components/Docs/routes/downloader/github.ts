@@ -7,9 +7,9 @@ export const githubRoute: DocTopic = {
     method: 'POST',
     path: '/api/downloader/github',
     pathTemplate: '/api/downloader/:slug',
-    description: 'Download repositories, releases, release assets, specific branches, single files, or folders from GitHub.',
+    description: 'Unduh repositori, rilis, aset rilis, branch, file tunggal, atau folder langsung dari GitHub.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'GitHub Repository, Release, File, or Folder URL.' }
+      { name: 'url', type: 'text', required: true, desc: 'URL Repositori, Rilis, File, atau Folder GitHub.' }
     ],
     payloadTemplate: {
       url: ''

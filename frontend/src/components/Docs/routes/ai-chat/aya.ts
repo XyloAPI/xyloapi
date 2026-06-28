@@ -7,9 +7,9 @@ export const ayaRoute: DocTopic = {
     method: 'GET',
     path: '/api/ai-chat/aya',
     pathTemplate: '/api/ai-chat/:slug',
-    description: 'Interact with Aya AI by Cohere. A powerful multilingual model for reasoning, translation, and chat.',
+    description: 'Sebuah model multibahasa yang canggih untuk penalaran, penerjemahan, dan obrolan.',
     parameters: [
-      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+      { name: 'prompt', type: 'text', required: true, desc: 'Pesan atau pertanyaan yang ingin diajukan ke AI.' }
     ],
     payloadTemplate: {
       prompt: ''

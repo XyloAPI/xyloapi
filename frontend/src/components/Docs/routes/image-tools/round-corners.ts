@@ -7,10 +7,10 @@ export const round_cornersRoute: DocTopic = {
     method: 'POST',
     path: '/api/image-tool/round-corners',
     pathTemplate: '/api/image-tool/:slug',
-    description: 'Round the corners of your images online. Customize the corner radius to create smooth, rounded edges on your photos.',
+    description: 'Buat sudut melengkung pada gambar. Sesuaikan radius sudut untuk menghasilkan tepi yang membulat dan halus.',
     parameters: [
-      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' },
-      { name: 'radius', type: 'number', required: false, desc: 'Corner radius in pixels (e.g. 30) or percentage (e.g. "25%"). Default is 30.' }
+      { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diproses.' },
+      { name: 'radius', type: 'number', required: false, desc: "Radius sudut dalam piksel (contoh: 30) atau persentase (contoh: '25%'). Default adalah 30." }
     ],
     payloadTemplate: {
       image: '',

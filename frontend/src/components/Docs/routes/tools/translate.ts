@@ -148,7 +148,7 @@ export const translateRoute: DocTopic = {
   method: 'GET',
   path: '/api/tools/translate',
   pathTemplate: '/api/tools/:slug',
-  description: 'Translate text to any language.',
+  description: 'Terjemahkan teks ke bahasa apa pun.',
   parameters: [
     { name: 'text', type: 'text', required: true, desc: 'Text to translate.' },
     { name: 'to', type: 'select', required: false, desc: 'Target language.', options: googleLanguages },

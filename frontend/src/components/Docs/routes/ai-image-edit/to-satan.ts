@@ -7,9 +7,9 @@ export const toSatanRoute: DocTopic = {
     method: 'POST',
     path: '/api/ai-image-edit/to-satan',
     pathTemplate: '/api/ai-image-edit/:slug',
-    description: 'Transform a person into a scary demon with horns and glowing yellow/red eyes using advanced AI. Upload an image file or provide a direct image URL.',
+    description: 'Ubah wajah menjadi iblis menyeramkan dengan tanduk dan mata menyala.',
     parameters: [
-        { name: 'image', type: 'file', required: true, desc: 'Image file or direct image URL to edit.' }
+        { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diubah.' }
     ],
     payloadTemplate: {
         image: ''

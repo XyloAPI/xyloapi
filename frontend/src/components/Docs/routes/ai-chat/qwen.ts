@@ -7,9 +7,9 @@ export const qwenRoute: DocTopic = {
     method: 'GET',
     path: '/api/ai-chat/qwen',
     pathTemplate: '/api/ai-chat/:slug',
-    description: 'Interact with the state-of-the-art Qwen LLM. Ask questions, get help, translate, or chat informally.',
+    description: 'Model Qwen AI mutakhir untuk pertanyaan, bantuan, penerjemahan, dan obrolan santai.',
     parameters: [
-      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+      { name: 'prompt', type: 'text', required: true, desc: 'Pesan atau pertanyaan yang ingin diajukan ke AI.' }
     ],
     payloadTemplate: {
       prompt: ''

@@ -7,9 +7,9 @@ export const quillbotRoute: DocTopic = {
     method: 'GET',
     path: '/api/ai-chat/quillbot',
     pathTemplate: '/api/ai-chat/:slug',
-    description: 'Interact with QuillBot AI. Generate drafts, brainstorm ideas, and get writing assistance.',
+    description: 'Buat draf tulisan, brainstorm ide, dan dapatkan bantuan menulis dari QuillBot AI.',
     parameters: [
-      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+      { name: 'prompt', type: 'text', required: true, desc: 'Pesan atau pertanyaan yang ingin diajukan ke AI.' }
     ],
     payloadTemplate: {
       prompt: ''

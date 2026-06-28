@@ -7,9 +7,9 @@ export const imghippoRoute: DocTopic = {
     method: 'POST',
     path: '/api/uploader/imghippo',
     pathTemplate: '/api/uploader/:slug',
-    description: 'Upload local image files or remote URLs directly to the ImgHippo hosting platform.',
+    description: 'Unggah file gambar lokal atau URL jarak jauh langsung ke platform hosting ImgHippo.',
     parameters: [
-      { name: 'image', type: 'file', required: true, desc: 'Select local image file to upload or enter image URL' }
+      { name: 'image', type: 'file', required: true, desc: 'Pilih file gambar lokal untuk diunggah atau masukkan URL gambar' }
     ],
     payloadTemplate: {
       image: ''

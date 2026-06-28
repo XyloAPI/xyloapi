@@ -7,13 +7,13 @@ export const guardianRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/guardian',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest news from The Guardian (theguardian.com) by category. Returns up to 25 articles with title, high-res image (1200px), description, author, and publish date — powered by official Guardian RSS feeds.',
+    description: 'Ambil berita terbaru dari The Guardian (theguardian.com) berdasarkan kategori. Mengembalikan hingga 25 artikel dengan judul, gambar beresolusi tinggi, deskripsi, dan tanggal terbit.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a Guardian news category.',
+        desc: 'Pilih kategori berita The Guardian.',
         options: [
           { value: 'top', label: 'Top Stories' },
           { value: 'world', label: 'World' },

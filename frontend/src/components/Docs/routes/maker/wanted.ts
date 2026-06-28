@@ -7,7 +7,7 @@ export const wantedRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/wanted',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate high-fidelity wanted posters.',
+  description: 'Buat poster buronan (wanted) berkualitas tinggi dengan gaya klasik.',
   parameters: [
     { name: 'image', type: 'text', required: true, desc: 'Direct URL to the target person image.' }
   ],

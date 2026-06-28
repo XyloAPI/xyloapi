@@ -7,12 +7,12 @@ export const glowRoute: DocTopic = {
     method: 'POST',
     path: '/api/image-tool/glow',
     pathTemplate: '/api/image-tool/:slug',
-    description: 'Add a beautiful, radiant glow effect with custom color, intensity, and blur radius to your images online. Upload an image file or provide a direct image URL.',
+    description: 'Tambahkan efek bercahaya (glow) warna-warni di sekitar elemen transparan pada gambar PNG.',
     parameters: [
-      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' },
-      { name: 'intensity', type: 'number', required: false, desc: 'Glow intensity from 1 to 100. Default is 20.' },
-      { name: 'radius', type: 'number', required: false, desc: 'Glow blur radius from 1 to 50. Default is 10.' },
-      { name: 'color', type: 'color', required: false, desc: 'Hex color code of the glow (e.g. "#ffffff" or "#ff00bb"). Default is "#ffffff".' }
+      { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diproses.' },
+      { name: 'intensity', type: 'number', required: false, desc: 'Intensitas cahaya dari 1 hingga 100. Default adalah 20.' },
+      { name: 'radius', type: 'number', required: false, desc: 'Radius blur cahaya dari 1 hingga 50. Default adalah 10.' },
+      { name: 'color', type: 'color', required: false, desc: "Kode warna Hex untuk efek cahaya (contoh: '#ffffff' atau '#ff00bb'). Default adalah '#ffffff'." }
     ],
     payloadTemplate: {
       image: '',

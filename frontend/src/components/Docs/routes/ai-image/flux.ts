@@ -7,10 +7,10 @@ export const fluxRoute: DocTopic = {
   method: 'POST',
   path: '/api/ai-image/flux',
   pathTemplate: '/api/ai-image/:slug',
-  description: 'Generate state-of-the-art images using the Flux AI model. Configure custom dimensions and steps for high-fidelity rendering.',
+  description: 'Buat gambar berkualitas tinggi menggunakan model Flux AI.',
   parameters: [
-    { name: 'prompt', type: 'text', required: true, desc: 'The text prompt to generate an image for.' },
-    { name: 'aspect_ratio', type: 'select', required: false, desc: 'Aspect ratio of the generated image.', options: ['1:1', '16:9', '9:16', '4:3', '3:4', '3:2', '2:3', '21:9'] }
+    { name: 'prompt', type: 'text', required: true, desc: 'Teks prompt untuk membuat gambar.' },
+    { name: 'aspect_ratio', type: 'select', required: false, desc: 'Rasio aspek gambar yang akan dibuat.', options: ['1:1', '16:9', '9:16', '4:3', '3:4', '3:2', '2:3', '21:9'] }
   ],
   payloadTemplate: {
     prompt: '',

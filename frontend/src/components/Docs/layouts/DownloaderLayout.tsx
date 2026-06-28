@@ -44,7 +44,6 @@ export default function DownloaderLayout({ resData, copyToClipboard }: Downloade
   return (
     <div className="response-layout">
       <div className="response-header">
-        <span className="response-status-badge">✓ DOWNLOAD LINKS EXTRACTED</span>
         <h2 className="response-title">
           {resData.title || 'TikTok Downloader'}
         </h2>

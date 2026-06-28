@@ -7,13 +7,13 @@ export const washingtonpostRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/washingtonpost',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest headlines from The Washington Post (washingtonpost.com) via Google News index. Returns up to 20 articles with title, description, and publish date. Note: article images are not available due to WaPo paywall restrictions.',
+    description: 'Ambil berita utama terbaru dari The Washington Post (washingtonpost.com) via Google News. Gambar tidak tersedia karena paywall.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a Washington Post news category.',
+        desc: 'Pilih kategori berita Washington Post.',
         options: [
           { value: 'top', label: 'Top Stories' },
           { value: 'world', label: 'World' },

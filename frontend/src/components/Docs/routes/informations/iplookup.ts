@@ -7,9 +7,9 @@ export const iplookupRoute: DocTopic = {
   method: 'GET',
   path: '/api/info/ip',
   pathTemplate: '/api/info/:slug',
-  description: 'Lookup detailed geolocation and network information for a specified IP address or domain.',
+  description: 'Cari geolokasi secara detail dan informasi jaringan untuk alamat IP atau domain yang ditentukan.',
   parameters: [
-    { name: 'ip', type: 'text', required: false, desc: 'IP address or domain name (e.g. 8.8.8.8 or xyloapi.qzz.io).' }
+    { name: 'ip', type: 'text', required: false, desc: 'Alamat IP atau nama domain (contoh: 8.8.8.8 atau xyloapi.qzz.io).' }
   ],
   payloadTemplate: {
     ip: '8.8.8.8'

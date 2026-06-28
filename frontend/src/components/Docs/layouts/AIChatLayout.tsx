@@ -9,9 +9,6 @@ export default function AIChatLayout({ activeTopic, resData }: AIChatLayoutProps
   return (
     <div className="response-layout">
       <div className="response-header">
-        <span className="response-status-badge">
-          ✓ RESPONSE GENERATED
-        </span>
         <h2 className="response-title">
           {activeTopic.title} Response
         </h2>

@@ -7,7 +7,7 @@ export const hitungjarakRoute: DocTopic = {
   method: 'GET',
   path: '/api/tools/hitung-jarak',
   pathTemplate: '/api/tools/:slug',
-  description: 'Calculate geographical distance, driving time, and route coordinates between two Indonesian cities.',
+  description: 'Hitung jarak geografis, waktu tempuh berkendara, dan koordinat rute antara dua kota di Indonesia.',
   parameters: [
     { name: 'from', type: 'text', required: true, desc: 'Origin city name (e.g., Solo).' },
     { name: 'to', type: 'text', required: true, desc: 'Destination city name (e.g., Yogyakarta).' }

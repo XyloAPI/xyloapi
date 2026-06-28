@@ -7,9 +7,9 @@ export const urlParserRoute: DocTopic = {
   method: 'GET',
   path: '/api/info/url-parser',
   pathTemplate: '/api/info/:slug',
-  description: 'Parse a URL into its constituent parts including protocol, domain, subdomain, port, pathname, search query, and hash components.',
+  description: 'Urai (parse) URL menjadi bagian-bagian penyusunnya, termasuk protokol, domain, subdomain, port, pathname, kueri pencarian, dan komponen hash.',
   parameters: [
-    { name: 'url', type: 'text', required: true, desc: 'The full URL string to parse and analyze.' }
+    { name: 'url', type: 'text', required: true, desc: 'String URL lengkap yang akan diurai dan dianalisis.' }
   ],
   payloadTemplate: {
     url: 'https://user:password@sub.example.com:8080/path/to/resource?search=query#section'

@@ -7,13 +7,13 @@ export const inewsRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/inews',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch latest local news, sports, business, lifestyle, and regional updates from iNews (inews.id) in Indonesia. Returns up to 20 articles with title, link, description, publish date, source, and image content.',
+    description: 'Ambil berita lokal terbaru, olahraga, bisnis, gaya hidup, dan pembaruan regional dari iNews (inews.id) di Indonesia.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select an iNews category.',
+        desc: 'Pilih kategori berita iNews.',
         options: [
           { value: 'news', label: 'News Utama' },
           { value: 'nasional', label: 'Nasional' },

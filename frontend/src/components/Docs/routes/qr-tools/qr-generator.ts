@@ -7,7 +7,7 @@ export const qr_generatorRoute: DocTopic = {
     method: 'GET',
     path: '/api/qr-tool/generate',
     pathTemplate: '/api/qr-tool/:slug',
-    description: 'Generate high-quality customizable QR Codes online instantly. Enter your data, customize the size, margin, and color.',
+    description: 'Hasilkan QR Code yang dapat disesuaikan dan berkualitas tinggi secara online secara instan. Masukkan data Anda, sesuaikan ukuran, margin, dan warna.',
     parameters: [
       { name: 'data', type: 'text', required: true, desc: 'The text or URL to encode into the QR code.' },
       { name: 'size', type: 'text', required: false, desc: 'Size in widthxheight format (e.g. 500x500 or 1000x1000). Default is 500x500.' },

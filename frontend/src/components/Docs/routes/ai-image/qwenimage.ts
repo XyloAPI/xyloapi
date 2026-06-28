@@ -7,9 +7,9 @@ export const qwenimageRoute: DocTopic = {
   method: 'POST',
   path: '/api/ai-image/qwenimage',
   pathTemplate: '/api/ai-image/:slug',
-  description: 'Generate high-quality illustrations and descriptive images utilizing Qwen-VL architecture.',
+  description: 'Buat ilustrasi dan gambar deskriptif berkualitas tinggi dengan memanfaatkan arsitektur Qwen-VL.',
   parameters: [
-    { name: 'prompt', type: 'text', required: true, desc: 'The text prompt to generate an image for.' }
+    { name: 'prompt', type: 'text', required: true, desc: 'Teks prompt untuk membuat gambar.' }
   ],
   payloadTemplate: {
     prompt: ''

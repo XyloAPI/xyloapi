@@ -7,9 +7,9 @@ export const jeevesRoute: DocTopic = {
     method: 'GET',
     path: '/api/ai-chat/jeeves',
     pathTemplate: '/api/ai-chat/:slug',
-    description: 'Interact with Jeeves AI. A fast and conversational AI assistant for general questions and tasks.',
+    description: 'Asisten AI cepat dan ramah untuk pertanyaan umum dan percakapan sehari-hari.',
     parameters: [
-      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+      { name: 'prompt', type: 'text', required: true, desc: 'Pesan atau pertanyaan yang ingin diajukan ke AI.' }
     ],
     payloadTemplate: {
       prompt: ''

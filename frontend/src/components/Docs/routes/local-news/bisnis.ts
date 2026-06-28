@@ -7,13 +7,13 @@ export const bisnisRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/bisnis',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch latest economic and general news from Bisnis.com in Indonesia. Returns up to 20 articles with title, link, publish date, source, and image by parsing sub-portal article listings.',
+    description: 'Ambil berita ekonomi dan umum terbaru dari Bisnis.com di Indonesia. Mengembalikan hingga 20 artikel dengan judul, tautan, tanggal terbit, sumber, dan gambar.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a Bisnis.com news category.',
+        desc: 'Pilih kategori berita Bisnis.com.',
         options: [
           { value: 'ekonomi', label: 'Bisnis Ekonomi' },
           { value: 'finansial', label: 'Bisnis Finansial' },

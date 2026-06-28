@@ -7,9 +7,9 @@ export const toHantuRoute: DocTopic = {
     method: 'POST',
     path: '/api/ai-image-edit/to-hantu',
     pathTemplate: '/api/ai-image-edit/:slug',
-    description: 'Transform a person into a scary ghost with pale skin and messy black hair using advanced AI. Upload an image file or provide a direct image URL.',
+    description: 'Ubah wajah menjadi hantu menyeramkan dengan kulit pucat.',
     parameters: [
-        { name: 'image', type: 'file', required: true, desc: 'Image file or direct image URL to edit.' }
+        { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diubah.' }
     ],
     payloadTemplate: {
         image: ''

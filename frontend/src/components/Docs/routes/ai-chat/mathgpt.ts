@@ -7,9 +7,9 @@ export const mathgptRoute: DocTopic = {
     method: 'GET',
     path: '/api/ai-chat/mathgpt',
     pathTemplate: '/api/ai-chat/:slug',
-    description: 'Interact with MathGPT. An AI model specialized in solving math problems and step-by-step explanations.',
+    description: 'Model AI khusus untuk menyelesaikan soal matematika dengan penjelasan langkah demi langkah.',
     parameters: [
-      { name: 'prompt', type: 'text', required: true, desc: 'The math problem or question to solve.' }
+      { name: 'prompt', type: 'text', required: true, desc: 'Soal matematika atau pertanyaan yang ingin diselesaikan.' }
     ],
     payloadTemplate: {
       prompt: ''

@@ -7,10 +7,10 @@ export const ipv6GeneratorRoute: DocTopic = {
   method: 'GET',
   path: '/api/info/ipv6-generator',
   pathTemplate: '/api/info/:slug',
-  description: 'Generate a unique IPv6 address using optional Global ID and Subnet ID values.',
+  description: 'Hasilkan alamat IPv6 unik menggunakan nilai ID Global dan ID Subnet opsional.',
   parameters: [
-    { name: 'global_id', type: 'text', required: false, desc: 'Optional 10-character global ID hex string. Generated randomly if blank.' },
-    { name: 'subnet_id', type: 'text', required: false, desc: 'Optional 4-character subnet ID hex string. Generated randomly if blank.' }
+    { name: 'global_id', type: 'text', required: false, desc: 'Opsional string hex ID global 10 karakter. Akan dihasilkan secara acak jika kosong.' },
+    { name: 'subnet_id', type: 'text', required: false, desc: 'Opsional string hex ID global 10 karakter. Akan dihasilkan secara acak jika kosong.' }
   ],
   payloadTemplate: {
     global_id: '3a5e94ff1e',

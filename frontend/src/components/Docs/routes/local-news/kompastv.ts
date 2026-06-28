@@ -7,13 +7,13 @@ export const kompastvRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/kompastv',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch latest local news and talkshow videos from Kompas TV (kompas.tv) in Indonesia. Returns up to 20 articles with title, link, description, publish date, source, and media content.',
+    description: 'Ambil video berita lokal terbaru dan acara bincang-bincang dari Kompas TV (kompas.tv) di Indonesia.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a Kompas TV news category.',
+        desc: 'Pilih kategori berita Kompas TV.',
         options: [
           { value: 'news', label: 'Berita Utama (News)' },
           { value: 'nasional', label: 'Nasional' },

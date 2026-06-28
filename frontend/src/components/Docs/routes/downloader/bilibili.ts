@@ -7,9 +7,9 @@ export const bilibiliRoute: DocTopic = {
     method: 'POST',
     path: '/api/downloader/bilibili',
     pathTemplate: '/api/downloader/:slug',
-    description: 'Download videos from Bilibili posts and anime episodes.',
+    description: 'Unduh video dan episode anime dari Bilibili.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'Bilibili video URL.' }
+      { name: 'url', type: 'text', required: true, desc: 'URL video Bilibili.' }
     ],
     payloadTemplate: {
       url: ''

@@ -7,13 +7,13 @@ export const wsjRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/wsj',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest news from The Wall Street Journal (wsj.com) by category. Returns up to 20 articles with title, description, and publish date. Note: article images are not available as wsj.com is behind a hard paywall (HTTP 401 for all server-side requests).',
+    description: 'Ambil berita terbaru dari The Wall Street Journal (wsj.com) berdasarkan kategori. Gambar artikel tidak tersedia karena paywall.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a WSJ category.',
+        desc: 'Pilih kategori berita WSJ.',
         options: [
           { value: 'top', label: 'Top News' },
           { value: 'business', label: 'Business' },

@@ -7,9 +7,9 @@ export const toKriboRoute: DocTopic = {
     method: 'POST',
     path: '/api/ai-image-edit/to-kribo',
     pathTemplate: '/api/ai-image-edit/:slug',
-    description: 'Transform a person to have a huge classic afro (kribo) hairstyle using advanced AI. Upload an image file or provide a direct image URL.',
+    description: 'Ubah gaya rambut menjadi kribo besar bergaya klasik.',
     parameters: [
-        { name: 'image', type: 'file', required: true, desc: 'Image file or direct image URL to edit.' }
+        { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diubah.' }
     ],
     payloadTemplate: {
         image: ''

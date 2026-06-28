@@ -7,7 +7,7 @@ export const base64ToImageRoute: DocTopic = {
   method: 'POST',
   path: '/api/tools/base64-to-image',
   pathTemplate: '/api/tools/:slug',
-  description: 'Convert a Base64 encoded string back into a viewable and downloadable image format.',
+  description: 'Ubah string yang dienkode Base64 kembali menjadi format gambar yang dapat dilihat dan diunduh.',
   parameters: [
     { name: 'base64', type: 'textarea', required: true, desc: 'Base64 string of the image (with or without data:image/png;base64 prefix).' }
   ],

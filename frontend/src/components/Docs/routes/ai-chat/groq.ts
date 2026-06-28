@@ -7,7 +7,7 @@ export const groqRoute: DocTopic = {
     method: 'GET',
     path: '/api/ai-chat/groq',
     pathTemplate: '/api/ai-chat/:slug',
-    description: 'Interact with Groq\'s Compound AI model featuring advanced tools like web search, code interpreter, and website visits.',
+    description: 'Model AI canggih dengan kemampuan pencarian web real-time, eksekusi kode, dan analisis data.',
     parameters: [
       { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the Compound AI model.' }
     ],

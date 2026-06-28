@@ -146,7 +146,7 @@ export default function Monitor() {
       <div className="monitor-container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
         <div style={{ fontFamily: 'var(--font-mono)', color: 'var(--gold)', display: 'flex', alignItems: 'center', gap: '12px' }}>
           <RefreshCw className="animate-spin" size={18} />
-          <span>INITIALIZING GATEWAY FEED...</span>
+          <span>Memuat Sistem...</span>
         </div>
       </div>
     );
@@ -185,7 +185,7 @@ export default function Monitor() {
       <div className="monitor-header">
         <div>
           <span className="monitor-pretitle">SYSTEM TELEMETRY</span>
-          <h1 className="monitor-title">LIVE API GATEWAY MONITOR</h1>
+          <h1 className="monitor-title">LIVE API MONITOR</h1>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
           <button
@@ -200,7 +200,7 @@ export default function Monitor() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span className={`status-dot ${isOnline ? 'online' : 'offline'}`}></span>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 600, color: isOnline ? 'var(--white)' : 'var(--ash)' }}>
-              {isOnline ? 'SYSTEM ACTIVE' : 'SYSTEM OFFLINE'}
+              {isOnline ? 'ONLINE' : 'OFFLINE'}
             </span>
           </div>
         </div>
@@ -210,7 +210,7 @@ export default function Monitor() {
       <div className="monitor-stats-grid">
         <div className="monitor-stat-card">
           <div className="stat-card-header">
-            <span>GATEWAY UPTIME</span>
+            <span>SYSTEM UPTIME</span>
             <Clock size={16} style={{ color: 'var(--gold)' }} />
           </div>
           <span className="stat-card-value">{formatUptime(uptimeVal)}</span>
@@ -218,7 +218,7 @@ export default function Monitor() {
         </div>
         <div className="monitor-stat-card">
           <div className="stat-card-header">
-            <span>REQUESTS TODAY</span>
+            <span>REQUESTS HARI INI</span>
             <Activity size={16} style={{ color: 'var(--gold)' }} />
           </div>
           <span className="stat-card-value">{stats.requestsToday.toLocaleString()}</span>
@@ -226,7 +226,7 @@ export default function Monitor() {
         </div>
         <div className="monitor-stat-card">
           <div className="stat-card-header">
-            <span>TOTAL REQUESTS</span>
+            <span>JUMLAH REQUESTS</span>
             <Database size={16} style={{ color: 'var(--gold)' }} />
           </div>
           <span className="stat-card-value">{(stats.totalRequests || 0).toLocaleString()}</span>
@@ -242,23 +242,23 @@ export default function Monitor() {
         </div>
         <div className="monitor-stat-card">
           <div className="stat-card-header">
-            <span>SUCCESS RATE</span>
+            <span>SUKSES</span>
             <CheckCircle2 size={16} style={{ color: '#27C93F' }} />
           </div>
           <span className="stat-card-value" style={{ color: stats.successRatePercent < 90 ? 'var(--gold)' : '#27C93F' }}>
             {stats.successRatePercent.toFixed(2)}%
           </span>
-          <span className="stat-card-label">HTTP responses &lt; 400</span>
+          <span className="stat-card-label">Persentase berhasil</span>
         </div>
         <div className="monitor-stat-card">
           <div className="stat-card-header">
-            <span>ERROR RATE</span>
+            <span>GAGAL</span>
             <XCircle size={16} style={{ color: stats.errorRatePercent > 0 ? '#FF3B30' : 'var(--steel)' }} />
           </div>
           <span className="stat-card-value" style={{ color: stats.errorRatePercent > 0 ? '#FF3B30' : 'var(--white)' }}>
             {stats.errorRatePercent.toFixed(2)}%
           </span>
-          <span className="stat-card-label">HTTP responses &gt;= 400</span>
+          <span className="stat-card-label">Persentase gagal</span>
         </div>
       </div>
 
@@ -267,17 +267,17 @@ export default function Monitor() {
         {/* Live Traffic Feed */}
         <div className="monitor-card wide-card">
           <div className="monitor-card-header">
-            <h3 className="card-title">Live Traffic Feed</h3>
-            <span className="card-subtitle">Real-time database records</span>
+            <h3 className="card-title">Riwayat Request</h3>
+            <span className="card-subtitle">Log request API</span>
           </div>
           <div className="table-responsive">
             <table className="monitor-table">
               <thead>
                 <tr>
-                  <th>Timestamp</th>
-                  <th>Method</th>
-                  <th>Pathway</th>
-                  <th>HTTP Code</th>
+                  <th>Waktu</th>
+                  <th>Metode</th>
+                  <th>Path</th>
+                  <th>Kode</th>
                   <th>Latency</th>
                 </tr>
               </thead>
@@ -285,7 +285,7 @@ export default function Monitor() {
                 {lastRequests.length === 0 ? (
                   <tr>
                     <td colSpan={5} style={{ textAlign: 'center', color: 'var(--steel)', padding: '48px 0', fontFamily: 'var(--font-mono)' }}>
-                      NO INBOUND TRAFFIC REGISTERED IN DATABASE
+                      TIDAK ADA LALU LINTAS API
                     </td>
                   </tr>
                 ) : (
@@ -328,12 +328,12 @@ export default function Monitor() {
         <div className="monitor-card narrow-card">
           <div className="monitor-card-header">
             <h3 className="card-title">Top Endpoints</h3>
-            <span className="card-subtitle">Most active route groupings</span>
+            <span className="card-subtitle">5 endpoints terpopuler</span>
           </div>
           <div className="top-endpoints-list">
             {topEndpoints.length === 0 ? (
               <div style={{ color: 'var(--steel)', padding: '48px 0', textAlign: 'center', fontFamily: 'var(--font-mono)' }}>
-                NO DATA LOGGED
+                TIDAK ADA DATA
               </div>
             ) : (
               topEndpoints.map((ep, idx) => (
@@ -343,10 +343,10 @@ export default function Monitor() {
                   </div>
                   <div className="ep-details">
                     <span className="ep-path">{ep.path}</span>
-                    <span className="ep-stats">Avg Latency: {ep.avg_latency}ms</span>
+                    <span className="ep-stats">Latency: {ep.avg_latency}ms</span>
                   </div>
                   <div className="ep-count">
-                    <span>{ep.count} hits</span>
+                    <span>{ep.count}x</span>
                     <ArrowUpRight size={12} style={{ color: 'var(--gold)', marginLeft: '4px' }} />
                   </div>
                 </div>
@@ -361,9 +361,9 @@ export default function Monitor() {
         <div className="monitor-card-header" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '20px', marginBottom: '24px' }}>
           <h3 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Wifi size={18} style={{ color: 'var(--cyan-pulse)' }} />
-            Server Speed Test
+            Tes kecepatan server
           </h3>
-          <span className="card-subtitle">Measure bandwidth capacity and ping latency to this server.</span>
+          <span className="card-subtitle">Ukur kecepatan koneksi ke server ini.</span>
         </div>
 
         {speedTestError && (
@@ -398,12 +398,12 @@ export default function Monitor() {
             {(testPhase !== 'idle' && testPhase !== 'complete') ? (
               <>
                 <RefreshCw className="animate-spin" size={16} style={{ color: 'var(--gold)' }} />
-                TESTING...
+                Testing...
               </>
             ) : (
               <>
                 <Wifi size={16} style={{ color: 'var(--cyan-pulse)' }} />
-                START
+                Mulai
               </>
             )}
           </button>
@@ -454,19 +454,19 @@ export default function Monitor() {
         <div className="monitor-card-header" style={{ marginBottom: '32px' }}>
           <h3 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <BarChart3 size={18} style={{ color: 'var(--gold)' }} />
-            Traffic & Latency Timelines
+            Grafik aktivitas
           </h3>
-          <span className="card-subtitle">Calculated dynamically using timestamp aggregation buckets</span>
+          <span className="card-subtitle">Data dihitung berdasarkan jumlah request</span>
         </div>
 
         <div className="monitor-charts-grid">
           {/* Chart 1: Traffic Volume */}
           <div className="monitor-chart-card">
-            <h4 className="chart-card-title">HOURLY REQUESTS VOLUME</h4>
+            <h4 className="chart-card-title">JUMLAH REQUEST PER JAM</h4>
             {hourlyData.length === 0 ? (
               <div className="chart-fallback">
-                <span>NO GRAPH DATA AVAILABLE</span>
-                <p>Waiting for database log entries...</p>
+                <span>Belum ada data</span>
+                <p>Menunggu log database...</p>
               </div>
             ) : (
               <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} className="svg-chart">
@@ -513,11 +513,11 @@ export default function Monitor() {
 
           {/* Chart 2: Latency Trend */}
           <div className="monitor-chart-card">
-            <h4 className="chart-card-title">HOURLY AVERAGE LATENCY</h4>
+            <h4 className="chart-card-title">RATA-RATA LATENCY PER JAM</h4>
             {hourlyData.length === 0 ? (
               <div className="chart-fallback">
-                <span>NO GRAPH DATA AVAILABLE</span>
-                <p>Waiting for database log entries...</p>
+                <span>Belum ada data</span>
+                <p>Menunggu log database...</p>
               </div>
             ) : (
               <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} className="svg-chart">

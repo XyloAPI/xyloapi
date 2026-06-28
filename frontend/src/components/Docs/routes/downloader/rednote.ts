@@ -7,9 +7,9 @@ export const rednoteRoute: DocTopic = {
     method: 'POST',
     path: '/api/downloader/rednote',
     pathTemplate: '/api/downloader/:slug',
-    description: 'Download high-quality images and videos directly from Xiaohongshu (RedNote) posts.',
+    description: 'Unduh gambar dan video berkualitas tinggi langsung dari postingan Xiaohongshu (RedNote).',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'Xiaohongshu/RedNote share URL (e.g. https://www.xiaohongshu.com/discovery/item/...).' }
+      { name: 'url', type: 'text', required: true, desc: 'URL tautan Xiaohongshu/RedNote (contoh: https://www.xiaohongshu.com/discovery/item/...).' }
     ],
     payloadTemplate: {
       url: ''

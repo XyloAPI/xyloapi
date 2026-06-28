@@ -7,9 +7,9 @@ export const dmarcvalidationRoute: DocTopic = {
   method: 'GET',
   path: '/api/info/dmarc-validation',
   pathTemplate: '/api/info/:slug',
-  description: 'Validate DMARC email authentication policy and security record configuration for a domain.',
+  description: 'Validasi kebijakan autentikasi email DMARC dan konfigurasi record keamanan untuk suatu domain.',
   parameters: [
-    { name: 'host', type: 'text', required: true, desc: 'Domain name to validate DMARC policy (e.g. google.com).' }
+    { name: 'host', type: 'text', required: true, desc: 'Nama domain untuk memvalidasi kebijakan DMARC (contoh: google.com).' }
   ],
   payloadTemplate: {
     host: 'google.com'

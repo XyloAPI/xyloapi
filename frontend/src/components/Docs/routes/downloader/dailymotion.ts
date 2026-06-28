@@ -7,9 +7,9 @@ export const dailymotionRoute: DocTopic = {
     method: 'POST',
     path: '/api/downloader/dailymotion',
     pathTemplate: '/api/downloader/:slug',
-    description: 'Download Dailymotion videos in multiple resolutions (360p up to 1080p).',
+    description: 'Unduh video Dailymotion dalam berbagai resolusi (360p hingga 1080p).',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'Dailymotion video URL (e.g. https://www.dailymotion.com/video/xael6ni).' }
+      { name: 'url', type: 'text', required: true, desc: 'URL video Dailymotion (contoh: https://www.dailymotion.com/video/xael6ni).' }
     ],
     payloadTemplate: {
       url: ''

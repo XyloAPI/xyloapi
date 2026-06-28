@@ -7,9 +7,9 @@ export const sfileRoute: DocTopic = {
     method: 'POST',
     path: '/api/downloader/sfile',
     pathTemplate: '/api/downloader/:slug',
-    description: 'Download files directly from sfile.co (and sfile.mobi) bypassing ad countdowns.',
+    description: 'Unduh file langsung dari sfile.co (dan sfile.mobi) dengan memotong waktu hitung mundur iklan.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'sfile.co file URL (e.g. https://sfile.co/agNixA1YkHq).' }
+      { name: 'url', type: 'text', required: true, desc: 'URL file sfile.co (contoh: https://sfile.co/agNixA1YkHq).' }
     ],
     payloadTemplate: {
       url: ''

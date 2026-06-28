@@ -7,9 +7,9 @@ export const ipWhoisRoute: DocTopic = {
   method: 'GET',
   path: '/api/info/ip-whois',
   pathTemplate: '/api/info/:slug',
-  description: 'Lookup detailed registry records and ownership credentials for any IPv4 or IPv6 address.',
+  description: 'Cari record registri secara detail dan kredensial kepemilikan untuk alamat IPv4 atau IPv6 apa pun.',
   parameters: [
-    { name: 'ip', type: 'text', required: true, desc: 'IP address to query (e.g. 8.8.8.8).' }
+    { name: 'ip', type: 'text', required: true, desc: 'Alamat IP yang akan dicari (contoh: 8.8.8.8).' }
   ],
   payloadTemplate: {
     ip: '8.8.8.8'

@@ -7,7 +7,7 @@ export const sswebRoute: DocTopic = {
   method: 'GET',
   path: '/api/tools/ssweb',
   pathTemplate: '/api/tools/:slug',
-  description: 'Capture screenshot of any website.',
+  description: 'Ambil tangkapan layar (screenshot) dari situs web apa pun.',
   parameters: [
     { name: 'url', type: 'text', required: true, desc: 'Target website URL.' },
     { name: 'fullpage', type: 'select', required: false, desc: 'Capture full height of webpage.', options: ['true', 'false'] },

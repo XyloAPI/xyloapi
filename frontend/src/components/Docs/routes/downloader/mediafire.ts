@@ -7,9 +7,9 @@ export const mediafireRoute: DocTopic = {
     method: 'POST',
     path: '/api/downloader/mediafire',
     pathTemplate: '/api/downloader/:slug',
-    description: 'Generate direct high-speed download links from MediaFire file sharing URLs.',
+    description: 'Hasilkan tautan unduh langsung berkecepatan tinggi dari URL file MediaFire.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'MediaFire file URL.' }
+      { name: 'url', type: 'text', required: true, desc: 'URL file MediaFire.' }
     ],
     payloadTemplate: {
       url: ''

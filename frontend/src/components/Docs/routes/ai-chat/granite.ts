@@ -7,9 +7,9 @@ export const graniteRoute: DocTopic = {
     method: 'GET',
     path: '/api/ai-chat/granite',
     pathTemplate: '/api/ai-chat/:slug',
-    description: 'Interact with IBM Granite 4.0. A fast and efficient model for coding, reasoning, and general chat.',
+    description: 'Model cepat dan efisien untuk pemrograman, penalaran, dan percakapan umum.',
     parameters: [
-      { name: 'prompt', type: 'text', required: true, desc: 'The input message or question for the AI model.' }
+      { name: 'prompt', type: 'text', required: true, desc: 'Pesan atau pertanyaan yang ingin diajukan ke AI.' }
     ],
     payloadTemplate: {
       prompt: ''

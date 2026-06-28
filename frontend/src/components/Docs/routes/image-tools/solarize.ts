@@ -7,10 +7,10 @@ export const solarizeRoute: DocTopic = {
     method: 'POST',
     path: '/api/image-tool/solarize',
     pathTemplate: '/api/image-tool/:slug',
-    description: 'Invert colors of an image above a specified brightness threshold to create a surreal solarized effect. Upload an image file or provide a direct image URL.',
+    description: 'Balikkan warna gambar di atas ambang batas kecerahan tertentu untuk menciptakan efek surealis (solarize).',
     parameters: [
-      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' },
-      { name: 'threshold', type: 'number', required: false, desc: 'Brightness threshold from 0 to 255. Default is 128.' }
+      { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diproses.' },
+      { name: 'threshold', type: 'number', required: false, desc: 'Ambang batas kecerahan dari 0 hingga 255. Default adalah 128.' }
     ],
     payloadTemplate: {
       image: '',

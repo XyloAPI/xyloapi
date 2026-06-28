@@ -7,13 +7,13 @@ export const aljazeeraRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/aljazeera',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest news articles from Al Jazeera (aljazeera.com) by category. Returns up to 20 articles with title, image, description, and publish date.',
+    description: 'Ambil artikel berita terbaru dari Al Jazeera (aljazeera.com) berdasarkan kategori. Mengembalikan hingga 20 artikel dengan judul, gambar, deskripsi, dan tanggal terbit.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select an Al Jazeera news category.',
+        desc: 'Pilih kategori berita Al Jazeera.',
         options: [
           { value: 'news', label: 'News' },
           { value: 'sport', label: 'Sport' },

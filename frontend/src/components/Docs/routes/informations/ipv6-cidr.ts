@@ -7,9 +7,9 @@ export const ipv6CidrRoute: DocTopic = {
   method: 'GET',
   path: '/api/info/ipv6-cidr-to-range',
   pathTemplate: '/api/info/:slug',
-  description: 'Convert an IPv6 CIDR block into a start and end IP address range, along with network statistics.',
+  description: 'Konversi blok CIDR IPv6 menjadi rentang alamat IP awal dan akhir, beserta statistik jaringan.',
   parameters: [
-    { name: 'cidr', type: 'text', required: true, desc: 'IPv6 CIDR block (e.g. 2001:4860:4860::8888/32).' }
+    { name: 'cidr', type: 'text', required: true, desc: 'Blok CIDR IPv6 (contoh: 2001:4860:4860::8888/32).' }
   ],
   payloadTemplate: {
     cidr: '2001:4860:4860::8888/32'

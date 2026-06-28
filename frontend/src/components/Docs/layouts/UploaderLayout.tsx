@@ -12,7 +12,6 @@ export default function UploaderLayout({ activeTopic, resData, copyToClipboard }
   return (
     <div className="response-layout">
       <div className="response-header">
-        <span className="response-status-badge">✓ CDN UPLOAD SUCCESSFUL</span>
         <h2 className="response-title">
           {activeTopic.title.replace(' Uploader', ' Hosted Asset')}
         </h2>

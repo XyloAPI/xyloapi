@@ -7,9 +7,9 @@ export const ipToDecimalRoute: DocTopic = {
   method: 'GET',
   path: '/api/info/ip-to-decimal',
   pathTemplate: '/api/info/:slug',
-  description: 'Convert an IP address to its decimal representation, along with expanded and compatibility IPv6 formats.',
+  description: 'Konversi alamat IP ke representasi desimalnya, beserta format ekspansi dan kompatibilitas IPv6.',
   parameters: [
-    { name: 'ip', type: 'text', required: true, desc: 'IP address to convert (e.g. 8.8.8.8).' }
+    { name: 'ip', type: 'text', required: true, desc: 'Alamat IP untuk dikonversi (contoh: 8.8.8.8).' }
   ],
   payloadTemplate: {
     ip: '8.8.8.8'

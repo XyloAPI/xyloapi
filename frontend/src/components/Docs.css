@@ -1022,5 +1022,11 @@ input[type=number] {
   }
 }
 
+/* Custom override to prevent search layout thumbnail crops */
+.response-layout img.search-card-img {
+  height: 100% !important;
+  object-fit: contain !important;
+}
+
 
 

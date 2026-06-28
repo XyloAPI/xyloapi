@@ -7,9 +7,9 @@ export const md5GeneratorRoute: DocTopic = {
   method: 'GET',
   path: '/api/info/md5-generator',
   pathTemplate: '/api/info/:slug',
-  description: 'Generate MD5, SHA-1, and Base64 encoded values for any input string.',
+  description: 'Hasilkan nilai enkripsi MD5, SHA-1, dan Base64 untuk input string apa pun.',
   parameters: [
-    { name: 'str', type: 'text', required: true, desc: 'The input string to hash.' }
+    { name: 'str', type: 'text', required: true, desc: 'Input string untuk di-hash.' }
   ],
   payloadTemplate: {
     str: 'test'

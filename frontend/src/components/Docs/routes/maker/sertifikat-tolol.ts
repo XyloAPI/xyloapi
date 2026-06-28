@@ -7,7 +7,7 @@ export const sertifikatTololRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/sertifikat-tolol',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate a mock Indonesian humorous "Certificate of Stupidity" with a custom name.',
+  description: 'Buat gambar sertifikat humor Indonesia dengan nama penerima kustom.',
   parameters: [
     { name: 'name', type: 'text', required: true, desc: 'Full name to print on the certificate.' }
   ],

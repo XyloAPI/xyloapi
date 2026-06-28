@@ -7,13 +7,13 @@ export const cnnRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/cnn',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest news headlines and articles from CNN (edition.cnn.com) by category. Returns up to 20 articles with title, image, description, and publish date.',
+    description: 'Ambil berita utama dan artikel terbaru dari CNN (edition.cnn.com) berdasarkan kategori. Mengembalikan hingga 20 artikel dengan judul, gambar, deskripsi, dan tanggal terbit.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a CNN news category.',
+        desc: 'Pilih sub-portal berita CNN.',
         options: [
           { value: 'top', label: 'Top Stories' },
           { value: 'world', label: 'World' },

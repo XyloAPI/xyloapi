@@ -7,15 +7,15 @@ export const add_noiseRoute: DocTopic = {
     method: 'POST',
     path: '/api/image-tool/add-noise',
     pathTemplate: '/api/image-tool/:slug',
-    description: 'Add random noise to your images online. Select the noise type (Gaussian, Uniform, or Salt & Pepper) and specify the intensity amount.',
+    description: 'Tambahkan noise acak ke gambar secara online. Pilih jenis noise (Gaussian, Uniform, atau Salt & Pepper) dan tentukan tingkat intensitasnya.',
     parameters: [
-      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' },
-      { name: 'amount', type: 'number', required: false, desc: 'Noise amount from 0 to 100. Default is 20.' },
+      { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diproses.' },
+      { name: 'amount', type: 'number', required: false, desc: 'Jumlah noise dari 0 hingga 100. Default adalah 20.' },
       {
         name: 'noise_type',
         type: 'select',
         required: false,
-        desc: 'Type of noise to generate: "gaussian", "uniform", or "salt_and_pepper". Default is "gaussian".',
+        desc: "Jenis noise yang dihasilkan: 'gaussian', 'uniform', atau 'salt_and_pepper'. Default adalah 'gaussian'.",
         options: [
           { value: 'gaussian', label: 'Gaussian (Film Grain)' },
           { value: 'uniform', label: 'Uniform Noise' },

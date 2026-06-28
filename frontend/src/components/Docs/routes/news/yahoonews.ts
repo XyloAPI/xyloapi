@@ -7,13 +7,13 @@ export const yahoonewsRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/yahoonews',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest news and headlines from Yahoo News (yahoo.com/news). Returns up to 20 articles with title, image, description, source, and publish date — resolved dynamically from Yahoo News categories and article pages.',
+    description: 'Ambil berita utama terbaru dari Yahoo News (yahoo.com/news). Mengembalikan hingga 20 artikel dari kategori berita Yahoo.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a Yahoo News section.',
+        desc: 'Pilih kategori berita Yahoo News.',
         options: [
           { value: 'top', label: 'Top Stories' },
           { value: 'us', label: 'U.S. News' },

@@ -7,9 +7,9 @@ export const teraboxRoute: DocTopic = {
     method: 'POST',
     path: '/api/downloader/terabox',
     pathTemplate: '/api/downloader/:slug',
-    description: 'Download videos and files directly from Terabox links bypassing app lock limitations.',
+    description: 'Unduh video dan file secara langsung dari tautan Terabox tanpa batasan dari aplikasi.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'Terabox file URL (e.g. https://1024terabox.com/s/1etUwLqCoOeuWejxFNJF5xA).' }
+      { name: 'url', type: 'text', required: true, desc: 'URL file Terabox (contoh: https://1024terabox.com/s/1etUwLqCoOeuWejxFNJF5xA).' }
     ],
     payloadTemplate: {
       url: ''

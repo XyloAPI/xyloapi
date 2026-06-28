@@ -7,13 +7,13 @@ export const nasanewsRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/nasa',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest science news, press releases, and featured stories directly from NASA (nasa.gov). Integrated directly with the official NASA WordPress REST API, delivering high-resolution images, clean HTML excerpts, and precise publication dates.',
+    description: 'Ambil berita sains terbaru, rilis pers, dan cerita pilihan langsung dari NASA (nasa.gov). Terintegrasi langsung dengan API REST NASA.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a NASA News category.',
+        desc: 'Pilih kategori berita NASA.',
         options: [
           { value: 'releases', label: 'News Releases' },
           { value: 'news', label: 'General News' },

@@ -7,13 +7,13 @@ export const straitstimesRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/straitstimes',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest news headlines and articles from The Straits Times (straitstimes.com) by category. Returns up to 25 articles with title, link, excerpt, and publish date.',
+    description: 'Ambil berita utama dan artikel terbaru dari The Straits Times (straitstimes.com) berdasarkan kategori.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a news category to fetch articles from.',
+        desc: 'Pilih kategori berita Straits Times.',
         options: [
           { value: 'singapore', label: 'Singapore' },
           { value: 'asia', label: 'Asia' },

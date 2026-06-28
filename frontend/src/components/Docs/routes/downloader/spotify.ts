@@ -7,9 +7,9 @@ export const spotifyRoute: DocTopic = {
     method: 'POST',
     path: '/api/downloader/spotify',
     pathTemplate: '/api/downloader/:slug',
-    description: 'Download Spotify tracks in high-quality 320kbps MP3 audio.',
+    description: 'Unduh lagu Spotify dalam format MP3 berkualitas tinggi (320kbps).',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'public Spotify track URL.' }
+      { name: 'url', type: 'text', required: true, desc: 'URL publik lagu Spotify.' }
     ],
     payloadTemplate: {
       url: ''

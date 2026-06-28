@@ -7,7 +7,7 @@ export const fakeffRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/fakeff',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate a mock Free Fire in-game player lobby card with a custom username.',
+  description: 'Hasilkan kartu profil lobi pemain Free Fire tiruan dengan nama pengguna kustom.',
   parameters: [
     { name: 'username', type: 'text', required: true, desc: 'Username to display in the lobby. Max 20 characters.' }
   ],

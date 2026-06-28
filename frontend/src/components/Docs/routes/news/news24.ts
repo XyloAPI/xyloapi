@@ -7,13 +7,13 @@ export const news24Route: DocTopic = {
     method: 'POST',
     path: '/api/news/news24',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest news from News24 (news24.com), South Africa\'s leading news site. Returns up to 20 articles with title, description, and publish date. Note: images unavailable as news24.com enforces 429 rate-limiting on all server-side requests.',
+    description: 'Ambil berita terbaru dari News24 (news24.com) di Afrika Selatan. Mengembalikan hingga 20 artikel dari feed RSS real-time mereka.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a News24 category.',
+        desc: 'Pilih kategori berita News24.',
         options: [
           { value: 'top', label: 'Top Stories' },
           { value: 'south-africa', label: 'South Africa' },

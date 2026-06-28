@@ -273,6 +273,54 @@ import { deeplRoute } from './routes/tools/deepl';
 import { aksarajawaRoute } from './routes/tools/aksarajawa';
 import { hitungjarakRoute } from './routes/tools/hitungjarak';
 import { base64ToImageRoute } from './routes/tools/base64-to-image';
+import { noHokiRoute } from './routes/primbon/no-hoki';
+import { tafsirMimpiRoute } from './routes/primbon/tafsir-mimpi';
+import { ramalanJodohRoute } from './routes/primbon/ramalan-jodoh';
+import { ramalanJodohBaliRoute } from './routes/primbon/ramalan-jodoh-bali';
+import { ramalanSuamiIstriRoute } from './routes/primbon/ramalan-suami-istri';
+import { ramalanCintaRoute } from './routes/primbon/ramalan-cinta';
+import { artiNamaRoute } from './routes/primbon/arti-nama';
+import { kecocokanNamaRoute } from './routes/primbon/kecocokan-nama';
+import { namaPasanganRoute } from './routes/primbon/nama-pasangan';
+import { tanggalJadianRoute } from './routes/primbon/tanggal-jadian';
+import { sifatUsahaRoute } from './routes/primbon/sifat-usaha';
+import { rejekiHokiRoute } from './routes/primbon/rejeki-hoki';
+import { pekerjaanCocokRoute } from './routes/primbon/pekerjaan-cocok';
+import { ramalanPitagorasRoute } from './routes/primbon/ramalan-pitagoras';
+import { potensiPenyakitRoute } from './routes/primbon/potensi-penyakit';
+import { simbolTarotRoute } from './routes/primbon/simbol-tarot';
+import { ramalanKartuRoute } from './routes/primbon/ramalan-kartu';
+import { fengShuiRoute } from './routes/primbon/feng-shui';
+import { ramalanIChingRoute } from './routes/primbon/ramalan-i-ching';
+import { hariBaikRoute } from './routes/primbon/hari-baik';
+import { hariLaranganRoute } from './routes/primbon/hari-larangan';
+import { hariNaasRoute } from './routes/primbon/hari-naas';
+import { nagaHariRoute } from './routes/primbon/naga-hari';
+import { arahRejekiRoute } from './routes/primbon/arah-rejeki';
+import { ramalanPeruntunganRoute } from './routes/primbon/ramalan-peruntungan';
+import { wetonRoute } from './routes/primbon/weton';
+import { sifatKarakterRoute } from './routes/primbon/sifat-karakter';
+import { potensiKeberuntunganRoute } from './routes/primbon/potensi-keberuntungan';
+import { memancingIkanRoute } from './routes/primbon/memancing-ikan';
+import { masaSuburRoute } from './routes/primbon/masa-subur';
+import { zodiakRoute } from './routes/primbon/zodiak';
+import { shioRoute } from './routes/primbon/shio';
+import { kayuBertuahRoute } from './routes/primbon/kayu-bertuah';
+import { batuPermataRoute } from './routes/primbon/batu-permata';
+import { pamaliRoute } from './routes/primbon/pamali';
+import { tanggalLahirRoute } from './routes/primbon/tanggal-lahir';
+import { wetonJodohRoute } from './routes/primbon/weton-jodoh';
+import { hariBaikMenikahRoute } from './routes/primbon/hari-baik-menikah';
+import { pinterestSearchRoute } from './routes/search/pinterest';
+import { youtubeSearchRoute } from './routes/search/youtube';
+import { appleMusicSearchRoute } from './routes/search/apple_music';
+import { bilibiliSearchRoute } from './routes/search/bilibili';
+import { wikipediaSearchRoute } from './routes/search/wikipedia';
+import { wikimediaSearchRoute } from './routes/search/wikimedia';
+import { tiktokSearchRoute } from './routes/search/tiktok';
+import { deezerSearchRoute } from './routes/search/deezer';
+import { githubSearchRoute } from './routes/search/github';
+import { chordSearchRoute } from './routes/search/chord';
 
 
 
@@ -552,11 +600,59 @@ export const docTopics: DocTopic[] = [
   aksarajawaRoute,
   hitungjarakRoute,
   base64ToImageRoute,
+  noHokiRoute,
+  tafsirMimpiRoute,
+  ramalanJodohRoute,
+  ramalanJodohBaliRoute,
+  ramalanSuamiIstriRoute,
+  ramalanCintaRoute,
+  artiNamaRoute,
+  kecocokanNamaRoute,
+  namaPasanganRoute,
+  tanggalJadianRoute,
+  sifatUsahaRoute,
+  rejekiHokiRoute,
+  pekerjaanCocokRoute,
+  ramalanPitagorasRoute,
+  potensiPenyakitRoute,
+  simbolTarotRoute,
+  ramalanKartuRoute,
+  fengShuiRoute,
+  ramalanIChingRoute,
+  hariBaikRoute,
+  hariLaranganRoute,
+  hariNaasRoute,
+  nagaHariRoute,
+  arahRejekiRoute,
+  ramalanPeruntunganRoute,
+  wetonRoute,
+  sifatKarakterRoute,
+  potensiKeberuntunganRoute,
+  memancingIkanRoute,
+  masaSuburRoute,
+  zodiakRoute,
+  shioRoute,
+  kayuBertuahRoute,
+  batuPermataRoute,
+  pamaliRoute,
+  tanggalLahirRoute,
+  wetonJodohRoute,
+  hariBaikMenikahRoute,
+  pinterestSearchRoute,
+  youtubeSearchRoute,
+  appleMusicSearchRoute,
+  bilibiliSearchRoute,
+  wikipediaSearchRoute,
+  wikimediaSearchRoute,
+  tiktokSearchRoute,
+  deezerSearchRoute,
+  githubSearchRoute,
+  chordSearchRoute,
 ];
 
-// Adjust methods dynamically based on category: GET for News and Downloader
+// Adjust methods dynamically based on category: GET for News, Downloader and Search
 docTopics.forEach(topic => {
-  if (topic.category === 'News' || topic.category === 'Local News' || topic.category === 'Downloader' || (topic.category === 'QR Tools' && topic.id !== 'qr-decoder') || topic.category === 'Shortlink Tools' || topic.category === 'AI Chat' || topic.category === 'BMKG Indonesia' || topic.category === 'Informations' || topic.category === 'DNS Tools' || topic.category === 'Email Tools' || topic.category === 'IP Tools' || (topic.category === 'Dev Tools' && topic.id !== 'base64-to-image') || topic.category === 'Cyber Security Tools' || topic.category === 'Maker' || (topic.category === 'Tools' && topic.id !== 'base64-to-image')) {
+  if (topic.category === 'Search' || topic.category === 'News' || topic.category === 'Local News' || topic.category === 'Downloader' || (topic.category === 'QR Tools' && topic.id !== 'qr-decoder') || topic.category === 'Shortlink Tools' || topic.category === 'AI Chat' || topic.category === 'BMKG Indonesia' || topic.category === 'Informations' || topic.category === 'DNS Tools' || topic.category === 'Email Tools' || topic.category === 'IP Tools' || (topic.category === 'Dev Tools' && topic.id !== 'base64-to-image') || topic.category === 'Cyber Security Tools' || topic.category === 'Maker' || (topic.category === 'Tools' && topic.id !== 'base64-to-image')) {
     topic.method = 'GET';
   }
 });

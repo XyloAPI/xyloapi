@@ -7,13 +7,13 @@ export const freepRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/detroit',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch local, sports, and business news from the Detroit Free Press (freep.com). Returns up to 20 articles with title, link, description, source, and publish date — utilizing Google News RSS query fallback to bypass Akamai Bot Manager and Cloudflare WAF protections.',
+    description: 'Ambil berita lokal, olahraga, dan bisnis dari Detroit Free Press (freep.com). Mengembalikan hingga 20 artikel dengan perlindungan dari WAF.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a Detroit Free Press section.',
+        desc: 'Pilih kategori berita Detroit Free Press.',
         options: [
           { value: 'top', label: 'Top Stories' },
           { value: 'news', label: 'Detroit & Local News' },

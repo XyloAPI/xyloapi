@@ -7,9 +7,9 @@ export const invertRoute: DocTopic = {
     method: 'POST',
     path: '/api/image-tool/invert',
     pathTemplate: '/api/image-tool/:slug',
-    description: 'Invert colors of an image to their exact opposites to create a striking "negative" photo effect. Upload an image file or provide a direct image URL.',
+    description: 'Balikkan (invert) warna gambar untuk menciptakan efek foto negatif yang mencolok.',
     parameters: [
-      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' }
+      { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diproses.' }
     ],
     payloadTemplate: {
       image: ''

@@ -7,13 +7,13 @@ export const usnewsRoute: DocTopic = {
     method: 'POST',
     path: '/api/news/usnews',
     pathTemplate: '/api/news/:slug',
-    description: 'Fetch the latest news and rankings from U.S. News & World Report (usnews.com). Returns up to 20 articles with title, link, description, source, and publish date — utilizing Google News RSS query fallback to bypass rate limits and WAF protections.',
+    description: 'Ambil berita terbaru dan peringkat dari U.S. News & World Report (usnews.com) menggunakan fallback kueri Google News.',
     parameters: [
       {
         name: 'category',
         type: 'select',
         required: true,
-        desc: 'Select a U.S. News section.',
+        desc: 'Pilih kategori berita US News.',
         options: [
           { value: 'top', label: 'Top Stories' },
           { value: 'national', label: 'National News' },

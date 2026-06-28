@@ -7,9 +7,9 @@ export const upscaleRoute: DocTopic = {
     method: 'POST',
     path: '/api/image-tool/upscale',
     pathTemplate: '/api/image-tool/:slug',
-    description: 'Upscale and enhance low-resolution images instantly using advanced super-resolution AI. Upload an image file or provide a direct image URL.',
+    description: 'Perbesar resolusi (upscale) dan perbaiki gambar berkualitas rendah menggunakan AI Super Resolution.',
     parameters: [
-      { name: 'image', type: 'file', required: true, desc: 'Image file or image URL to process.' }
+      { name: 'image', type: 'file', required: true, desc: 'File gambar atau URL gambar yang ingin diproses.' }
     ],
     payloadTemplate: {
       image: ''

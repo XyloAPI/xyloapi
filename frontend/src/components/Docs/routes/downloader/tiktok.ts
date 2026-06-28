@@ -7,9 +7,9 @@ export const tiktokRoute: DocTopic = {
     method: 'POST',
     path: '/api/downloader/tiktok',
     pathTemplate: '/api/downloader/:slug',
-    description: 'Download TikTok videos without watermark, with watermark, or as high-quality MP3 audio files.',
+    description: 'Unduh video TikTok tanpa watermark, dengan watermark, atau sebagai file audio MP3 berkualitas tinggi.',
     parameters: [
-      { name: 'url', type: 'text', required: true, desc: 'public TikTok video URL.' }
+      { name: 'url', type: 'text', required: true, desc: 'URL publik video TikTok.' }
     ],
     payloadTemplate: {
       url: ''

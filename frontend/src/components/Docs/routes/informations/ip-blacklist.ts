@@ -7,9 +7,9 @@ export const ipblacklistRoute: DocTopic = {
   method: 'GET',
   path: '/api/info/ip-blacklist',
   pathTemplate: '/api/info/:slug',
-  description: 'Check if an IP address or domain is blacklisted across 50+ DNSBL databases (Spamhaus, Sorbs, Barracuda, etc.).',
+  description: 'Periksa apakah alamat IP atau domain masuk dalam daftar hitam di lebih dari 50 database DNSBL (Spamhaus, Sorbs, Barracuda, dll).',
   parameters: [
-    { name: 'ip', type: 'text', required: true, desc: 'IP address or domain name to check (e.g. 1.1.1.1 or google.com).' }
+    { name: 'ip', type: 'text', required: true, desc: 'Alamat IP atau nama domain yang akan dicek (contoh: 1.1.1.1 atau google.com).' }
   ],
   payloadTemplate: {
     ip: 'google.com'

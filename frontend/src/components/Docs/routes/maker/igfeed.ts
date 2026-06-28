@@ -7,7 +7,7 @@ export const igfeedRoute: DocTopic = {
   method: 'GET',
   path: '/api/maker/igfeed',
   pathTemplate: '/api/maker/:slug',
-  description: 'Generate a realistic Instagram feed post mockup with a custom photo, caption, and profile data.',
+  description: 'Hasilkan gambar mockup postingan feed Instagram yang realistis dengan foto kustom, caption, dan data profil.',
   parameters: [
     { name: 'username', type: 'text', required: false, desc: 'Instagram username to display.' },
     { name: 'avatar', type: 'text', required: false, desc: 'URL of the profile avatar image.' },
