@@ -16,7 +16,13 @@ export default defineConfig({
             if (id.includes('react') || id.includes('scheduler') || id.includes('react-dom')) {
               return 'vendor-react';
             }
-            if (id.includes('@radix-ui') || id.includes('lucide-react')) {
+            if (id.includes('recharts') || id.includes('d3')) {
+              return 'vendor-recharts';
+            }
+            if (id.includes('@tanstack')) {
+              return 'vendor-query';
+            }
+            if (id.includes('@radix-ui')) {
               return 'vendor-ui';
             }
             return 'vendor';
